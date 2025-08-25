@@ -101,8 +101,8 @@ const PatientPortal: React.FC = () => {
 
   const upcomingAppointments = appointments.filter(a => a.status === AppointmentStatus.SCHEDULED || a.status === AppointmentStatus.CONFIRMED);
   const pastAppointments = appointments.filter(a => a.status === AppointmentStatus.COMPLETED || a.status === AppointmentStatus.CANCELLED);
-  const pendingExercises = exercises.filter(e => e.status === 'pending' || e.status === 'in_progress');
-  const completedExercises = exercises.filter(e => e.status === 'completed');
+  const pendingExercises = exercises.filter(e => e.status === 'pendente' || e.status === 'em_andamento');
+  const completedExercises = exercises.filter(e => e.status === 'concluido');
   const pendingPayments = payments.filter(p => p.status === 'pendente');
   const unreadMessages = messages.filter(m => !m.is_read);
 
@@ -327,7 +327,7 @@ const PatientPortal: React.FC = () => {
                   <CreditCard className="w-5 h-5 text-yellow-600" />
                   <div>
                     <p className="font-medium text-gray-900">{payment.descricao}</p>
-                    <p className="text-sm text-gray-600">{formatDate(payment.payment_date)}</p>
+                    <p className="text-sm text-gray-600">{formatDate(payment.data)}</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -525,7 +525,7 @@ const PatientPortal: React.FC = () => {
                 <p className="text-sm text-gray-600 mb-3 line-clamp-2">{exercise.description}</p>
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <span>{exercise.category}</span>
-                  <span>Concluído em {formatDate(exercise.completion_date || '')}</span>
+                  <span>Concluído em {formatDate(exercise.created_at || '')}</span>
                 </div>
                 {exercise.feedback && (
                   <div className="mt-3 p-2 bg-green-50 rounded text-sm text-green-800">
@@ -559,9 +559,9 @@ const PatientPortal: React.FC = () => {
                   <CreditCard className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">{payment.description}</p>
-                  <p className="text-sm text-gray-600">{formatDate(payment.date)}</p>
-                  <p className="text-sm text-gray-600">{payment.method}</p>
+                  <p className="font-medium text-gray-900">{payment.descricao}</p>
+                  <p className="text-sm text-gray-600">{formatDate(payment.data)}</p>
+                  <p className="text-sm text-gray-600">{payment.metodo}</p>
                 </div>
               </div>
               <div className="text-right">

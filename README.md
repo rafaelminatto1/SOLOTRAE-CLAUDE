@@ -1,13 +1,100 @@
-# React + TypeScript + Vite
+# FisioFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema completo de gestão para clínicas de fisioterapia, desenvolvido com React, TypeScript, Vite e Supabase.
 
-Currently, two official plugins are available:
+## 🚀 Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Gestão de Pacientes**: Cadastro, histórico médico e acompanhamento
+- **Agendamento**: Sistema completo de agendamento de consultas
+- **Portal do Paciente**: Acesso para pacientes visualizarem informações
+- **Exercícios**: Biblioteca de exercícios com instruções
+- **Documentos**: Upload e gestão de documentos médicos
+- **Mensagens**: Sistema de comunicação interna
+- **Pagamentos**: Controle financeiro e pagamentos
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologias
+
+- **Frontend**: React 18 + TypeScript + Vite
+- **Styling**: Tailwind CSS
+- **Backend**: Supabase (Database, Auth, Storage)
+- **Deploy**: Vercel + GitHub Actions
+- **Icons**: Lucide React
+
+## 📋 Pré-requisitos
+
+- Node.js 18+
+- npm ou pnpm
+- Conta no Supabase
+- Conta no Vercel (para deploy)
+
+## 🚀 Instalação
+
+1. Clone o repositório:
+```bash
+git clone https://github.com/seu-usuario/fisioflow.git
+cd fisioflow
+```
+
+2. Instale as dependências:
+```bash
+npm install
+```
+
+3. Configure as variáveis de ambiente:
+```bash
+cp .env.example .env.local
+```
+
+Edite o arquivo `.env.local` com suas credenciais do Supabase:
+```env
+VITE_SUPABASE_URL=sua_url_do_supabase
+VITE_SUPABASE_ANON_KEY=sua_chave_anonima
+```
+
+4. Execute o projeto:
+```bash
+npm run dev
+```
+
+## 🧪 Scripts Disponíveis
+
+- `npm run dev` - Inicia o servidor de desenvolvimento
+- `npm run build` - Gera build de produção
+- `npm run check` - Executa verificação de tipos TypeScript
+- `npm run preview` - Visualiza build de produção localmente
+
+## 📚 Deploy
+
+Veja o arquivo [DEPLOY.md](./DEPLOY.md) para instruções detalhadas de deploy.
+
+## 🏗️ Estrutura do Projeto
+
+```
+src/
+├── components/     # Componentes reutilizáveis
+├── pages/         # Páginas da aplicação
+├── hooks/         # Custom hooks
+├── utils/         # Funções utilitárias
+└── types/         # Definições de tipos TypeScript
+
+api/               # Backend APIs (Node.js/Express)
+shared/            # Tipos compartilhados
+supabase/          # Configurações e migrações do Supabase
+```
+
+## 🤝 Contribuição
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## Configuração Avançada do ESLint
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
