@@ -71,7 +71,7 @@ const Exercises: React.FC = () => {
   const [formData, setFormData] = useState<ExerciseFormData>({
     name: '',
     description: '',
-    category: ExerciseCategory.STRENGTH,
+    category: ExerciseCategory.STRENGTHENING,
     subcategory: '',
     difficulty: ExerciseDifficulty.BEGINNER,
     estimated_duration: '',
@@ -139,14 +139,14 @@ const Exercises: React.FC = () => {
         subcategory: formData.subcategory || undefined,
         difficulty: formData.difficulty,
         estimated_duration: parseInt(formData.estimated_duration),
-        equipment: formData.equipment ? formData.equipment.split(',').map(e => e.trim()).filter(e => e) : [],
-        muscle_groups: formData.muscle_groups ? formData.muscle_groups.split(',').map(g => g.trim()).filter(g => g) : [],
-        objectives: formData.objectives ? formData.objectives.split(',').map(o => o.trim()).filter(o => o) : [],
+        // equipment: formData.equipment ? formData.equipment.split(',').map(e => e.trim()).filter(e => e) : [],
+      // muscle_groups: formData.muscle_groups ? formData.muscle_groups.split(',').map(g => g.trim()).filter(g => g) : [],
+      // objectives: formData.objectives ? formData.objectives.split(',').map(o => o.trim()).filter(o => o) : [],
         instructions: formData.instructions.trim(),
-        contraindications: formData.contraindications.trim() || undefined,
+        precautions: formData.contraindications.trim() || undefined,
         video_url: formData.video_url.trim() || undefined,
         image_url: formData.image_url.trim() || undefined,
-        tags: formData.tags ? formData.tags.split(',').map(t => t.trim()).filter(t => t) : [],
+        // tags: formData.tags ? formData.tags.split(',').map(t => t.trim()).filter(t => t) : [],
         is_active: formData.is_active,
       };
 
@@ -172,18 +172,18 @@ const Exercises: React.FC = () => {
     setFormData({
       name: exercise.name,
       description: exercise.description,
-      category: exercise.category,
-      subcategory: exercise.subcategory || '',
+      category: exercise.category as ExerciseCategory,
+      // subcategory: exercise.subcategory || '', // Property doesn't exist in Exercise interface
       difficulty: exercise.difficulty,
       estimated_duration: exercise.estimated_duration.toString(),
-      equipment: exercise.equipment.join(', '),
-      muscle_groups: exercise.muscle_groups.join(', '),
-      objectives: exercise.objectives.join(', '),
+      equipment: '', // exercise.equipment?.join(', ') || '',
+      muscle_groups: '', // exercise.muscle_groups?.join(', ') || '',
+      objectives: '', // exercise.objectives?.join(', ') || '',
       instructions: exercise.instructions,
-      contraindications: exercise.contraindications || '',
+      contraindications: exercise.precautions || '',
       video_url: exercise.video_url || '',
       image_url: exercise.image_url || '',
-      tags: exercise.tags.join(', '),
+      tags: '', // exercise.tags?.join(', ') || '',
       is_active: exercise.is_active,
     });
     setShowModal(true);
@@ -207,7 +207,7 @@ const Exercises: React.FC = () => {
     setFormData({
       name: '',
       description: '',
-      category: ExerciseCategory.STRENGTH,
+      category: ExerciseCategory.STRENGTHENING,
       subcategory: '',
       difficulty: ExerciseDifficulty.BEGINNER,
       estimated_duration: '',
@@ -358,20 +358,7 @@ const Exercises: React.FC = () => {
                     {exercise.category}
                   </div>
                   
-                  {exercise.muscle_groups.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {exercise.muscle_groups.slice(0, 2).map((grupo, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {grupo}
-                        </Badge>
-                      ))}
-                      {exercise.muscle_groups.length > 2 && (
-                        <Badge variant="secondary" className="text-xs">
-                          +{exercise.muscle_groups.length - 2}
-                        </Badge>
-                      )}
-                    </div>
-                  )}
+                  {/* muscle_groups display removed - property doesn't exist in Exercise interface */}
                   
                   <div className="flex items-center justify-between pt-2">
                     <div className="flex items-center gap-2">
@@ -497,11 +484,16 @@ const Exercises: React.FC = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
-                  <option value={ExerciseCategory.STRENGTH}>Força</option>
+                  <option value={ExerciseCategory.STRENGTHENING}>Fortalecimento</option>
                   <option value={ExerciseCategory.CARDIO}>Cardio</option>
-                  <option value={ExerciseCategory.FLEXIBILITY}>Flexibilidade</option>
+                  <option value={ExerciseCategory.STRETCHING}>Alongamento</option>
                   <option value={ExerciseCategory.BALANCE}>Equilíbrio</option>
-                  <option value={ExerciseCategory.REHABILITATION}>Reabilitação</option>
+                  <option value={ExerciseCategory.CERVICAL}>Cervical</option>
+                  <option value={ExerciseCategory.UPPER_LIMBS}>Membros Superiores</option>
+                  <option value={ExerciseCategory.TRUNK}>Tronco</option>
+                  <option value={ExerciseCategory.LOWER_LIMBS}>Membros Inferiores</option>
+                  <option value={ExerciseCategory.NEURAL_MOBILIZATION}>Mobilização Neural</option>
+                  <option value={ExerciseCategory.GENERAL_MOBILITY}>Mobilidade Geral</option>
                 </select>
               </div>
             </div>
@@ -647,25 +639,21 @@ const Exercises: React.FC = () => {
                 <p className="text-sm">{selectedExercise.instructions}</p>
               </div>
               
-              {selectedExercise.muscle_groups.length > 0 && (
+              {/* muscle_groups and equipment sections removed - properties don't exist in Exercise interface */}
+              
+              {selectedExercise.precautions && (
                 <div>
-                  <h4 className="font-medium text-sm text-gray-500 mb-2">Grupos Musculares</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {selectedExercise.muscle_groups.map((grupo, index) => (
-                      <Badge key={index} variant="secondary">{grupo}</Badge>
-                    ))}
-                  </div>
+                  <h4 className="font-medium text-sm text-gray-500 mb-2">Precauções</h4>
+                  <p className="text-sm">{selectedExercise.precautions}</p>
                 </div>
               )}
               
-              {selectedExercise.equipment.length > 0 && (
+              {selectedExercise.video_url && (
                 <div>
-                  <h4 className="font-medium text-sm text-gray-500 mb-2">Equipamentos</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {selectedExercise.equipment.map((equipamento, index) => (
-                      <Badge key={index} variant="outline">{equipamento}</Badge>
-                    ))}
-                  </div>
+                  <h4 className="font-medium text-sm text-gray-500 mb-2">Vídeo</h4>
+                  <a href={selectedExercise.video_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    Ver vídeo do exercício
+                  </a>
                 </div>
               )}
             </div>

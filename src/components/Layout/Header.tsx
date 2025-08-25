@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
 import { RealtimeNotificationBell } from '../Notifications/RealtimeNotificationBell';
 import { ThemeToggle } from '../ui/ThemeToggle';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
+import Button from '../ui/button';
+import Input from '../ui/input';
 import {
   DropdownMenu,
   DropdownMenuContent,

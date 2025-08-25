@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import type { UserRole } from '@shared/types';
+import { UserRole } from '@shared/types';
 import {
   Home,
   Users,
@@ -28,7 +28,7 @@ interface NavItem {
   name: string;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
-  roles: string[];
+  roles: UserRole[];
   badge?: string;
 }
 
@@ -37,80 +37,80 @@ const navigation: NavItem[] = [
     name: 'Dashboard',
     href: '/dashboard',
     icon: Home,
-    roles: ['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA', 'PACIENTE', 'PARCEIRO'],
+    roles: [UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY, UserRole.PATIENT, UserRole.PARTNER],
   },
   {
     name: 'Pacientes',
     href: '/patients',
     icon: Users,
-    roles: ['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA'],
+    roles: [UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY],
   },
   {
     name: 'Agendamentos',
     href: '/appointments',
     icon: Calendar,
-    roles: ['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA'],
+    roles: [UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY],
   },
   {
     name: 'Minhas Consultas',
     href: '/my-appointments',
     icon: Clock,
-    roles: ['PACIENTE'],
+    roles: [UserRole.PATIENT],
   },
   {
     name: 'Exercícios',
     href: '/exercises',
     icon: Activity,
-    roles: ['ADMIN', 'FISIOTERAPEUTA', 'PACIENTE'],
+    roles: [UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.PATIENT],
   },
   {
     name: 'Meu Plano',
     href: '/my-plan',
     icon: Heart,
-    roles: ['PACIENTE'],
+    roles: [UserRole.PATIENT],
   },
   {
     name: 'IA Assistente',
     href: '/ai-assistant',
     icon: Brain,
-    roles: ['ADMIN', 'FISIOTERAPEUTA'],
+    roles: [UserRole.ADMIN, UserRole.PHYSIOTHERAPIST],
     badge: 'Pro',
   },
   {
     name: 'Relatórios',
     href: '/reports',
     icon: BarChart3,
-    roles: ['ADMIN', 'FISIOTERAPEUTA'],
+    roles: [UserRole.ADMIN, UserRole.PHYSIOTHERAPIST],
   },
   {
     name: 'Parcerias',
     href: '/partnerships',
     icon: Handshake,
-    roles: ['ADMIN', 'PARCEIRO'],
+    roles: [UserRole.ADMIN, UserRole.PARTNER],
   },
   {
     name: 'Meus Vouchers',
     href: '/my-vouchers',
     icon: FileText,
-    roles: ['PARCEIRO'],
+    roles: [UserRole.PARTNER],
   },
   {
     name: 'Usuários',
     href: '/users',
     icon: Shield,
-    roles: ['ADMIN'],
+    roles: [UserRole.ADMIN],
   },
   {
     name: 'Perfil',
     href: '/profile',
     icon: User,
-    roles: ['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA', 'PACIENTE', 'PARCEIRO'],
+    roles: [UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY, UserRole.PATIENT, UserRole.PARTNER],
   },
   {
     name: 'Configurações',
     href: '/settings',
     icon: Settings,
-    roles: ['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA'],
+    roles: [UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY],
   },
 ];
 

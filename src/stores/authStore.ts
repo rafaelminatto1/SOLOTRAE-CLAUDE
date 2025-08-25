@@ -1,6 +1,9 @@
 import { create } from 'zustand';
-import { User } from '@supabase/supabase-js';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
+import { User as CustomUser } from '@shared/types';
+
+export type User = SupabaseUser & CustomUser;
 
 interface AuthState {
   user: User | null;
@@ -29,7 +32,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       if (data.user) {
         set({ 
-          user: data.user, 
+          user: data.user as User, 
           isAuthenticated: true,
           isLoading: false 
         });
@@ -60,7 +63,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       
       if (session?.user) {
         set({ 
-          user: session.user, 
+          user: session.user as User, 
           isAuthenticated: true,
           isLoading: false 
         });
@@ -76,7 +79,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       supabase.auth.onAuthStateChange((event, session) => {
         if (session?.user) {
           set({ 
-            user: session.user, 
+            user: session.user as User, 
             isAuthenticated: true,
             isLoading: false 
           });

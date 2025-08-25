@@ -4,7 +4,7 @@ import { useRealtimeContext } from '../../contexts/RealtimeContext'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
 import { toast } from 'sonner'
-import type { Notification } from '@shared/types'
+import { Notification } from '@shared/types';
 
 export function RealtimeNotificationBell() {
   const { notifications, unreadCount } = useRealtimeContext()
@@ -19,7 +19,7 @@ export function RealtimeNotificationBell() {
     try {
       const { error } = await supabase
         .from('notifications')
-        .update({ is_read: true })
+        .update({ read: true })
         .eq('id', notificationId)
         .eq('user_id', user.id)
 
@@ -41,9 +41,9 @@ export function RealtimeNotificationBell() {
     try {
       const { error } = await supabase
         .from('notifications')
-        .update({ is_read: true })
+        .update({ read: true })
         .eq('user_id', user.id)
-        .eq('is_read', false)
+        .eq('read', false)
 
       if (error) {
         console.error('Error marking all notifications as read:', error)
@@ -142,7 +142,7 @@ export function RealtimeNotificationBell() {
                   <div
                     key={notification.id}
                     className={`p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
-                      !notification.is_read ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                      !notification.read ? 'bg-blue-50 dark:bg-blue-900/20' : ''
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -152,7 +152,7 @@ export function RealtimeNotificationBell() {
                           <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
                             {notification.title}
                           </h4>
-                          {!notification.is_read && (
+                          {!notification.read && (
                             <div className="w-2 h-2 bg-blue-500 rounded-full" />
                           )}
                         </div>
@@ -163,7 +163,7 @@ export function RealtimeNotificationBell() {
                           {formatDate(notification.created_at)}
                         </p>
                       </div>
-                      {!notification.is_read && (
+                      {!notification.read && (
                         <button
                           onClick={() => markAsRead(notification.id)}
                           className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1"

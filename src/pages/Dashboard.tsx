@@ -4,6 +4,7 @@ import { useApiGet } from '@/hooks/useApi';
 import { Card } from '@/components/ui/Card';
 import AnimatedContainer from '@/components/ui/AnimatedContainer';
 import { useStaggerAnimation } from '@/hooks/useAnimation';
+import { UserRole } from '@shared/types';
 import {
   Users,
   Calendar,
@@ -63,7 +64,7 @@ export default function Dashboard() {
   const [upcomingAppointments, setUpcomingAppointments] = useState<UpcomingAppointment[]>([]);
   
   const getRoleSpecificStats = () => {
-    if (hasRole(['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA'])) {
+    if (hasRole([UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY])) {
       return [
         {
           name: 'Total de Pacientes',
@@ -94,7 +95,7 @@ export default function Dashboard() {
           color: 'bg-orange-500',
         },
       ];
-    } else if (hasRole(['PACIENTE'])) {
+    } else if (hasRole([UserRole.PATIENT])) {
       return [
         {
           name: 'Próxima Consulta',
@@ -213,12 +214,12 @@ export default function Dashboard() {
                 {getGreeting()}, {user?.full_name}!
               </h1>
               <p className="text-gray-600 dark:text-gray-300 mt-1 transition-colors">
-                {hasRole(['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA']) 
+                {hasRole([UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY]) 
                   ? 'Aqui está um resumo das atividades de hoje.'
                   : 'Acompanhe seu progresso e próximas atividades.'}
               </p>
             </div>
-            {hasRole(['ADMIN', 'FISIOTERAPEUTA']) && (
+            {hasRole([UserRole.ADMIN, UserRole.PHYSIOTHERAPIST]) && (
               <div className="flex items-center space-x-2 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-lg transition-colors">
                 <Brain className="h-5 w-5 text-blue-600 dark:text-blue-400 transition-colors" />
                 <span className="text-sm font-medium text-blue-600 dark:text-blue-400 transition-colors">IA Assistente Ativo</span>
@@ -260,12 +261,12 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Próximos Agendamentos */}
-        {hasRole(['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA', 'PACIENTE']) && (
+        {hasRole([UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY, UserRole.PATIENT]) && (
           <AnimatedContainer animation="slide-up" delay={200}>
             <Card variant="elevated" hover>
               <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white transition-colors">
-                {hasRole(['PACIENTE']) ? 'Minhas Próximas Consultas' : 'Próximos Agendamentos'}
+                {hasRole([UserRole.PATIENT]) ? 'Minhas Próximas Consultas' : 'Próximos Agendamentos'}
               </h3>
               <Calendar className="h-5 w-5 text-gray-400 dark:text-gray-500 transition-colors" />
             </div>
@@ -340,7 +341,7 @@ export default function Dashboard() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 dark:text-white transition-colors">{activity.title}</p>
                       <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">{activity.description}</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 transition-colors">{activity.created_at}</p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 transition-colors">{activity.time}</p>
                     </div>
                   </div>
                 );
@@ -357,7 +358,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      {hasRole(['ADMIN', 'FISIOTERAPEUTA', 'SECRETARIA']) && (
+      {hasRole([UserRole.ADMIN, UserRole.PHYSIOTHERAPIST, UserRole.SECRETARY]) && (
         <AnimatedContainer animation="fade-in" delay={400}>
           <Card variant="glass" hover>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors">Ações Rápidas</h3>

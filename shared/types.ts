@@ -419,7 +419,7 @@ export interface Notification {
   title: string;
   message: string;
   type: 'info' | 'success' | 'warning' | 'error';
-  is_read: boolean;
+  read: boolean;
   action_url?: string;
   created_at: string;
   user?: User;
@@ -468,7 +468,7 @@ export interface Message {
   receiver_id: number;
   content: string;
   message_type: 'text' | 'file' | 'image';
-  is_read: boolean;
+  read: boolean;
   created_at: string;
   sender?: User;
   receiver?: User;

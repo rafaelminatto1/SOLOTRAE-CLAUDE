@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
-import type { Database } from '../../api/database/supabase';
+import type { Database } from '../../shared/database.types';
+import { Tables } from '../../shared/database.types';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://qywbmnvsyjhlrmtsvkjd.supabase.co';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5d2JtbnZzeWpobHJtdHN2a2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5MDUwODIsImV4cCI6MjA3MTQ4MTA4Mn0.NrCQt7GgpDaUmSlIgXq9RQOkAxYqDS6EtS0bv2-ErtE';
@@ -22,8 +23,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 });
 
 // Tipos exportados para uso no frontend
-export type { Database } from '../../api/database/supabase';
-export type { Tables, TablesInsert, TablesUpdate } from '../../api/database/supabase';
+export type { Database, Tables, TablesInsert, TablesUpdate } from '../../shared/database.types';
 
 // Tipos específicos para o frontend
 export type User = Tables<'users'>;
