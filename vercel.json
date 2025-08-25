@@ -1,8 +1,8 @@
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "installCommand": "pnpm install",
-  "devCommand": "pnpm dev",
+  "installCommand": "npm ci",
+  "devCommand": "npm run dev",
   "functions": {
     "api/**/*.ts": {
       "runtime": "nodejs18.x"

@@ -1,0 +1,179 @@
+# =================================
+# FISIOFLOW - DOCKER COMPOSE
+# =================================
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: fisioflow-postgres
+    environment:
+      POSTGRES_DB: fisioflow
+      POSTGRES_USER: fisioflow
+      POSTGRES_PASSWORD: fisioflow123
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fisioflow"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: fisioflow-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass fisioflow123
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend Flask API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fisioflow-backend
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://fisioflow:fisioflow123@postgres:5432/fisioflow
+      - REDIS_URL=redis://:fisioflow123@redis:6379
+      - JWT_SECRET=dev-jwt-secret-change-in-production
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    networks:
+      - fisioflow-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    command: python app.py
+
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: fisioflow-frontend
+    environment:
+      - VITE_API_URL=http://localhost:3001
+      - VITE_APP_NAME=FisioFlow
+      - VITE_APP_VERSION=1.0.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    networks:
+      - fisioflow-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+    command: npm run frontend:dev
+
+  # Nginx Reverse Proxy (Produção)
+  nginx:
+    image: nginx:alpine
+    container_name: fisioflow-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    networks:
+      - fisioflow-network
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+    profiles:
+      - production
+
+  # Celery Worker (para tarefas assíncronas)
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fisioflow-celery
+    environment:
+      - DATABASE_URL=postgresql://fisioflow:fisioflow123@postgres:5432/fisioflow
+      - REDIS_URL=redis://:fisioflow123@redis:6379
+      - CELERY_BROKER_URL=redis://:fisioflow123@redis:6379
+      - CELERY_RESULT_BACKEND=redis://:fisioflow123@redis:6379
+    volumes:
+      - ./backend:/app
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    networks:
+      - fisioflow-network
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    command: celery -A app.celery worker --loglevel=info
+    profiles:
+      - production
+
+  # Celery Beat (agendador de tarefas)
+  celery-beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fisioflow-celery-beat
+    environment:
+      - DATABASE_URL=postgresql://fisioflow:fisioflow123@postgres:5432/fisioflow
+      - REDIS_URL=redis://:fisioflow123@redis:6379
+      - CELERY_BROKER_URL=redis://:fisioflow123@redis:6379
+      - CELERY_RESULT_BACKEND=redis://:fisioflow123@redis:6379
+    volumes:
+      - ./backend:/app
+      - ./logs:/app/logs
+    networks:
+      - fisioflow-network
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    command: celery -A app.celery beat --loglevel=info
+    profiles:
+      - production
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  fisioflow-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

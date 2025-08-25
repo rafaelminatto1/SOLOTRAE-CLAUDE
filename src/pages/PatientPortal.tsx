@@ -9,6 +9,8 @@ import {
   Appointment, 
   Exercise, 
   Patient, 
+  Document,
+  Message,
   AppointmentStatus, 
   ExerciseCategory, 
   ExerciseDifficulty 
@@ -40,38 +42,17 @@ interface Payment {
   id: string;
   data: string;
   valor: number;
+  amount: number; // Alias para valor
   status: 'pendente' | 'pago' | 'reembolsado';
   metodo: string;
   descricao: string;
   comprovante_url?: string;
+  receipt_url?: string; // Alias para comprovante_url
 }
 
-interface Document {
-  id: string;
-  nome: string;
-  tipo: string;
-  data_upload: string;
-  tamanho: number;
-  url: string;
-}
+// Interface Document removida - usando a importada de @shared/types
 
-interface Message {
-  id: string;
-  remetente: {
-    id: string;
-    nome: string;
-    foto_url?: string;
-    tipo: 'paciente' | 'fisioterapeuta' | 'secretaria' | 'sistema';
-  };
-  conteudo: string;
-  data_envio: string;
-  lida: boolean;
-  anexos?: Array<{
-    id: string;
-    nome: string;
-    url: string;
-  }>;
-}
+// Interface Message removida - usando a importada de @shared/types
 
 interface PatientPortalData extends Patient {
   fisioterapeuta_principal?: {
@@ -123,7 +104,7 @@ const PatientPortal: React.FC = () => {
   const pendingExercises = exercises.filter(e => e.status === 'pending' || e.status === 'in_progress');
   const completedExercises = exercises.filter(e => e.status === 'completed');
   const pendingPayments = payments.filter(p => p.status === 'pendente');
-  const unreadMessages = messages.filter(m => !m.read);
+  const unreadMessages = messages.filter(m => !m.is_read);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -197,7 +178,7 @@ const PatientPortal: React.FC = () => {
   };
 
   const handleDownloadDocument = (document: Document) => {
-    window.open(document.url, '_blank');
+    window.open(document.file_path, '_blank');
   };
 
   const renderOverview = () => (
@@ -669,7 +650,7 @@ const PatientPortal: React.FC = () => {
             <div
               key={message.id}
               className={`p-4 rounded-lg border ${
-                message.read ? 'border-gray-200 bg-white' : 'border-blue-200 bg-blue-50'
+                message.is_read ? 'border-gray-200 bg-white' : 'border-blue-200 bg-blue-50'
               }`}
             >
               <div className="flex items-start justify-between mb-3">
@@ -678,13 +659,13 @@ const PatientPortal: React.FC = () => {
                     <User className="w-5 h-5 text-gray-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">{message.sender.name}</p>
-            <p className="text-sm text-gray-600">{message.sender.type}</p>
+                    <p className="font-medium text-gray-900">{message.sender?.name}</p>
+                    <p className="text-sm text-gray-600">{message.sender?.role}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-gray-600">{formatDate(message.send_date)}</p>
-            {!message.read && (
+                  <p className="text-sm text-gray-600">{formatDate(message.created_at)}</p>
+            {!message.is_read && (
                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
                       <Bell className="w-3 h-3 mr-1" />
                       Nova
@@ -701,9 +682,9 @@ const PatientPortal: React.FC = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => window.open(attachment.url, '_blank')}
-                    >
-                      <Clipboard className="w-4 h-4 mr-1" />
-                      {attachment.name}
+                     >
+                       <Clipboard className="w-4 h-4 mr-1" />
+                       {attachment.name}
                     </Button>
                   ))}
                 </div>
@@ -962,19 +943,19 @@ const PatientPortal: React.FC = () => {
             <div className="flex items-center space-x-4">
               <FileText className="w-12 h-12 text-blue-600" />
               <div>
-                <h3 className="text-lg font-bold text-gray-900">{selectedDocument.name}</h3>
-                <p className="text-gray-600">{selectedDocument.type}</p>
+                <h3 className="text-lg font-bold text-gray-900">{selectedDocument.title}</h3>
+                <p className="text-gray-600">{selectedDocument.file_type}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Data de Envio</label>
-                <p className="text-gray-900">{formatDate(selectedDocument.upload_date)}</p>
+                <p className="text-gray-900">{formatDate(selectedDocument.created_at)}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Tamanho</label>
-                <p className="text-gray-900">{(selectedDocument.size / 1024 / 1024).toFixed(2)} MB</p>
+                <p className="text-gray-900">{(selectedDocument.file_size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
             </div>
 

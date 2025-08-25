@@ -353,6 +353,12 @@ export interface Exercise {
   created_at: string;
   updated_at: string;
   creator?: User;
+  // Propriedades adicionais para o frontend
+  feedback?: string;
+  status?: 'pendente' | 'em_andamento' | 'concluido';
+  progress?: number; // Progresso do exercício (0-100)
+  difficulty_level?: string; // Nível de dificuldade
+  estimated_duration?: number; // Duração estimada em minutos
 }
 
 // Interfaces de Planos de Tratamento - Sincronizadas com o banco
@@ -448,6 +454,11 @@ export interface Document {
   updated_at: string;
   patient?: Patient;
   uploader?: User;
+  // Propriedades adicionais para compatibilidade
+  name: string; // Alias para title
+  type: string; // Alias para file_type
+  upload_date: string; // Alias para created_at
+  size: number; // Alias para file_size
 }
 
 // Interface para mensagens
@@ -461,6 +472,13 @@ export interface Message {
   created_at: string;
   sender?: User;
   receiver?: User;
+  attachments?: {
+    id: string;
+    name: string;
+    url: string;
+    type: string;
+    size: number;
+  }[];
 }
 
 // Interfaces de IA

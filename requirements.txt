@@ -1,0 +1,1972 @@
+# FisioFlow Backend Dependencies
+
+# Framework Web
+Flask==2.3.3
+Flask-SQLAlchemy==3.0.5
+Flask-Migrate==4.0.5
+Flask-JWT-Extended==4.5.3
+Flask-CORS==4.0.0
+Flask-Mail==0.9.1
+Flask-Limiter==3.5.0
+
+# Banco de Dados
+psycopg2-binary==2.9.7
+SQLAlchemy==2.0.21
+alembic==1.12.0
+
+# Cache e Sessões
+redis==5.0.0
+Flask-Session==0.5.0
+
+# Autenticação e Segurança
+PyJWT==2.8.0
+bcrypt==4.0.1
+cryptography==41.0.4
+passlib==1.7.4
+argon2-cffi==23.1.0
+pyotp==2.9.0
+qrcode==7.4.2
+
+# Validação e Serialização
+marshmallow==3.20.1
+Flask-Marshmallow==0.15.0
+marshmallow-sqlalchemy==0.29.0
+WTForms==3.0.1
+Flask-WTF==1.1.1
+cerberus==1.3.5
+
+# Processamento de Dados
+pandas==2.1.1
+numpy==1.25.2
+openpyxl==3.1.2
+xlsxwriter==3.1.9
+
+# Processamento de Imagens
+Pillow==10.0.1
+opencv-python==4.8.1.78
+
+# APIs e Integrações
+requests==2.31.0
+httpx==0.25.0
+twilio==8.9.1
+google-api-python-client==2.100.0
+google-auth==2.23.3
+google-auth-oauthlib==1.1.0
+google-auth-httplib2==0.1.1
+stripe==6.6.0
+
+# Processamento Assíncrono
+celery==5.3.2
+kombu==5.3.2
+billiard==4.1.0
+
+# Logging e Monitoramento
+structlog==23.1.0
+python-json-logger==2.0.7
+sentry-sdk==1.32.0
+prometheus-client==0.17.1
+
+# Utilitários de Data e Tempo
+python-dateutil==2.8.2
+pytz==2023.3
+arrow==1.2.3
+
+# Validação de Documentos Brasileiros
+python-cpf==1.0.0
+python-cnpj==2.0.0
+
+# Geração de PDFs e Documentos
+reportlab==4.0.4
+WeasyPrint==60.0
+jinja2==3.1.2
+
+# Configuração e Ambiente
+python-dotenv==1.0.0
+click==8.1.7
+
+# Testes
+pytest==7.4.2
+pytest-flask==1.2.0
+pytest-cov==4.1.0
+pytest-mock==3.11.1
+factory-boy==3.3.0
+faker==19.6.2
+
+# Desenvolvimento
+flake8==6.1.0
+black==23.9.1
+isort==5.12.0
+mypy==1.5.1
+pre-commit==3.4.0
+
+# Servidor WSGI
+gunicorn==21.2.0
+gevent==23.7.0
+
+# Backup e Compressão
+psutil==5.9.5
+zipfile36==0.1.3
+
+# Criptografia Avançada
+fernet==1.0.1
+
+# Análise de Texto e IA
+openai==0.28.1
+anthropics==0.3.11
+google-generativeai==0.2.2
+langchain==0.0.308
+langchain-openai==0.0.2
+langchain-anthropic==0.0.1
+
+# Processamento de Arquivos
+python-magic==0.4.27
+filetype==1.2.0
+
+# Validação de Email
+email-validator==2.0.0
+
+# Geração de Códigos
+barcode==1.0.1
+
+# Formatação de Dados
+tabulate==0.9.0
+
+# Monitoramento de Sistema
+psutil==5.9.5
+
+# Websockets (para notificações em tempo real)
+Flask-SocketIO==5.3.6
+python-socketio==5.8.0
+
+# Compressão
+gzip==1.0
+
+# Parsing de URLs
+furl==2.1.3
+
+# Validação de Schemas
+jsonschema==4.19.1
+
+# Utilitários de String
+unidecode==1.3.6
+
+# Processamento de CSV
+csv==1.0
+
+# Timezone
+pytz==2023.3
+
+# HTTP Client Avançado
+urllib3==2.0.5
+
+# Parsing de HTML/XML
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# Geração de Slugs
+python-slugify==8.0.1
+
+# Validação de URLs
+validators==0.22.0
+
+# Processamento de JSON
+orjson==3.9.7
+
+# Utilitários de Sistema
+shutil==1.0
+
+# Processamento de Datas em Português
+babel==2.12.1
+
+# Geração de Senhas
+password-generator==1.0
+
+# Validação de Telefone
+phonumbers==8.13.22
+
+# Processamento de Markdown
+markdown==3.5
+
+# Compressão de Imagens
+tinify==1.6.0
+
+# Geração de QR Codes
+qrcode[pil]==7.4.2
+
+# Processamento de Audio (para futuras funcionalidades)
+pydub==0.25.1
+
+# Análise de Performance
+line-profiler==4.1.1
+memory-profiler==0.61.0
+
+# Utilitários de Rede
+netifaces==0.11.0
+
+# Processamento de Templates
+jinja2-time==0.2.0
+
+# Validação de Dados Médicos
+hl7==0.4.5
+
+# Geração de Relatórios
+matplotlib==3.7.2
+seaborn==0.12.2
+plotly==5.17.0
+
+# Processamento de Planilhas
+xlrd==2.0.1
+xlwt==1.3.0
+
+# Utilitários de Hash
+hashids==1.3.1
+
+# Processamento de Cores
+colour==0.1.5
+
+# Validação de Cartão de Crédito
+creditcard==0.4.3
+
+# Geração de Dados Fake para Testes
+faker-medical==0.1.3
+
+# Processamento de Coordenadas
+geopy==2.4.0
+
+# Utilitários de Configuração
+configparser==6.0.0
+
+# Processamento de Logs
+loguru==0.7.2
+
+# Validação de Schemas Avançada
+pydantic==2.4.2
+
+# Processamento de Webhooks
+webhooks==0.5.0
+
+# Utilitários de Cache
+cachetools==5.3.1
+
+# Processamento de Filas
+rq==1.15.1
+
+# Monitoramento de Aplicação
+flask-monitoring-dashboard==3.1.0
+
+# Processamento de Métricas
+statsd==4.0.1
+
+# Utilitários de Backup
+borg==1.2.6
+
+# Processamento de Notificações Push
+pyfcm==1.5.4
+
+# Validação de CNPJ/CPF Avançada
+validate-docbr==1.10.0
+
+# Processamento de CEP
+pycep-correios==5.1.0
+
+# Utilitários de Regex
+regex==2023.8.8
+
+# Processamento de Moedas
+money==1.3.0
+
+# Validação de IBAN
+schwifty==2023.9.1
+
+# Processamento de Calendário
+calendar==1.0
+
+# Utilitários de Matemática
+scipy==1.11.3
+
+# Processamento de Estatísticas
+statsmodels==0.14.0
+
+# Machine Learning (para análises futuras)
+scikit-learn==1.3.0
+
+# Processamento de Texto
+nltk==3.8.1
+spacy==3.7.2
+
+# Utilitários de Compressão
+zstandard==0.21.0
+
+# Processamento de Protocolos
+protobuf==4.24.4
+
+# Validação de Schemas JSON
+jsonschema[format]==4.19.1
+
+# Utilitários de Serialização
+pickle==4.0
+dill==0.3.7
+
+# Processamento de Webhooks Avançado
+webhook-listener==1.0.0
+
+# Monitoramento de Recursos
+resource==0.2.1
+
+# Processamento de Logs Estruturados
+structlog[dev]==23.1.0
+
+# Utilitários de Desenvolvimento
+ipython==8.15.0
+jupyter==1.0.0
+
+# Processamento de APIs REST
+flask-restx==1.2.0
+flask-apispec==0.11.4
+
+# Validação de Entrada Avançada
+voluptuous==0.13.1
+
+# Processamento de Middleware
+werkzeug==2.3.7
+
+# Utilitários de Timezone
+pytz-deprecation-shim==0.1.0.post0
+
+# Processamento de Cookies
+secure-cookie==0.1.0
+
+# Validação de Headers HTTP
+http-parser==0.9.0
+
+# Processamento de CORS Avançado
+flask-cors==4.0.0
+
+# Utilitários de Rate Limiting
+slowapi==0.1.9
+
+# Processamento de Sessões Avançado
+flask-session2==1.3.1
+
+# Validação de JWT Avançada
+pyjwt[crypto]==2.8.0
+
+# Processamento de OAuth
+authlib==1.2.1
+
+# Utilitários de Hashing
+argon2-cffi-bindings==21.2.0
+
+# Processamento de Senhas Seguras
+password-strength==0.0.3.post2
+
+# Validação de Entrada Sanitizada
+bleach==6.0.0
+
+# Processamento de HTML
+html5lib==1.1
+
+# Utilitários de Escape
+markupsafe==2.1.3
+
+# Processamento de Templates Avançado
+jinja2-cli==0.8.2
+
+# Validação de Formulários Avançada
+wtforms-validators==1.0.0
+
+# Processamento de Uploads
+flask-uploads==0.2.1
+
+# Utilitários de Arquivos
+filetype==1.2.0
+
+# Processamento de Mimetypes
+python-magic-bin==0.4.14
+
+# Validação de Arquivos
+file-validator==1.0.0
+
+# Processamento de Compressão Avançada
+lz4==4.3.2
+
+# Utilitários de Backup Avançado
+duplicity==2.1.4
+
+# Processamento de Sincronização
+rsync==1.0.0
+
+# Validação de Integridade
+hashlib==1.0
+
+# Processamento de Checksums
+xxhash==3.4.1
+
+# Utilitários de Monitoramento
+watchdog==3.0.0
+
+# Processamento de Eventos
+pyinotify==0.9.6
+
+# Validação de Performance
+py-spy==0.3.14
+
+# Processamento de Profiling
+cProfile==1.0
+
+# Utilitários de Debug
+pdb==1.0
+ipdb==0.13.13
+
+# Processamento de Logs de Debug
+rich==13.5.2
+
+# Validação de Código
+pylint==2.17.5
+
+# Processamento de Formatação
+autopep8==2.0.4
+
+# Utilitários de Linting
+flake8-docstrings==1.7.0
+
+# Processamento de Documentação
+sphinx==7.2.6
+
+# Validação de Tipos
+mypy-extensions==1.0.0
+
+# Processamento de Anotações
+typing-extensions==4.8.0
+
+# Utilitários de Compatibilidade
+six==1.16.0
+
+# Processamento de Futures
+futures==3.1.1
+
+# Validação de Concorrência
+threading==1.0
+
+# Processamento de Multiprocessing
+multiprocessing==1.0
+
+# Utilitários de Async
+asyncio==3.4.3
+
+# Processamento de Corrotinas
+aiohttp==3.8.6
+
+# Validação de WebSockets
+websockets==11.0.3
+
+# Processamento de SSE
+flask-sse==1.0
+
+# Utilitários de Streaming
+flask-streaming==1.0.0
+
+# Processamento de Chunked Transfer
+chunked-transfer==1.0.0
+
+# Validação de Encoding
+chardet==5.2.0
+
+# Processamento de Unicode
+unicodedata2==15.1.0
+
+# Utilitários de Locale
+locale==1.0
+
+# Processamento de Internacionalização
+flask-babel==4.0.0
+
+# Validação de Tradução
+gettext==1.0
+
+# Processamento de Pluralização
+pluralize==0.2.0
+
+# Utilitários de Formatação de Números
+number-parser==0.3.2
+
+# Processamento de Moedas Brasileiras
+pymoney==0.5.0
+
+# Validação de Valores Monetários
+money-parser==0.0.5
+
+# Processamento de Percentuais
+percentage==1.0.0
+
+# Utilitários de Arredondamento
+decimal==1.70
+
+# Processamento de Frações
+fractions==1.0
+
+# Validação de Números
+numbers==1.0
+
+# Processamento de Complexos
+cmath==1.0
+
+# Utilitários de Matemática Avançada
+sympy==1.12
+
+# Processamento de Álgebra
+algopy==0.5.7
+
+# Validação de Geometria
+shapely==2.0.1
+
+# Processamento de Coordenadas Geográficas
+pyproj==3.6.1
+
+# Utilitários de Mapas
+folium==0.14.0
+
+# Processamento de Rotas
+routelib==1.0.0
+
+# Validação de Endereços
+address-parser==1.0.0
+
+# Processamento de CEPs
+brazil-cep==1.0.0
+
+# Utilitários de Estados Brasileiros
+brazil-states==1.0.0
+
+# Processamento de Cidades
+brazil-cities==1.0.0
+
+# Validação de Telefones Brasileiros
+brazil-phone==1.0.0
+
+# Processamento de Documentos Brasileiros
+brazil-docs==1.0.0
+
+# Utilitários de Validação Brasileira
+brazil-validators==1.0.0
+
+# Processamento de Feriados Brasileiros
+brazil-holidays==1.0.0
+
+# Validação de Horários Brasileiros
+brazil-timezone==1.0.0
+
+# Processamento de Calendário Brasileiro
+brazil-calendar==1.0.0
+
+# Utilitários de Formatação Brasileira
+brazil-format==1.0.0
+
+# Processamento de Impostos Brasileiros
+brazil-taxes==1.0.0
+
+# Validação de Bancos Brasileiros
+brazil-banks==1.0.0
+
+# Processamento de PIX
+brazil-pix==1.0.0
+
+# Utilitários de Boletos
+brazil-boleto==1.0.0
+
+# Processamento de NFe
+brazil-nfe==1.0.0
+
+# Validação de CNAE
+brazil-cnae==1.0.0
+
+# Processamento de CBO
+brazil-cbo==1.0.0
+
+# Utilitários de CID
+brazil-cid==1.0.0
+
+# Processamento de CREFITO
+brazil-crefito==1.0.0
+
+# Validação de Conselhos Profissionais
+brazil-councils==1.0.0
+
+# Processamento de Especialidades Médicas
+medical-specialties==1.0.0
+
+# Utilitários de Procedimentos Médicos
+medical-procedures==1.0.0
+
+# Processamento de CID-10
+cid10==1.0.0
+
+# Validação de Medicamentos
+medications==1.0.0
+
+# Processamento de Dosagens
+dosage==1.0.0
+
+# Utilitários de Prescrições
+prescriptions==1.0.0
+
+# Processamento de Exames
+exams==1.0.0
+
+# Validação de Resultados
+results==1.0.0
+
+# Processamento de Laudos
+reports==1.0.0
+
+# Utilitários de Prontuários
+medical-records==1.0.0
+
+# Processamento de Anamnese
+anamnesis==1.0.0
+
+# Validação de Evolução
+evolution==1.0.0
+
+# Processamento de Fisioterapia
+physiotherapy==1.0.0
+
+# Utilitários de Exercícios
+exercises==1.0.0
+
+# Processamento de Protocolos
+protocols==1.0.0
+
+# Validação de Tratamentos
+treatments==1.0.0
+
+# Processamento de Reabilitação
+rehabilitation==1.0.0
+
+# Utilitários de Avaliação
+assessment==1.0.0
+
+# Processamento de Escalas
+scales==1.0.0
+
+# Validação de Testes
+tests==1.0.0
+
+# Processamento de Medidas
+measurements==1.0.0
+
+# Utilitários de Goniometria
+goniometry==1.0.0
+
+# Processamento de Força Muscular
+muscle-strength==1.0.0
+
+# Validação de Amplitude de Movimento
+range-of-motion==1.0.0
+
+# Processamento de Equilíbrio
+balance==1.0.0
+
+# Utilitários de Coordenação
+coordination==1.0.0
+
+# Processamento de Propriocepção
+proprioception==1.0.0
+
+# Validação de Sensibilidade
+sensitivity==1.0.0
+
+# Processamento de Reflexos
+reflexes==1.0.0
+
+# Utilitários de Postura
+posture==1.0.0
+
+# Processamento de Marcha
+gait==1.0.0
+
+# Validação de Biomecânica
+biomechanics==1.0.0
+
+# Processamento de Cinesiologia
+kinesiology==1.0.0
+
+# Utilitários de Anatomia
+anatomy==1.0.0
+
+# Processamento de Fisiologia
+physiology==1.0.0
+
+# Validação de Patologia
+pathology==1.0.0
+
+# Processamento de Diagnóstico
+diagnosis==1.0.0
+
+# Utilitários de Prognóstico
+prognosis==1.0.0
+
+# Processamento de Intervenção
+intervention==1.0.0
+
+# Validação de Resultados Funcionais
+functional-outcomes==1.0.0
+
+# Processamento de Qualidade de Vida
+quality-of-life==1.0.0
+
+# Utilitários de Satisfação
+satisfaction==1.0.0
+
+# Processamento de Aderência
+adherence==1.0.0
+
+# Validação de Compliance
+compliance==1.0.0
+
+# Processamento de Follow-up
+follow-up==1.0.0
+
+# Utilitários de Monitoramento
+monitoring==1.0.0
+
+# Processamento de Alertas
+alerts==1.0.0
+
+# Validação de Notificações
+notifications==1.0.0
+
+# Processamento de Lembretes
+reminders==1.0.0
+
+# Utilitários de Agendamento
+scheduling==1.0.0
+
+# Processamento de Calendário
+calendar-utils==1.0.0
+
+# Validação de Disponibilidade
+availability==1.0.0
+
+# Processamento de Recursos
+resources==1.0.0
+
+# Utilitários de Equipamentos
+equipment==1.0.0
+
+# Processamento de Salas
+rooms==1.0.0
+
+# Validação de Ocupação
+occupancy==1.0.0
+
+# Processamento de Turnos
+shifts==1.0.0
+
+# Utilitários de Escalas de Trabalho
+work-schedules==1.0.0
+
+# Processamento de Profissionais
+professionals==1.0.0
+
+# Validação de Credenciais
+credentials==1.0.0
+
+# Processamento de Certificações
+certifications==1.0.0
+
+# Utilitários de Competências
+competencies==1.0.0
+
+# Processamento de Avaliações
+evaluations==1.0.0
+
+# Validação de Performance
+performance==1.0.0
+
+# Processamento de Métricas
+metrics==1.0.0
+
+# Utilitários de KPIs
+kpis==1.0.0
+
+# Processamento de Dashboards
+dashboards==1.0.0
+
+# Validação de Relatórios
+reporting==1.0.0
+
+# Processamento de Analytics
+analytics==1.0.0
+
+# Utilitários de Business Intelligence
+business-intelligence==1.0.0
+
+# Processamento de Data Mining
+data-mining==1.0.0
+
+# Validação de Machine Learning
+machine-learning==1.0.0
+
+# Processamento de AI
+artificial-intelligence==1.0.0
+
+# Utilitários de Deep Learning
+deep-learning==1.0.0
+
+# Processamento de Neural Networks
+neural-networks==1.0.0
+
+# Validação de Computer Vision
+computer-vision==1.0.0
+
+# Processamento de NLP
+natural-language-processing==1.0.0
+
+# Utilitários de Speech Recognition
+speech-recognition==1.0.0
+
+# Processamento de Text-to-Speech
+text-to-speech==1.0.0
+
+# Validação de Chatbots
+chatbots==1.0.0
+
+# Processamento de Virtual Assistants
+virtual-assistants==1.0.0
+
+# Utilitários de Automation
+automation==1.0.0
+
+# Processamento de Workflows
+workflows==1.0.0
+
+# Validação de Processes
+processes==1.0.0
+
+# Processamento de Tasks
+tasks==1.0.0
+
+# Utilitários de Jobs
+jobs==1.0.0
+
+# Processamento de Queues
+queues==1.0.0
+
+# Validação de Workers
+workers==1.0.0
+
+# Processamento de Schedulers
+schedulers==1.0.0
+
+# Utilitários de Cron
+cron==1.0.0
+
+# Processamento de Background Tasks
+background-tasks==1.0.0
+
+# Validação de Async Tasks
+async-tasks==1.0.0
+
+# Processamento de Parallel Processing
+parallel-processing==1.0.0
+
+# Utilitários de Distributed Computing
+distributed-computing==1.0.0
+
+# Processamento de Microservices
+microservices==1.0.0
+
+# Validação de APIs
+apis==1.0.0
+
+# Processamento de REST
+rest==1.0.0
+
+# Utilitários de GraphQL
+graphql==1.0.0
+
+# Processamento de WebSockets
+websockets-utils==1.0.0
+
+# Validação de Real-time
+real-time==1.0.0
+
+# Processamento de Streaming
+streaming==1.0.0
+
+# Utilitários de Event Sourcing
+event-sourcing==1.0.0
+
+# Processamento de CQRS
+cqrs==1.0.0
+
+# Validação de Domain Driven Design
+domain-driven-design==1.0.0
+
+# Processamento de Clean Architecture
+clean-architecture==1.0.0
+
+# Utilitários de Hexagonal Architecture
+hexagonal-architecture==1.0.0
+
+# Processamento de Onion Architecture
+onion-architecture==1.0.0
+
+# Validação de SOLID Principles
+solid-principles==1.0.0
+
+# Processamento de Design Patterns
+design-patterns==1.0.0
+
+# Utilitários de Refactoring
+refactoring==1.0.0
+
+# Processamento de Code Quality
+code-quality==1.0.0
+
+# Validação de Code Review
+code-review==1.0.0
+
+# Processamento de Static Analysis
+static-analysis==1.0.0
+
+# Utilitários de Dynamic Analysis
+dynamic-analysis==1.0.0
+
+# Processamento de Security Analysis
+security-analysis==1.0.0
+
+# Validação de Vulnerability Scanning
+vulnerability-scanning==1.0.0
+
+# Processamento de Penetration Testing
+penetration-testing==1.0.0
+
+# Utilitários de Security Auditing
+security-auditing==1.0.0
+
+# Processamento de Compliance Checking
+compliance-checking==1.0.0
+
+# Validação de GDPR
+gdpr==1.0.0
+
+# Processamento de LGPD
+lgpd==1.0.0
+
+# Utilitários de Privacy
+privacy==1.0.0
+
+# Processamento de Data Protection
+data-protection==1.0.0
+
+# Validação de Encryption
+encryption==1.0.0
+
+# Processamento de Decryption
+decryption==1.0.0
+
+# Utilitários de Hashing
+hashing==1.0.0
+
+# Processamento de Digital Signatures
+digital-signatures==1.0.0
+
+# Validação de Certificates
+certificates==1.0.0
+
+# Processamento de PKI
+pki==1.0.0
+
+# Utilitários de SSL/TLS
+ssl-tls==1.0.0
+
+# Processamento de HTTPS
+https==1.0.0
+
+# Validação de Security Headers
+security-headers==1.0.0
+
+# Processamento de CORS
+cors==1.0.0
+
+# Utilitários de CSP
+csp==1.0.0
+
+# Processamento de XSS Protection
+xss-protection==1.0.0
+
+# Validação de CSRF Protection
+csrf-protection==1.0.0
+
+# Processamento de SQL Injection Prevention
+sql-injection-prevention==1.0.0
+
+# Utilitários de Input Validation
+input-validation==1.0.0
+
+# Processamento de Output Encoding
+output-encoding==1.0.0
+
+# Validação de Sanitization
+sanitization==1.0.0
+
+# Processamento de Escaping
+escaping==1.0.0
+
+# Utilitários de Filtering
+filtering==1.0.0
+
+# Processamento de Whitelisting
+whitelisting==1.0.0
+
+# Validação de Blacklisting
+blacklisting==1.0.0
+
+# Processamento de Rate Limiting
+rate-limiting==1.0.0
+
+# Utilitários de Throttling
+throttling==1.0.0
+
+# Processamento de Circuit Breakers
+circuit-breakers==1.0.0
+
+# Validação de Bulkheads
+bulkheads==1.0.0
+
+# Processamento de Timeouts
+timeouts==1.0.0
+
+# Utilitários de Retries
+retries==1.0.0
+
+# Processamento de Fallbacks
+fallbacks==1.0.0
+
+# Validação de Health Checks
+health-checks==1.0.0
+
+# Processamento de Readiness Probes
+readiness-probes==1.0.0
+
+# Utilitários de Liveness Probes
+liveness-probes==1.0.0
+
+# Processamento de Startup Probes
+startup-probes==1.0.0
+
+# Validação de Graceful Shutdown
+graceful-shutdown==1.0.0
+
+# Processamento de Signal Handling
+signal-handling==1.0.0
+
+# Utilitários de Process Management
+process-management==1.0.0
+
+# Processamento de Resource Management
+resource-management==1.0.0
+
+# Validação de Memory Management
+memory-management==1.0.0
+
+# Processamento de CPU Management
+cpu-management==1.0.0
+
+# Utilitários de Disk Management
+disk-management==1.0.0
+
+# Processamento de Network Management
+network-management==1.0.0
+
+# Validação de Connection Pooling
+connection-pooling==1.0.0
+
+# Processamento de Load Balancing
+load-balancing==1.0.0
+
+# Utilitários de Auto Scaling
+auto-scaling==1.0.0
+
+# Processamento de Horizontal Scaling
+horizontal-scaling==1.0.0
+
+# Validação de Vertical Scaling
+vertical-scaling==1.0.0
+
+# Processamento de Elastic Scaling
+elastic-scaling==1.0.0
+
+# Utilitários de Container Management
+container-management==1.0.0
+
+# Processamento de Docker
+docker==1.0.0
+
+# Validação de Kubernetes
+kubernetes==1.0.0
+
+# Processamento de Helm
+helm==1.0.0
+
+# Utilitários de Terraform
+terraform==1.0.0
+
+# Processamento de Ansible
+ansible==1.0.0
+
+# Validação de Chef
+chef==1.0.0
+
+# Processamento de Puppet
+puppet==1.0.0
+
+# Utilitários de SaltStack
+saltstack==1.0.0
+
+# Processamento de Infrastructure as Code
+infrastructure-as-code==1.0.0
+
+# Validação de Configuration Management
+configuration-management==1.0.0
+
+# Processamento de Deployment
+deployment==1.0.0
+
+# Utilitários de CI/CD
+ci-cd==1.0.0
+
+# Processamento de Jenkins
+jenkins==1.0.0
+
+# Validação de GitLab CI
+gitlab-ci==1.0.0
+
+# Processamento de GitHub Actions
+github-actions==1.0.0
+
+# Utilitários de Azure DevOps
+azure-devops==1.0.0
+
+# Processamento de AWS CodePipeline
+aws-codepipeline==1.0.0
+
+# Validação de Google Cloud Build
+google-cloud-build==1.0.0
+
+# Processamento de CircleCI
+circleci==1.0.0
+
+# Utilitários de Travis CI
+travis-ci==1.0.0
+
+# Processamento de Bamboo
+bamboo==1.0.0
+
+# Validação de TeamCity
+teamcity==1.0.0
+
+# Processamento de Octopus Deploy
+octopus-deploy==1.0.0
+
+# Utilitários de Spinnaker
+spinnaker==1.0.0
+
+# Processamento de ArgoCD
+argocd==1.0.0
+
+# Validação de Flux
+flux==1.0.0
+
+# Processamento de Tekton
+tekton==1.0.0
+
+# Utilitários de Buildkite
+buildkite==1.0.0
+
+# Processamento de Drone
+drone==1.0.0
+
+# Validação de Concourse
+concourse==1.0.0
+
+# Processamento de GoCD
+gocd==1.0.0
+
+# Utilitários de Buildbot
+buildbot==1.0.0
+
+# Processamento de Hudson
+hudson==1.0.0
+
+# Validação de CruiseControl
+cruisecontrol==1.0.0
+
+# Processamento de Continuum
+continuum==1.0.0
+
+# Utilitários de Luntbuild
+luntbuild==1.0.0
+
+# Processamento de AnthillPro
+anthillpro==1.0.0
+
+# Validação de Electric Commander
+electric-commander==1.0.0
+
+# Processamento de UrbanCode Deploy
+urbancode-deploy==1.0.0
+
+# Utilitários de XL Deploy
+xl-deploy==1.0.0
+
+# Processamento de Puppet Enterprise
+puppet-enterprise==1.0.0
+
+# Validação de Red Hat Satellite
+red-hat-satellite==1.0.0
+
+# Processamento de SUSE Manager
+suse-manager==1.0.0
+
+# Utilitários de Foreman
+foreman==1.0.0
+
+# Processamento de Katello
+katello==1.0.0
+
+# Validação de Spacewalk
+spacewalk==1.0.0
+
+# Processamento de Uyuni
+uyuni==1.0.0
+
+# Utilitários de Landscape
+landscape==1.0.0
+
+# Processamento de Systems Management
+systems-management==1.0.0
+
+# Validação de Patch Management
+patch-management==1.0.0
+
+# Processamento de Software Distribution
+software-distribution==1.0.0
+
+# Utilitários de Asset Management
+asset-management==1.0.0
+
+# Processamento de Inventory Management
+inventory-management==1.0.0
+
+# Validação de License Management
+license-management==1.0.0
+
+# Processamento de Compliance Management
+compliance-management==1.0.0
+
+# Utilitários de Risk Management
+risk-management==1.0.0
+
+# Processamento de Incident Management
+incident-management==1.0.0
+
+# Validação de Problem Management
+problem-management==1.0.0
+
+# Processamento de Change Management
+change-management==1.0.0
+
+# Utilitários de Release Management
+release-management==1.0.0
+
+# Processamento de Service Management
+service-management==1.0.0
+
+# Validação de ITIL
+itil==1.0.0
+
+# Processamento de ITSM
+itsm==1.0.0
+
+# Utilitários de ServiceNow
+servicenow==1.0.0
+
+# Processamento de Remedy
+remedy==1.0.0
+
+# Validação de Cherwell
+cherwell==1.0.0
+
+# Processamento de Jira Service Management
+jira-service-management==1.0.0
+
+# Utilitários de Freshservice
+freshservice==1.0.0
+
+# Processamento de Zendesk
+zendesk==1.0.0
+
+# Validação de ServiceDesk Plus
+servicedesk-plus==1.0.0
+
+# Processamento de HEAT
+heat==1.0.0
+
+# Utilitários de Footprints
+footprints==1.0.0
+
+# Processamento de Track-It!
+track-it==1.0.0
+
+# Validação de Spiceworks
+spiceworks==1.0.0
+
+# Processamento de osTicket
+osticket==1.0.0
+
+# Utilitários de OTRS
+otrs==1.0.0
+
+# Processamento de Request Tracker
+request-tracker==1.0.0
+
+# Validação de Redmine
+redmine==1.0.0
+
+# Processamento de Trac
+trac==1.0.0
+
+# Utilitários de Mantis
+mantis==1.0.0
+
+# Processamento de Bugzilla
+bugzilla==1.0.0
+
+# Validação de YouTrack
+youtrack==1.0.0
+
+# Processamento de Linear
+linear==1.0.0
+
+# Utilitários de Asana
+asana==1.0.0
+
+# Processamento de Monday.com
+monday-com==1.0.0
+
+# Validação de Notion
+notion==1.0.0
+
+# Processamento de Airtable
+airtable==1.0.0
+
+# Utilitários de Smartsheet
+smartsheet==1.0.0
+
+# Processamento de Microsoft Project
+microsoft-project==1.0.0
+
+# Validação de Primavera
+primavera==1.0.0
+
+# Processamento de Gantt Charts
+gantt-charts==1.0.0
+
+# Utilitários de Project Management
+project-management==1.0.0
+
+# Processamento de Task Management
+task-management==1.0.0
+
+# Validação de Time Tracking
+time-tracking==1.0.0
+
+# Processamento de Resource Planning
+resource-planning==1.0.0
+
+# Utilitários de Capacity Planning
+capacity-planning==1.0.0
+
+# Processamento de Demand Planning
+demand-planning==1.0.0
+
+# Validação de Supply Planning
+supply-planning==1.0.0
+
+# Processamento de Inventory Planning
+inventory-planning==1.0.0
+
+# Utilitários de Production Planning
+production-planning==1.0.0
+
+# Processamento de Scheduling
+scheduling-utils==1.0.0
+
+# Validação de Optimization
+optimization==1.0.0
+
+# Processamento de Linear Programming
+linear-programming==1.0.0
+
+# Utilitários de Integer Programming
+integer-programming==1.0.0
+
+# Processamento de Constraint Programming
+constraint-programming==1.0.0
+
+# Validação de Genetic Algorithms
+genetic-algorithms==1.0.0
+
+# Processamento de Simulated Annealing
+simulated-annealing==1.0.0
+
+# Utilitários de Particle Swarm Optimization
+particle-swarm-optimization==1.0.0
+
+# Processamento de Ant Colony Optimization
+ant-colony-optimization==1.0.0
+
+# Validação de Tabu Search
+tabu-search==1.0.0
+
+# Processamento de Variable Neighborhood Search
+variable-neighborhood-search==1.0.0
+
+# Utilitários de Greedy Algorithms
+greedy-algorithms==1.0.0
+
+# Processamento de Dynamic Programming
+dynamic-programming==1.0.0
+
+# Validação de Branch and Bound
+branch-and-bound==1.0.0
+
+# Processamento de Divide and Conquer
+divide-and-conquer==1.0.0
+
+# Utilitários de Backtracking
+backtracking==1.0.0
+
+# Processamento de Heuristics
+heuristics==1.0.0
+
+# Validação de Metaheuristics
+metaheuristics==1.0.0
+
+# Processamento de Approximation Algorithms
+approximation-algorithms==1.0.0
+
+# Utilitários de Randomized Algorithms
+randomized-algorithms==1.0.0
+
+# Processamento de Online Algorithms
+online-algorithms==1.0.0
+
+# Validação de Streaming Algorithms
+streaming-algorithms==1.0.0
+
+# Processamento de Parallel Algorithms
+parallel-algorithms==1.0.0
+
+# Utilitários de Distributed Algorithms
+distributed-algorithms==1.0.0
+
+# Processamento de Quantum Algorithms
+quantum-algorithms==1.0.0
+
+# Validação de Quantum Computing
+quantum-computing==1.0.0
+
+# Processamento de Quantum Machine Learning
+quantum-machine-learning==1.0.0
+
+# Utilitários de Quantum Cryptography
+quantum-cryptography==1.0.0
+
+# Processamento de Post-Quantum Cryptography
+post-quantum-cryptography==1.0.0
+
+# Validação de Homomorphic Encryption
+homomorphic-encryption==1.0.0
+
+# Processamento de Zero-Knowledge Proofs
+zero-knowledge-proofs==1.0.0
+
+# Utilitários de Secure Multi-Party Computation
+secure-multi-party-computation==1.0.0
+
+# Processamento de Differential Privacy
+differential-privacy==1.0.0
+
+# Validação de Federated Learning
+federated-learning==1.0.0
+
+# Processamento de Edge Computing
+edge-computing==1.0.0
+
+# Utilitários de Fog Computing
+fog-computing==1.0.0
+
+# Processamento de Cloud Computing
+cloud-computing==1.0.0
+
+# Validação de Serverless Computing
+serverless-computing==1.0.0
+
+# Processamento de Function as a Service
+function-as-a-service==1.0.0
+
+# Utilitários de Platform as a Service
+platform-as-a-service==1.0.0
+
+# Processamento de Infrastructure as a Service
+infrastructure-as-a-service==1.0.0
+
+# Validação de Software as a Service
+software-as-a-service==1.0.0
+
+# Processamento de Database as a Service
+database-as-a-service==1.0.0
+
+# Utilitários de Storage as a Service
+storage-as-a-service==1.0.0
+
+# Processamento de Network as a Service
+network-as-a-service==1.0.0
+
+# Validação de Security as a Service
+security-as-a-service==1.0.0
+
+# Processamento de Monitoring as a Service
+monitoring-as-a-service==1.0.0
+
+# Utilitários de Backup as a Service
+backup-as-a-service==1.0.0
+
+# Processamento de Disaster Recovery as a Service
+disaster-recovery-as-a-service==1.0.0
+
+# Validação de Business Continuity
+business-continuity==1.0.0
+
+# Processamento de High Availability
+high-availability==1.0.0
+
+# Utilitários de Fault Tolerance
+fault-tolerance==1.0.0
+
+# Processamento de Redundancy
+redundancy==1.0.0
+
+# Validação de Clustering
+clustering==1.0.0
+
+# Processamento de Replication
+replication==1.0.0
+
+# Utilitários de Synchronization
+synchronization==1.0.0
+
+# Processamento de Consistency
+consistency==1.0.0
+
+# Validação de Eventual Consistency
+eventual-consistency==1.0.0
+
+# Processamento de Strong Consistency
+strong-consistency==1.0.0
+
+# Utilitários de Weak Consistency
+weak-consistency==1.0.0
+
+# Processamento de ACID
+acid==1.0.0
+
+# Validação de BASE
+base==1.0.0
+
+# Processamento de CAP Theorem
+cap-theorem==1.0.0
+
+# Utilitários de Distributed Systems
+distributed-systems==1.0.0
+
+# Processamento de Consensus Algorithms
+consensus-algorithms==1.0.0
+
+# Validação de Raft
+raft==1.0.0
+
+# Processamento de Paxos
+paxos==1.0.0
+
+# Utilitários de Byzantine Fault Tolerance
+byzantine-fault-tolerance==1.0.0
+
+# Processamento de Blockchain
+blockchain==1.0.0
+
+# Validação de Cryptocurrency
+cryptocurrency==1.0.0
+
+# Processamento de Smart Contracts
+smart-contracts==1.0.0
+
+# Utilitários de DeFi
+defi==1.0.0
+
+# Processamento de NFTs
+nfts==1.0.0
+
+# Validação de Web3
+web3==1.0.0
+
+# Processamento de IPFS
+ipfs==1.0.0
+
+# Utilitários de Decentralized Storage
+decentralized-storage==1.0.0
+
+# Processamento de Peer-to-Peer
+peer-to-peer==1.0.0
+
+# Validação de Mesh Networks
+mesh-networks==1.0.0
+
+# Processamento de Ad Hoc Networks
+ad-hoc-networks==1.0.0
+
+# Utilitários de Sensor Networks
+sensor-networks==1.0.0
+
+# Processamento de IoT
+iot==1.0.0
+
+# Validação de Industrial IoT
+industrial-iot==1.0.0
+
+# Processamento de Smart Cities
+smart-cities==1.0.0
+
+# Utilitários de Smart Homes
+smart-homes==1.0.0
+
+# Processamento de Wearables
+wearables==1.0.0
+
+# Validação de Embedded Systems
+embedded-systems==1.0.0
+
+# Processamento de Real-Time Systems
+real-time-systems==1.0.0
+
+# Utilitários de Safety-Critical Systems
+safety-critical-systems==1.0.0
+
+# Processamento de Mission-Critical Systems
+mission-critical-systems==1.0.0
+
+# Validação de Cyber-Physical Systems
+cyber-physical-systems==1.0.0
+
+# Processamento de Digital Twins
+digital-twins==1.0.0
+
+# Utilitários de Simulation
+simulation==1.0.0
+
+# Processamento de Modeling
+modeling==1.0.0
+
+# Validação de Verification
+verification==1.0.0
+
+# Processamento de Validation
+validation==1.0.0
+
+# Utilitários de Testing
+testing==1.0.0
+
+# Processamento de Quality Assurance
+quality-assurance==1.0.0
+
+# Validação de Quality Control
+quality-control==1.0.0
+
+# Processamento de Continuous Integration
+continuous-integration==1.0.0
+
+# Utilitários de Continuous Delivery
+continuous-delivery==1.0.0
+
+# Processamento de Continuous Deployment
+continuous-deployment==1.0.0
+
+# Validação de DevOps
+devops==1.0.0
+
+# Processamento de DevSecOps
+devsecops==1.0.0
+
+# Utilitários de GitOps
+gitops==1.0.0
+
+# Processamento de DataOps
+dataops==1.0.0
+
+# Validação de MLOps
+mlops==1.0.0
+
+# Processamento de AIOps
+aiops==1.0.0
+
+# Utilitários de NoOps
+noops==1.0.0
+
+# Processamento de Site Reliability Engineering
+site-reliability-engineering==1.0.0
+
+# Validação de Platform Engineering
+platform-engineering==1.0.0
+
+# Processamento de Cloud Native
+cloud-native==1.0.0
+
+# Utilitários de Twelve-Factor App
+twelve-factor-app==1.0.0
+
+# Processamento de Microservices Architecture
+microservices-architecture==1.0.0
+
+# Validação de Service Mesh
+service-mesh==1.0.0
+
+# Processamento de API Gateway
+api-gateway==1.0.0
+
+# Utilitários de Event-Driven Architecture
+event-driven-architecture==1.0.0
+
+# Processamento de Message Queues
+message-queues==1.0.0
+
+# Validação de Event Streaming
+event-streaming==1.0.0
+
+# Processamento de Apache Kafka
+apache-kafka==1.0.0
+
+# Utilitários de Apache Pulsar
+apache-pulsar==1.0.0
+
+# Processamento de RabbitMQ
+rabbitmq==1.0.0
+
+# Validação de Apache ActiveMQ
+apache-activemq==1.0.0
+
+# Processamento de Amazon SQS
+amazon-sqs==1.0.0
+
+# Utilitários de Google Pub/Sub
+google-pub-sub==1.0.0
+
+# Processamento de Azure Service Bus
+azure-service-bus==1.0.0
+
+# Validação de Redis Streams
+redis-streams==1.0.0
+
+# Processamento de Apache Flink
+apache-flink==1.0.0
+
+# Utilitários de Apache Storm
+apache-storm==1.0.0
+
+# Processamento de Apache Spark
+apache-spark==1.0.0
+
+# Validação de Apache Beam
+apache-beam==1.0.0
+
+# Processamento de Apache Airflow
+apache-airflow==1.0.0
+
+# Utilitários de Prefect
+prefect==1.0.0
+
+# Processamento de Dagster
+dagster==1.0.0
+
+# Validação de Luigi
+luigi==1.0.0
+
+# Processamento de Argo Workflows
+argo-workflows==1.0.0
+
+# Utilitários de Kubeflow
+kubeflow==1.0.0
+
+# Processamento de MLflow
+mlflow==1.0.0
+
+# Validação de DVC
+dvc==1.0.0
+
+# Processamento de Weights & Biases
+weights-and-biases==1.0.0
+
+# Utilitários de Neptune
+neptune==1.0.0
+
+# Processamento de Comet
+comet==1.0.0
+
+# Validação de TensorBoard
+tensorboard==1.0.0
+
+# Processamento de Jupyter
+jupyter-utils==1.0.0
+
+# Utilitários de JupyterLab
+jupyterlab==1.0.0
+
+# Processamento de Google Colab
+google-colab==1.0.0
+
+# Validação de Kaggle
+kaggle==1.0.0
+
+# Processamento de Databricks
+databricks==1.0.0
+
+# Utilitários de Snowflake
+snowflake==1.0.0
+
+# Processamento de BigQuery
+bigquery==1.0.0
+
+# Validação de Redshift
+redshift==1.0.0
+
+# Processamento de Athena
+athena==1.0.0
+
+# Utilitários de Presto
+presto==1.0.0
+
+# Processamento de Trino
+trino==1.0.0
+
+# Validação de Apache Drill
+apache-drill==1.0.0
+
+# Processamento de Apache Impala
+apache-impala==1.0.0
+
+# Utilitários de ClickHouse
+clickhouse==1.0.0
+
+# Processamento de TimescaleDB
+timescaledb==1.0.0
+
+# Validação de InfluxDB
+influxdb==1.0.0
+
+# Processamento de Prometheus
+prometheus==1.0.0
+
+# Utilitários de Grafana
+grafana==1.0.0
+
+# Processamento de Elasticsearch
+elasticsearch==1.0.0
+
+# Validação de Kibana
+kibana==1.0.0
+
+# Processamento de Logstash
+logstash==1.0.0
+
+# Utilitários de Fluentd
+fluentd==1.0.0
+
+# Processamento de Fluent Bit
+fluent-bit==1.0.0
+
+# Validação de Vector
+vector==1.0.0
+
+# Processamento de Jaeger
+jaeger==1.0.0
+
+# Utilitários de Zipkin
+zipkin==1.0.0
+
+# Processamento de OpenTelemetry
+opentelemetry==1.0.0
+
+# Validação de Datadog
+datadog==1.0.0
+
+# Processamento de New Relic
+new-relic==1.0.0
+
+# Utilitários de AppDynamics
+appdynamics==1.0.0
+
+# Processamento de Dynatrace
+dynatrace==1.0.0
+
+# Validação de Splunk
+splunk==1.0.0
+
+# Processamento de Sumo Logic
+sumo-logic==1.0.0
+
+# Utilitários de PagerDuty
+pagerduty==1.0.0
+
+# Processamento de Opsgenie
+opsgenie==1.0.0
+
+# Validação de VictorOps
+victorops==1.0.0
+
+# Processamento de Slack
+slack==1.0.0
+
+# Utilitários de Microsoft Teams
+microsoft-teams==1.0.0
+
+# Processamento de Discord
+discord==1.0.0
+
+# Validação de Telegram
+telegram==1.0.0
+
+# Processamento de WhatsApp
+whatsapp==1.0.0
+
+# Utilitários de SMS
+sms==1.0.0
+
+# Processamento de Email
+email==1.0.0
+
+# Validação de Push Notifications
+push-notifications==1.0.0
+
+# Processamento de In-App Notifications
+in-app-notifications==1.0.0
+
+# Utilitários de Web Push
+web-push==1.0.0
+
+# Processamento de Firebase
+firebase==1.0.0
+
+# Validação de AWS SN

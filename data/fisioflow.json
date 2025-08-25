@@ -1,0 +1,1596 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@fisioflow.com",
+      "password": "$2b$10$tFvYlyz9LN5.rZb3U4SqWO83ilX0TJN358WMWC4pwcgDFBwU2PQD6",
+      "name": "Administrador",
+      "role": "admin",
+      "phone": "(11) 99999-9999",
+      "avatar": null,
+      "is_active": 1,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "email": "dr.silva@fisioflow.com",
+      "password": "$2b$10$57lUDMWgniGw7M0fZ5pc9e70i5BC.07CtUyL/5qq7G1cCHLhIsc46",
+      "name": "Dr. João Silva",
+      "role": "physiotherapist",
+      "phone": "(11) 98888-8888",
+      "avatar": null,
+      "is_active": 1,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "email": "dra.santos@fisioflow.com",
+      "password": "$2b$10$57lUDMWgniGw7M0fZ5pc9e70i5BC.07CtUyL/5qq7G1cCHLhIsc46",
+      "name": "Dra. Maria Santos",
+      "role": "physiotherapist",
+      "phone": "(11) 97777-7777",
+      "avatar": null,
+      "is_active": 1,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 4,
+      "email": "ana.costa@email.com",
+      "password": "$2b$10$AnAuwa3Njwu4i9Qx5O575ut5.oYa3EodjbL8pmmVgf6Qf5IrWTkMS",
+      "name": "Ana Costa",
+      "role": "patient",
+      "phone": "(11) 96666-6666",
+      "avatar": null,
+      "is_active": 1,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 5,
+      "email": "carlos.lima@email.com",
+      "password": "$2b$10$AnAuwa3Njwu4i9Qx5O575ut5.oYa3EodjbL8pmmVgf6Qf5IrWTkMS",
+      "name": "Carlos Lima",
+      "role": "patient",
+      "phone": "(11) 95555-5555",
+      "avatar": null,
+      "is_active": 1,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 6,
+      "email": "teste@teste.com",
+      "password": "$2b$10$gY9f5rFKWZcziZjI4Jgyne2.wuM.OVZq7xSA1l1o2aPwB8F4wSbDu",
+      "name": "Teste Usuario",
+      "role": "patient",
+      "phone": null,
+      "created_at": "2025-08-24T10:12:11.628Z",
+      "updated_at": "2025-08-24T10:12:11.628Z"
+    },
+    {
+      "id": 7,
+      "email": "testuser@example.com",
+      "password": "$2b$10$W7O4tKoy5hr/ZPkvK1ZxFOcZSbDT90OF8WsfOF5sn6tClDetcULpe",
+      "name": "Test User",
+      "role": "patient",
+      "phone": null,
+      "created_at": "2025-08-24T10:22:34.918Z",
+      "updated_at": "2025-08-24T10:22:34.918Z"
+    },
+    {
+      "id": 8,
+      "email": "joao@email.com",
+      "password": "$2b$10$GgM2P46ygM6I.qrxXKetp.Cf/TrbbU.GXEYP9bK3tMoewGuaYNNPO",
+      "name": "Jo�o Silva",
+      "role": "patient",
+      "phone": "11999999999",
+      "created_at": "2025-08-24T10:25:46.109Z",
+      "updated_at": "2025-08-24T10:25:46.109Z"
+    },
+    {
+      "id": 9,
+      "email": "testintegration@fisioflow.com",
+      "password": "$2b$10$5xncc2/xm5l3KX61MfuFZePdZJFhnOkaE4VOdeA0kgYNTgotvReji",
+      "name": "Test User Integration",
+      "role": "physiotherapist",
+      "phone": null,
+      "created_at": "2025-08-24T10:34:09.707Z",
+      "updated_at": "2025-08-24T10:34:09.707Z"
+    },
+    {
+      "id": 10,
+      "email": "patienttest@fisioflow.com",
+      "password": "$2b$10$bOI6hjXPJBD7aTE7pOSPb.D.l.1cinMYlRonNW8CXMK.VrdjHjIiq",
+      "name": "Patient Test Integration",
+      "role": "patient",
+      "phone": "11987654321",
+      "created_at": "2025-08-24T10:35:39.379Z",
+      "updated_at": "2025-08-24T10:35:39.379Z"
+    },
+    {
+      "id": 11,
+      "email": "newpatient@fisioflow.com",
+      "password": "$2b$10$Iuau9EKu6AFIlQ4dJSQZhuqtwCXxNq1fUn.9xQ8d2ndjcAYJoOHSi",
+      "name": "New Patient Test",
+      "role": "patient",
+      "phone": null,
+      "created_at": "2025-08-24T10:36:20.709Z",
+      "updated_at": "2025-08-24T10:36:20.709Z"
+    },
+    {
+      "id": 12,
+      "email": "physio1756035494945@test.com",
+      "password": "$2b$10$xRoqM3hTI5fygJEohAzKpuwRrWrG6PORcC20GazwRnUPGqQiHoGWK",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:38:15.090Z",
+      "updated_at": "2025-08-24T11:38:15.090Z"
+    },
+    {
+      "id": 13,
+      "email": "physio1756035514827@test.com",
+      "password": "$2b$10$lEqZ0.OXghgtjXPdwI5ca.gGkqh0bMo.kBTPh6eG5EFei1fi.Co4a",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:38:34.979Z",
+      "updated_at": "2025-08-24T11:38:34.979Z"
+    },
+    {
+      "id": 14,
+      "email": "patient@test.com",
+      "password": "$2b$10$GPOYei3/2a9MEk634pgeRO9w.MT9ATYBTY48wYwmfwPBY80knJU9e",
+      "name": "Test Patient",
+      "role": "patient",
+      "phone": "11999999999",
+      "created_at": "2025-08-24T11:38:35.411Z",
+      "updated_at": "2025-08-24T11:38:35.411Z"
+    },
+    {
+      "id": 15,
+      "email": "physio1756035553616@test.com",
+      "password": "$2b$10$QTWhYfH1meo/M40BddFasebvMGmsJ/Rj//PO2tYX1OiDHWHfMU/Ru",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:39:13.818Z",
+      "updated_at": "2025-08-24T11:39:13.818Z"
+    },
+    {
+      "id": 16,
+      "email": "physio1756035586289@test.com",
+      "password": "$2b$10$To2xd4bsaNffh9RRbp5gH.U9jTqHM/5YcJ6Dr50vZHGoxu843TiU6",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:39:46.469Z",
+      "updated_at": "2025-08-24T11:39:46.469Z"
+    },
+    {
+      "id": 17,
+      "email": "physio1756035616678@test.com",
+      "password": "$2b$10$m7MxYOjlP7SfFVXOnnAmJOhp9Jx9flIU0Xhl.X7nxQrO3J/AVuZoW",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:40:16.894Z",
+      "updated_at": "2025-08-24T11:40:16.894Z"
+    },
+    {
+      "id": 18,
+      "email": "physio1756035686661@test.com",
+      "password": "$2b$10$3frrSH8c9nhCTdASzIHrxuni9PZ2g7tgMeGV4vNxEFBeIP5EN6zEG",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:41:26.831Z",
+      "updated_at": "2025-08-24T11:41:26.831Z"
+    },
+    {
+      "id": 19,
+      "email": "physio1756035778731@test.com",
+      "password": "$2b$10$fwJj/dEMpIy5JU34daAwreSCYOvErHaIGJI3Y1McPeWU1jSA1TlYu",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:42:58.928Z",
+      "updated_at": "2025-08-24T11:42:58.928Z"
+    },
+    {
+      "id": 20,
+      "email": "physio1756035831247@test.com",
+      "password": "$2b$10$cyoFkM0KieNxzwRCvrMuNuiH3vvIMb6qLdAdl7d.EU0g8UbQlz/du",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:43:51.453Z",
+      "updated_at": "2025-08-24T11:43:51.453Z"
+    },
+    {
+      "id": 21,
+      "email": "physio1756035880913@test.com",
+      "password": "$2b$10$K/Jczl1k.wAdMchLSB5Zi./0Aqsz0Aj4xqPb4gc0uHITYg3FTXUKe",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:44:41.038Z",
+      "updated_at": "2025-08-24T11:44:41.038Z"
+    },
+    {
+      "id": 22,
+      "email": "physio1756035982519@test.com",
+      "password": "$2b$10$7BOjQcDkC6JvmeOB94aD8u9LAnIRQhHbcEVnfNsYE19428e4WyCb6",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:46:22.756Z",
+      "updated_at": "2025-08-24T11:46:22.756Z"
+    },
+    {
+      "id": 23,
+      "email": "physio1756036067723@test.com",
+      "password": "$2b$10$dLItzQViXOHPlJTDDxI/h.6Pnog1UJ8ypUNzXrjbVQkDP0qBRxmvq",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:47:47.857Z",
+      "updated_at": "2025-08-24T11:47:47.857Z"
+    },
+    {
+      "id": 24,
+      "email": "physio1756036163819@test.com",
+      "password": "$2b$10$rn3ReGQSoSziiWxPAbiXR.kElOH7T/ZHbvlb4DeWcxCHNPHlfCF1i",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:49:24.039Z",
+      "updated_at": "2025-08-24T11:49:24.039Z"
+    },
+    {
+      "id": 25,
+      "email": "physio1756036201237@test.com",
+      "password": "$2b$10$t5BEMIfx5slRBVYDWP.FuOkGdfoZHAz0B3MHlx0CDSob7Oj36MWNq",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:50:01.365Z",
+      "updated_at": "2025-08-24T11:50:01.365Z"
+    },
+    {
+      "id": 26,
+      "email": "physio1756036219973@test.com",
+      "password": "$2b$10$Wi9J9H/o4uWEIlXUdVcpUOYsk1ENISC60SpWROlBFL3qy0rshh.TG",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:50:20.170Z",
+      "updated_at": "2025-08-24T11:50:20.170Z"
+    },
+    {
+      "id": 27,
+      "email": "physio1756036314680@test.com",
+      "password": "$2b$10$c18QZ5DO/wUl97c2hywovuRELogJyWX1HIox81El/UYawDWTt26e2",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:51:54.898Z",
+      "updated_at": "2025-08-24T11:51:54.898Z"
+    },
+    {
+      "id": 28,
+      "email": "physio1756036383909@test.com",
+      "password": "$2b$10$1TB7KkNHdYJBpqYgrKYYwuDvYhkDjr8MSglmbl9nzsYnrYF42ZJP.",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:53:04.018Z",
+      "updated_at": "2025-08-24T11:53:04.018Z"
+    },
+    {
+      "id": 29,
+      "email": "physio1756036404231@test.com",
+      "password": "$2b$10$qK7zE0ujtzh4SlnowCGkt.FzpojEtMNOsPr2yPOf8bYNO.eeQsTg.",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:53:24.418Z",
+      "updated_at": "2025-08-24T11:53:24.418Z"
+    },
+    {
+      "id": 30,
+      "email": "physio1756036490179@test.com",
+      "password": "$2b$10$0D4g4K/Wod2Ajp8iXfEC6.eKLITo5U9dIFgD03YBpH9tuXkz6Iz1e",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:54:50.291Z",
+      "updated_at": "2025-08-24T11:54:50.291Z"
+    },
+    {
+      "id": 31,
+      "email": "physio1756036595339@test.com",
+      "password": "$2b$10$yLzUO1K1k6rtKUguy9lYf.zrj2EAwQRDWnvDmZY4QsvDyePSU7nZe",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:56:35.544Z",
+      "updated_at": "2025-08-24T11:56:35.544Z"
+    },
+    {
+      "id": 32,
+      "email": "physio1756036630998@test.com",
+      "password": "$2b$10$UIX1Zci6UqQRQlSptecp3ODe78ePUjcUfpt.LDDrRJBHbsqoFVUpG",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:57:11.156Z",
+      "updated_at": "2025-08-24T11:57:11.156Z"
+    },
+    {
+      "id": 33,
+      "email": "physio1756036708542@test.com",
+      "password": "$2b$10$nfewrS26q/mEH6qo1E9OpuW/6ttBj7V/D9idssZJIyjM.UO4nJu/6",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:58:28.767Z",
+      "updated_at": "2025-08-24T11:58:28.767Z"
+    },
+    {
+      "id": 34,
+      "email": "physio1756036736202@test.com",
+      "password": "$2b$10$mt56GQIcMWJ9pbnF.A6IFuBSy5ic/ppB7XWMOuHKaoZVoOqDmfrdG",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:58:56.325Z",
+      "updated_at": "2025-08-24T11:58:56.325Z"
+    },
+    {
+      "id": 35,
+      "email": "physio1756036794874@test.com",
+      "password": "$2b$10$93dcvDeqDwkAApDt8KRiD.RnbZZq3TJWTChnvvZPwB8tOIKHI.Dym",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T11:59:54.998Z",
+      "updated_at": "2025-08-24T11:59:54.998Z"
+    },
+    {
+      "id": 36,
+      "email": "physio1756037024184@test.com",
+      "password": "$2b$10$N1sOSiLRvrwqfRAv0Eeo9ebEK7CKq6x/MRwlmg5Pka49JFNthsRaK",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T12:03:44.376Z",
+      "updated_at": "2025-08-24T12:03:44.376Z"
+    },
+    {
+      "id": 37,
+      "email": "physio1756037095402@test.com",
+      "password": "$2b$10$P2fIojHlb/TEyUagbOGi8OLoCBpNNv5F3wM4Xig.iAyhblm6NdL.K",
+      "name": "Integration Test Physiotherapist",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T12:04:55.554Z",
+      "updated_at": "2025-08-24T12:04:55.554Z"
+    },
+    {
+      "id": 38,
+      "email": "test.physio.1756043354465@fisioflow.com",
+      "password": "$2b$10$2KTiZjMvBCy9nx7MQA2VguPcFiSoTrMu2J17nP1o4FKOADAZ1tElG",
+      "name": "Dr. Teste Fisioterapeuta",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T13:49:14.636Z",
+      "updated_at": "2025-08-24T13:49:14.636Z"
+    },
+    {
+      "id": 39,
+      "email": "test.physio.1756043514371@fisioflow.com",
+      "password": "$2b$10$UOvzWBddyvywSdAZYvptROkaoXTVK4QlBI8vBIAj1c94Y/RmIoUnW",
+      "name": "Dr. Teste Fisioterapeuta",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T13:51:54.636Z",
+      "updated_at": "2025-08-24T13:51:54.637Z"
+    },
+    {
+      "id": 40,
+      "email": "test.physio.1756043638160@fisioflow.com",
+      "password": "$2b$10$FBbD.jSO1Yux4Nk3E.2za.9Q4RNj59DYHVoGeCqVNyTIBMrXPYGAi",
+      "name": "Dr. Teste Fisioterapeuta",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T13:53:58.422Z",
+      "updated_at": "2025-08-24T13:53:58.422Z"
+    },
+    {
+      "id": 41,
+      "email": "test.physio.1756043890275@fisioflow.com",
+      "password": "$2b$10$Fc0EOSdHAiPWRwH.v0LtoO9/CDCX7ryR4K3Xo1Iy8JVZaWhOr2NWC",
+      "name": "Dr. Teste Fisioterapeuta",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T13:58:10.527Z",
+      "updated_at": "2025-08-24T13:58:10.527Z"
+    },
+    {
+      "id": 42,
+      "email": "test.physio.1756044158784@fisioflow.com",
+      "password": "$2b$10$.vdWGuIq5UUlZCKupi1EN.sOEdtkD7DwIBFj/P30JLR6rRRZ1CJrO",
+      "name": "Dr. Teste Fisioterapeuta",
+      "role": "physiotherapist",
+      "phone": "11999888777",
+      "created_at": "2025-08-24T14:02:39.066Z",
+      "updated_at": "2025-08-24T14:02:39.066Z"
+    }
+  ],
+  "patients": [
+    {
+      "id": 1,
+      "user_id": 4,
+      "cpf": "123.456.789-01",
+      "birth_date": "1985-03-15",
+      "gender": "F",
+      "address": "Rua das Flores, 123 - São Paulo/SP",
+      "emergency_contact": "Pedro Costa",
+      "emergency_phone": "(11) 94444-4444",
+      "medical_history": "Histórico de lesão no joelho direito",
+      "allergies": null,
+      "medications": null,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 5,
+      "cpf": "987.654.321-09",
+      "birth_date": "1978-11-22",
+      "gender": "M",
+      "address": "Av. Paulista, 456 - São Paulo/SP",
+      "emergency_contact": "Mariana Oliveira",
+      "emergency_phone": "(11) 93333-3333",
+      "medical_history": "Dor lombar crônica",
+      "allergies": null,
+      "medications": null,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "user_id": 6,
+      "date_of_birth": null,
+      "gender": null,
+      "address": null,
+      "emergency_contact": null,
+      "medical_history": null,
+      "created_at": "2025-08-24T10:12:11.628Z",
+      "updated_at": "2025-08-24T10:12:11.628Z"
+    },
+    {
+      "id": 4,
+      "user_id": 7,
+      "date_of_birth": null,
+      "gender": null,
+      "address": null,
+      "emergency_contact": null,
+      "medical_history": null,
+      "created_at": "2025-08-24T10:22:34.918Z",
+      "updated_at": "2025-08-24T10:22:34.918Z"
+    },
+    {
+      "id": 5,
+      "user_id": 8,
+      "date_of_birth": null,
+      "gender": null,
+      "address": null,
+      "emergency_contact": null,
+      "medical_history": null,
+      "created_at": "2025-08-24T10:25:46.109Z",
+      "updated_at": "2025-08-24T10:25:46.109Z"
+    },
+    {
+      "id": 6,
+      "user_id": 10,
+      "date_of_birth": null,
+      "gender": null,
+      "address": null,
+      "emergency_contact": null,
+      "medical_history": null,
+      "created_at": "2025-08-24T10:35:39.379Z",
+      "updated_at": "2025-08-24T10:35:39.379Z"
+    },
+    {
+      "id": 7,
+      "user_id": 11,
+      "date_of_birth": null,
+      "gender": null,
+      "address": null,
+      "emergency_contact": null,
+      "medical_history": null,
+      "created_at": "2025-08-24T10:36:20.709Z",
+      "updated_at": "2025-08-24T10:36:20.709Z"
+    },
+    {
+      "id": 8,
+      "user_id": 14,
+      "date_of_birth": null,
+      "gender": null,
+      "address": null,
+      "emergency_contact": null,
+      "medical_history": null,
+      "created_at": "2025-08-24T11:38:35.411Z",
+      "updated_at": "2025-08-24T11:38:35.411Z"
+    }
+  ],
+  "physiotherapists": [
+    {
+      "id": 1,
+      "user_id": 2,
+      "crefito": "CREFITO-3/12345",
+      "specialties": "Ortopedia, Traumatologia",
+      "bio": "Especialista em reabilitação ortopédica com mais de 10 anos de experiência.",
+      "experience_years": 10,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 3,
+      "crefito": "CREFITO-3/67890",
+      "specialties": "Neurologia, Pediatria",
+      "bio": "Fisioterapeuta especializada em neurologia e fisioterapia pediátrica.",
+      "experience_years": 8,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "user_id": 9,
+      "specialization": "General",
+      "license_number": "LIC1756031649707",
+      "created_at": "2025-08-24T10:34:09.707Z",
+      "updated_at": "2025-08-24T10:34:09.707Z"
+    },
+    {
+      "id": 4,
+      "user_id": 12,
+      "specialization": "General",
+      "license_number": "LIC1756035495090",
+      "created_at": "2025-08-24T11:38:15.090Z",
+      "updated_at": "2025-08-24T11:38:15.090Z"
+    },
+    {
+      "id": 5,
+      "user_id": 13,
+      "specialization": "General",
+      "license_number": "LIC1756035514979",
+      "created_at": "2025-08-24T11:38:34.979Z",
+      "updated_at": "2025-08-24T11:38:34.979Z"
+    },
+    {
+      "id": 6,
+      "user_id": 15,
+      "specialization": "General",
+      "license_number": "LIC1756035553818",
+      "created_at": "2025-08-24T11:39:13.818Z",
+      "updated_at": "2025-08-24T11:39:13.818Z"
+    },
+    {
+      "id": 7,
+      "user_id": 16,
+      "specialization": "General",
+      "license_number": "LIC1756035586469",
+      "created_at": "2025-08-24T11:39:46.469Z",
+      "updated_at": "2025-08-24T11:39:46.469Z"
+    },
+    {
+      "id": 8,
+      "user_id": 17,
+      "specialization": "General",
+      "license_number": "LIC1756035616894",
+      "created_at": "2025-08-24T11:40:16.894Z",
+      "updated_at": "2025-08-24T11:40:16.894Z"
+    },
+    {
+      "id": 9,
+      "user_id": 18,
+      "specialization": "General",
+      "license_number": "LIC1756035686831",
+      "created_at": "2025-08-24T11:41:26.831Z",
+      "updated_at": "2025-08-24T11:41:26.831Z"
+    },
+    {
+      "id": 10,
+      "user_id": 19,
+      "specialization": "General",
+      "license_number": "LIC1756035778928",
+      "created_at": "2025-08-24T11:42:58.928Z",
+      "updated_at": "2025-08-24T11:42:58.928Z"
+    },
+    {
+      "id": 11,
+      "user_id": 20,
+      "specialization": "General",
+      "license_number": "LIC1756035831453",
+      "created_at": "2025-08-24T11:43:51.453Z",
+      "updated_at": "2025-08-24T11:43:51.453Z"
+    },
+    {
+      "id": 12,
+      "user_id": 21,
+      "specialization": "General",
+      "license_number": "LIC1756035881039",
+      "created_at": "2025-08-24T11:44:41.039Z",
+      "updated_at": "2025-08-24T11:44:41.039Z"
+    },
+    {
+      "id": 13,
+      "user_id": 22,
+      "specialization": "General",
+      "license_number": "LIC1756035982756",
+      "created_at": "2025-08-24T11:46:22.756Z",
+      "updated_at": "2025-08-24T11:46:22.756Z"
+    },
+    {
+      "id": 14,
+      "user_id": 23,
+      "specialization": "General",
+      "license_number": "LIC1756036067857",
+      "created_at": "2025-08-24T11:47:47.857Z",
+      "updated_at": "2025-08-24T11:47:47.857Z"
+    },
+    {
+      "id": 15,
+      "user_id": 24,
+      "specialization": "General",
+      "license_number": "LIC1756036164039",
+      "created_at": "2025-08-24T11:49:24.039Z",
+      "updated_at": "2025-08-24T11:49:24.039Z"
+    },
+    {
+      "id": 16,
+      "user_id": 25,
+      "specialization": "General",
+      "license_number": "LIC1756036201365",
+      "created_at": "2025-08-24T11:50:01.365Z",
+      "updated_at": "2025-08-24T11:50:01.365Z"
+    },
+    {
+      "id": 17,
+      "user_id": 26,
+      "specialization": "General",
+      "license_number": "LIC1756036220170",
+      "created_at": "2025-08-24T11:50:20.170Z",
+      "updated_at": "2025-08-24T11:50:20.170Z"
+    },
+    {
+      "id": 18,
+      "user_id": 27,
+      "specialization": "General",
+      "license_number": "LIC1756036314898",
+      "created_at": "2025-08-24T11:51:54.898Z",
+      "updated_at": "2025-08-24T11:51:54.898Z"
+    },
+    {
+      "id": 19,
+      "user_id": 28,
+      "specialization": "General",
+      "license_number": "LIC1756036384019",
+      "created_at": "2025-08-24T11:53:04.019Z",
+      "updated_at": "2025-08-24T11:53:04.019Z"
+    },
+    {
+      "id": 20,
+      "user_id": 29,
+      "specialization": "General",
+      "license_number": "LIC1756036404418",
+      "created_at": "2025-08-24T11:53:24.418Z",
+      "updated_at": "2025-08-24T11:53:24.418Z"
+    },
+    {
+      "id": 21,
+      "user_id": 30,
+      "specialization": "General",
+      "license_number": "LIC1756036490291",
+      "created_at": "2025-08-24T11:54:50.291Z",
+      "updated_at": "2025-08-24T11:54:50.291Z"
+    },
+    {
+      "id": 22,
+      "user_id": 31,
+      "specialization": "General",
+      "license_number": "LIC1756036595544",
+      "created_at": "2025-08-24T11:56:35.544Z",
+      "updated_at": "2025-08-24T11:56:35.544Z"
+    },
+    {
+      "id": 23,
+      "user_id": 32,
+      "specialization": "General",
+      "license_number": "LIC1756036631156",
+      "created_at": "2025-08-24T11:57:11.156Z",
+      "updated_at": "2025-08-24T11:57:11.156Z"
+    },
+    {
+      "id": 24,
+      "user_id": 33,
+      "specialization": "General",
+      "license_number": "LIC1756036708767",
+      "created_at": "2025-08-24T11:58:28.767Z",
+      "updated_at": "2025-08-24T11:58:28.767Z"
+    },
+    {
+      "id": 25,
+      "user_id": 34,
+      "specialization": "General",
+      "license_number": "LIC1756036736325",
+      "created_at": "2025-08-24T11:58:56.325Z",
+      "updated_at": "2025-08-24T11:58:56.325Z"
+    },
+    {
+      "id": 26,
+      "user_id": 35,
+      "specialization": "General",
+      "license_number": "LIC1756036794998",
+      "created_at": "2025-08-24T11:59:54.998Z",
+      "updated_at": "2025-08-24T11:59:54.998Z"
+    },
+    {
+      "id": 27,
+      "user_id": 36,
+      "specialization": "General",
+      "license_number": "LIC1756037024376",
+      "created_at": "2025-08-24T12:03:44.376Z",
+      "updated_at": "2025-08-24T12:03:44.376Z"
+    },
+    {
+      "id": 28,
+      "user_id": 37,
+      "specialization": "General",
+      "license_number": "LIC1756037095554",
+      "created_at": "2025-08-24T12:04:55.554Z",
+      "updated_at": "2025-08-24T12:04:55.554Z"
+    },
+    {
+      "id": 29,
+      "user_id": 38,
+      "specialization": "General",
+      "license_number": "LIC1756043354636",
+      "created_at": "2025-08-24T13:49:14.636Z",
+      "updated_at": "2025-08-24T13:49:14.636Z"
+    },
+    {
+      "id": 30,
+      "user_id": 39,
+      "specialization": "General",
+      "license_number": "LIC1756043514637",
+      "created_at": "2025-08-24T13:51:54.637Z",
+      "updated_at": "2025-08-24T13:51:54.637Z"
+    },
+    {
+      "id": 31,
+      "user_id": 40,
+      "specialization": "General",
+      "license_number": "LIC1756043638422",
+      "created_at": "2025-08-24T13:53:58.422Z",
+      "updated_at": "2025-08-24T13:53:58.422Z"
+    },
+    {
+      "id": 32,
+      "user_id": 41,
+      "specialization": "General",
+      "license_number": "LIC1756043890527",
+      "created_at": "2025-08-24T13:58:10.527Z",
+      "updated_at": "2025-08-24T13:58:10.527Z"
+    },
+    {
+      "id": 33,
+      "user_id": 42,
+      "specialization": "General",
+      "license_number": "LIC1756044159066",
+      "created_at": "2025-08-24T14:02:39.066Z",
+      "updated_at": "2025-08-24T14:02:39.066Z"
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "patient_id": 1,
+      "physiotherapist_id": 1,
+      "date": "2025-08-24",
+      "time": "09:00",
+      "duration": 60,
+      "status": "scheduled",
+      "type": "Consulta Inicial",
+      "notes": "Primeira consulta para avaliação",
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "patient_id": 2,
+      "physiotherapist_id": 2,
+      "date": "2025-08-30",
+      "time": "14:00",
+      "duration": 60,
+      "status": "scheduled",
+      "type": "Sessão de Fisioterapia",
+      "notes": "Sessão de reabilitação lombar",
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "patient_id": 1,
+      "physiotherapist_id": 1,
+      "appointment_date": "2024-02-15 10:00:00",
+      "duration": 60,
+      "status": "consultation",
+      "notes": "Integration test appointment"
+    }
+  ],
+  "exercises": [
+    {
+      "id": 1,
+      "name": "Alongamento de Quadríceps",
+      "description": "Exercício para alongar os músculos da coxa",
+      "category": "Alongamento",
+      "difficulty": "beginner",
+      "duration": 30,
+      "repetitions": 3,
+      "sets": 1,
+      "instructions": "1. Fique em pé\n2. Dobre uma perna para trás\n3. Segure o pé com a mão\n4. Mantenha por 30 segundos",
+      "precautions": "Não force o movimento se sentir dor",
+      "image_url": null,
+      "video_url": null,
+      "created_by": 2,
+      "is_active": 1,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Fortalecimento de Core",
+      "description": "Exercício para fortalecer músculos abdominais",
+      "category": "Fortalecimento",
+      "difficulty": "intermediate",
+      "duration": 60,
+      "repetitions": 15,
+      "sets": 3,
+      "instructions": "1. Deite de costas\n2. Flexione os joelhos\n3. Levante o tronco\n4. Mantenha por 2 segundos",
+      "precautions": "Mantenha a respiração durante o exercício",
+      "image_url": null,
+      "video_url": null,
+      "created_by": 2,
+      "is_active": 1,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Caminhada Terapêutica",
+      "description": "Exercício cardiovascular de baixo impacto",
+      "category": "Cardiovascular",
+      "difficulty": "beginner",
+      "duration": 1800,
+      "repetitions": 1,
+      "sets": 1,
+      "instructions": "1. Caminhe em ritmo moderado\n2. Mantenha postura ereta\n3. Respire naturalmente",
+      "precautions": "Pare se sentir fadiga excessiva",
+      "image_url": null,
+      "video_url": null,
+      "created_by": 2,
+      "is_active": 1,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Test Exercise Integration",
+      "description": "This is a test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise slowly and with proper form",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 5,
+      "name": "Test Exercise for Treatment Plan",
+      "description": "A test exercise for integration testing",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 30,
+      "instructions": "Perform this exercise carefully",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 6,
+      "name": "Test Exercise for Treatment Plan",
+      "description": "A test exercise for integration testing",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 30,
+      "instructions": "Perform this exercise carefully",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 7,
+      "name": "Test Exercise for Treatment Plan",
+      "description": "A test exercise for integration testing",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 30,
+      "instructions": "Perform this exercise carefully",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 8,
+      "name": "Test Exercise for Treatment Plan",
+      "description": "A test exercise for integration testing",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 30,
+      "instructions": "Perform this exercise carefully",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 9,
+      "name": "Test Exercise 1756035687198",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 10,
+      "name": "Manual Test Exercise",
+      "description": "A manual test exercise for debugging",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Test instructions",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 11,
+      "name": "Test Exercise 1756035779583",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 12,
+      "name": "Test Exercise 1756035831948",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 13,
+      "name": "Test Exercise 1756035881346",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 14,
+      "name": "Test Exercise 1756035983287",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 15,
+      "name": "Test Exercise 1756036068457",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 16,
+      "name": "Test Exercise 1756036164491",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 17,
+      "name": "Test Exercise 1756036201699",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 18,
+      "name": "Test Exercise 1756036220892",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 19,
+      "name": "Test Exercise 1756036316013",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 20,
+      "name": "Test Exercise 1756036384296",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 21,
+      "name": "Test Exercise 1756036404808",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 22,
+      "name": "Test Exercise 1756036490671",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 23,
+      "name": "Test Exercise 1756036596026",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 24,
+      "name": "Test Exercise 1756036631607",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 25,
+      "name": "Test Exercise 1756036709163",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 26,
+      "name": "Test Exercise 1756036736608",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 27,
+      "name": "Test Exercise 1756036795281",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 28,
+      "name": "Test Exercise 1756037095992",
+      "description": "A comprehensive test exercise for integration testing purposes",
+      "category": "strength",
+      "difficulty_level": "beginner",
+      "duration": 300,
+      "instructions": "Perform this exercise carefully following all safety guidelines",
+      "created_at": "",
+      "updated_at": ""
+    }
+  ],
+  "treatment_plans": [
+    {
+      "id": 1,
+      "patient_id": 1,
+      "physiotherapist_id": 1,
+      "title": "Reabilitação de Joelho",
+      "description": "Plano de tratamento para recuperação de lesão no joelho direito",
+      "start_date": "2025-08-24",
+      "end_date": null,
+      "status": "active",
+      "goals": "Reduzir dor e inflamação, recuperar amplitude de movimento, fortalecer musculatura",
+      "notes": null,
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "patient_id": 8,
+      "physiotherapist_id": 14,
+      "name": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "start_date": "",
+      "end_date": "2025-08-24",
+      "status": null
+    },
+    {
+      "id": 3,
+      "patient_id": 8,
+      "physiotherapist_id": 15,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 4,
+      "patient_id": 8,
+      "physiotherapist_id": 16,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 5,
+      "patient_id": 8,
+      "physiotherapist_id": 17,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 6,
+      "patient_id": 8,
+      "physiotherapist_id": 18,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 7,
+      "patient_id": 8,
+      "physiotherapist_id": 19,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 8,
+      "patient_id": 8,
+      "physiotherapist_id": 20,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 9,
+      "patient_id": 8,
+      "physiotherapist_id": 21,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 10,
+      "patient_id": 8,
+      "physiotherapist_id": 22,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 11,
+      "patient_id": 8,
+      "physiotherapist_id": 23,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 12,
+      "patient_id": 8,
+      "physiotherapist_id": 24,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 13,
+      "patient_id": 8,
+      "physiotherapist_id": 25,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 14,
+      "patient_id": 8,
+      "physiotherapist_id": 26,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    },
+    {
+      "id": 15,
+      "patient_id": 8,
+      "physiotherapist_id": 28,
+      "title": "Integration Test Treatment Plan",
+      "description": "A comprehensive treatment plan for testing",
+      "goals": "",
+      "start_date": "2025-08-24",
+      "end_date": null
+    }
+  ],
+  "treatment_plan_exercises": [
+    {
+      "id": 1,
+      "treatment_plan_id": 1,
+      "exercise_id": 1,
+      "sets": 1,
+      "repetitions": 3,
+      "duration": null,
+      "frequency": "Diário",
+      "notes": null,
+      "order_index": 1,
+      "created_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "treatment_plan_id": 1,
+      "exercise_id": 2,
+      "sets": 3,
+      "repetitions": 15,
+      "duration": null,
+      "frequency": "3x por semana",
+      "notes": null,
+      "order_index": 2,
+      "created_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "exercise_id": 15,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "created_at": 1
+    },
+    {
+      "id": 4,
+      "exercise_id": 16,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 5,
+      "exercise_id": 17,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 6,
+      "exercise_id": 18,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 7,
+      "exercise_id": 19,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 8,
+      "exercise_id": 20,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 9,
+      "exercise_id": 21,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 10,
+      "treatment_plan_id": 9,
+      "exercise_id": 22,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 11,
+      "treatment_plan_id": "9",
+      "exercise_id": 22,
+      "sets": 2,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Second set of exercises",
+      "order_index": 1
+    },
+    {
+      "id": 12,
+      "treatment_plan_id": 10,
+      "exercise_id": 23,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 13,
+      "treatment_plan_id": "10",
+      "exercise_id": 23,
+      "sets": 2,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Second set of exercises",
+      "order_index": 1
+    },
+    {
+      "id": 14,
+      "treatment_plan_id": 11,
+      "exercise_id": 24,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 15,
+      "treatment_plan_id": "11",
+      "exercise_id": 24,
+      "sets": 2,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Second set of exercises",
+      "order_index": 1
+    },
+    {
+      "id": 16,
+      "treatment_plan_id": 12,
+      "exercise_id": 25,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 17,
+      "treatment_plan_id": "12",
+      "exercise_id": 25,
+      "sets": 2,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Second set of exercises",
+      "order_index": 1
+    },
+    {
+      "id": 18,
+      "treatment_plan_id": 13,
+      "exercise_id": 26,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 19,
+      "treatment_plan_id": "13",
+      "exercise_id": 26,
+      "sets": 2,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Second set of exercises",
+      "order_index": 1
+    },
+    {
+      "id": 20,
+      "treatment_plan_id": 14,
+      "exercise_id": 27,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 21,
+      "treatment_plan_id": "14",
+      "exercise_id": 27,
+      "sets": 2,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Second set of exercises",
+      "order_index": 1
+    },
+    {
+      "id": 22,
+      "treatment_plan_id": 15,
+      "exercise_id": 28,
+      "sets": 3,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Start with light weight",
+      "order_index": 1
+    },
+    {
+      "id": 23,
+      "treatment_plan_id": "15",
+      "exercise_id": 28,
+      "sets": 2,
+      "repetitions": 1,
+      "duration": 0,
+      "notes": "Second set of exercises",
+      "order_index": 1
+    }
+  ],
+  "exercise_logs": [],
+  "notifications": [
+    {
+      "id": 1,
+      "user_id": 4,
+      "title": "Consulta Agendada",
+      "message": "Sua consulta foi agendada para amanhã às 09:00",
+      "type": "info",
+      "is_read": 0,
+      "action_url": null,
+      "created_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "title": "Novo Paciente",
+      "message": "Ana Costa foi adicionada como sua paciente",
+      "type": "success",
+      "is_read": 0,
+      "action_url": null,
+      "created_at": "2024-01-20T10:00:00Z"
+    }
+  ],
+  "files": [],
+  "migrations": [
+    {
+      "id": 1,
+      "filename": "001_initial_schema.sql",
+      "executed_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "filename": "004_create_notifications.sql",
+      "executed_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "filename": "005_create_files.sql",
+      "executed_at": "2024-01-20T10:00:00Z"
+    }
+  ]
+}
