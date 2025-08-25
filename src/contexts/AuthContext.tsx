@@ -109,14 +109,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Criar perfil do usuário na tabela users
       if (data.user) {
-        const { error: profileError } = await supabase
+        const { error: profileError } = await (supabase as any)
           .from('users')
           .insert({
             id: data.user.id,
             email: userData.email,
             name: userData.name,
             role: userData.role,
-            phone: userData.phone
+            phone: userData.phone,
+            is_active: true
           });
 
         if (profileError) {
@@ -152,7 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     const requiredRoles = Array.isArray(roles) ? roles : [roles];
     
-    return requiredRoles.includes(user.role);
+    return requiredRoles.includes(user.role as any);
   };
 
   const resetPassword = async (email: string) => {

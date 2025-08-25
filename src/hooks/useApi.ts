@@ -67,7 +67,7 @@ export function useApi<T = any>(
         }
 
         // Fazer requisição
-        let response = await fetch(url, fetchOptions);
+        const response = await fetch(url, fetchOptions);
 
         // Se token expirou, fazer logout
         if (response.status === 401 && requireAuth) {

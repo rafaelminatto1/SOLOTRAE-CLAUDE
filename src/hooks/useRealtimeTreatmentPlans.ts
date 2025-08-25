@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRealtimeSubscription } from './useRealtimeSubscription'
 import { useAuthStore } from '../stores/authStore'
 import { toast } from 'sonner'
-import type { TreatmentPlan } from '@shared/types'
+// TreatmentPlan interface is defined locally below
 
 interface TreatmentPlan {
   id: string

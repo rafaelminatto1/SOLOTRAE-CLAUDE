@@ -18,7 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/Table';
 import {
   Dialog,
   DialogContent,
@@ -44,9 +44,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui/Select';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@/components/ui/Textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Search,
@@ -241,16 +241,16 @@ const Appointments: React.FC = () => {
   const handleEdit = (appointment: Appointment) => {
     setEditingAppointment(appointment);
     setFormData({
-      patient_id: appointment.patient_id,
-      physiotherapist_id: appointment.physiotherapist_id,
+      patient_id: appointment.patient_id.toString(),
+      physiotherapist_id: appointment.physiotherapist_id.toString(),
       appointment_date: appointment.appointment_date,
       start_time: appointment.start_time,
       end_time: appointment.end_time,
-      appointment_type: appointment.appointment_type,
+      appointment_type: appointment.appointment_type as AppointmentType,
       status: appointment.status,
       notes: appointment.notes || '',
       price: appointment.price?.toString() || '',
-      payment_method: appointment.payment_method || 'cash'
+      payment_method: (appointment.payment_method as 'cash' | 'card' | 'pix' | 'insurance') || 'cash'
     });
     setShowEditModal(true);
   };
@@ -359,7 +359,7 @@ const Appointments: React.FC = () => {
               </SelectTrigger>
               <SelectContent>
                 {patients.map(patient => (
-                  <SelectItem key={patient.id} value={patient.id}>
+                  <SelectItem key={patient.id} value={patient.id.toString()}>
                     {patient.first_name} {patient.last_name}
                   </SelectItem>
                 ))}
@@ -374,7 +374,7 @@ const Appointments: React.FC = () => {
               </SelectTrigger>
               <SelectContent>
                 {physiotherapists.map(physiotherapist => (
-                  <SelectItem key={physiotherapist.id} value={physiotherapist.id}>
+                  <SelectItem key={physiotherapist.id} value={physiotherapist.id.toString()}>
                     {physiotherapist.first_name} {physiotherapist.last_name} - {physiotherapist.specialization}
                   </SelectItem>
                 ))}
@@ -571,7 +571,7 @@ const Appointments: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
-              <span>{appointments.filter(a => a.status === 'confirmado').length} confirmados</span>
+              <span>{appointments.filter(a => a.status === 'confirmed').length} confirmados</span>
             </div>
           </div>
           <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
@@ -677,7 +677,7 @@ const Appointments: React.FC = () => {
                     <SelectContent>
                       <SelectItem value="">Todos os fisioterapeutas</SelectItem>
                       {physiotherapists.map(physiotherapist => (
-                        <SelectItem key={physiotherapist.id} value={physiotherapist.id}>
+                        <SelectItem key={physiotherapist.id} value={physiotherapist.id.toString()}>
                           {physiotherapist.first_name} {physiotherapist.last_name}
                         </SelectItem>
                       ))}
@@ -1027,10 +1027,10 @@ const Appointments: React.FC = () => {
                       <span className="text-muted-foreground">Especialidade:</span>
                       <span className="ml-2">{selectedAppointment.physiotherapist?.specialization || 'N/A'}</span>
                     </div>
-                    {selectedAppointment.physiotherapist?.license_number && (
+                    {selectedAppointment.physiotherapist?.crefito && (
                       <div>
                         <span className="text-muted-foreground">CREFITO:</span>
-                        <span className="ml-2">{selectedAppointment.physiotherapist.license_number}</span>
+                        <span className="ml-2">{selectedAppointment.physiotherapist.crefito}</span>
                       </div>
                     )}
                   </div>

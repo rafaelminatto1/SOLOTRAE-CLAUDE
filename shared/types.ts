@@ -95,14 +95,14 @@ export enum PaymentStatus {
 
 // Interfaces de Usuário - Sincronizadas com o banco
 export interface User {
-  id: number;
+  id: string;
   email: string;
   name: string;
   full_name?: string;
-  role: UserRole;
+  role: 'admin' | 'physiotherapist' | 'patient';
   phone?: string;
-  avatar?: string;
-  is_active: boolean;
+  avatar_url?: string;
+  is_active?: boolean;
   two_factor_enabled?: boolean;
   created_at: string;
   updated_at: string;
@@ -414,12 +414,13 @@ export interface ExerciseLog {
 
 // Interfaces de Notificações - Sincronizadas com o banco
 export interface Notification {
-  id: number;
-  user_id: number;
+  id: string;
+  user_id: string;
   title: string;
   message: string;
   type: 'info' | 'success' | 'warning' | 'error';
   read: boolean;
+  data?: any;
   action_url?: string;
   created_at: string;
   user?: User;

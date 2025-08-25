@@ -17,7 +17,7 @@ export function useRealtimeNotifications() {
     setNotifications(prev => [newNotification, ...prev])
     
     // Update unread count
-    if (!newNotification.is_read) {
+    if (!newNotification.read) {
       setUnreadCount(prev => prev + 1)
     }
     
@@ -41,7 +41,7 @@ export function useRealtimeNotifications() {
     )
     
     // Update unread count if notification was marked as read
-    if (payload.old.is_read === false && updatedNotification.is_read === true) {
+    if (payload.old.read === false && updatedNotification.read === true) {
       setUnreadCount(prev => Math.max(0, prev - 1))
     }
   }
@@ -55,7 +55,7 @@ export function useRealtimeNotifications() {
     )
     
     // Update unread count if deleted notification was unread
-    if (!deletedNotification.is_read) {
+    if (!deletedNotification.read) {
       setUnreadCount(prev => Math.max(0, prev - 1))
     }
   }

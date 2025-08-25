@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import traeSoloBadge from 'vite-plugin-trae-solo-badge'
+// // import traeSoloBadge from 'vite-plugin-trae-solo-badge' // Plugin removido temporariamente
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,8 +15,8 @@ export default defineConfig({
         ]
       }
     }),
-    tsconfigPaths(),
-    traeSoloBadge()
+    tsconfigPaths()
+    // traeSoloBadge()
   ],
   resolve: {
     alias: {

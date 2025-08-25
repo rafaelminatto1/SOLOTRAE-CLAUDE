@@ -3,7 +3,7 @@ import { useRealtimeNotifications } from '../hooks/useRealtimeNotifications';
 import { useRealtimeProgress } from '../hooks/useRealtimeProgress';
 import { useRealtimeTreatmentPlans } from '../hooks/useRealtimeTreatmentPlans';
 import { useAuthStore } from '../stores/authStore';
-import type { Notification, ExerciseProgress, TreatmentPlan } from '@shared/types';
+import type { Notification, TreatmentPlan } from '@shared/types';
 
 interface RealtimeContextType {
   // Notifications
@@ -21,6 +21,7 @@ interface RealtimeContextType {
   // Connection status
   isConnected: boolean
   connectionError: string | null
+  connectionStatus: 'connected' | 'disconnected' | 'connecting'
 }
 
 const RealtimeContext = createContext<RealtimeContextType | undefined>(undefined)
@@ -44,6 +45,7 @@ export function RealtimeProvider({ children }: RealtimeProviderProps) {
   const { user, isAuthenticated } = useAuthStore()
   const [isConnected, setIsConnected] = useState(false)
   const [connectionError, setConnectionError] = useState<string | null>(null)
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'connecting'>('disconnected')
 
   // Initialize realtime hooks
   const {
@@ -83,11 +85,14 @@ export function RealtimeProvider({ children }: RealtimeProviderProps) {
     // In a real implementation, you would monitor the Supabase connection status
     const checkConnection = () => {
       try {
+        setConnectionStatus('connecting')
         setIsConnected(true)
         setConnectionError(null)
+        setConnectionStatus('connected')
       } catch (error) {
         setIsConnected(false)
         setConnectionError('Failed to connect to realtime service')
+        setConnectionStatus('disconnected')
         console.error('Realtime connection error:', error)
       }
     }
@@ -129,7 +134,8 @@ export function RealtimeProvider({ children }: RealtimeProviderProps) {
     
     // Connection status
     isConnected,
-    connectionError
+    connectionError,
+    connectionStatus
   }
 
   return (

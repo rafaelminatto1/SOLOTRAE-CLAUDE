@@ -285,11 +285,11 @@ export default function Dashboard() {
                 {upcomingAppointments.slice(0, 5).map((appointment) => (
                   <div key={appointment.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors">
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white transition-colors">{appointment.patient?.first_name} {appointment.patient?.last_name}</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">{appointment.appointment_type}</p>
+                      <p className="font-medium text-gray-900 dark:text-white transition-colors">{appointment.patient_name}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">{appointment.type}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white transition-colors">{appointment.start_time}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white transition-colors">{appointment.time}</p>
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                         appointment.status === 'confirmed' ? 'bg-green-100 text-green-800' :
                         appointment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :

@@ -1,19 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
 import { RealtimeNotificationBell } from '../Notifications/RealtimeNotificationBell';
 import { ThemeToggle } from '../ui/ThemeToggle';
-import Button from '../ui/button';
-import Input from '../ui/input';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+// import Button from '../ui/Button';
+// import Input from '../ui/Input';
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from '../ui/dropdown-menu';
+// import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
   Search,
   User,
@@ -23,7 +23,7 @@ import {
   ChevronDown,
   Shield,
 } from 'lucide-react';
-import type { UserRole } from '@shared/types';
+// import type { UserRole } from '@shared/types';
 
 interface HeaderProps {
   onMenuClick: () => void;

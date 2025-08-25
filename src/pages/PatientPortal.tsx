@@ -104,7 +104,7 @@ const PatientPortal: React.FC = () => {
   const pendingExercises = exercises.filter(e => e.status === 'pendente' || e.status === 'em_andamento');
   const completedExercises = exercises.filter(e => e.status === 'concluido');
   const pendingPayments = payments.filter(p => p.status === 'pendente');
-  const unreadMessages = messages.filter(m => !m.is_read);
+  const unreadMessages = messages.filter(m => !m.read);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -650,7 +650,7 @@ const PatientPortal: React.FC = () => {
             <div
               key={message.id}
               className={`p-4 rounded-lg border ${
-                message.is_read ? 'border-gray-200 bg-white' : 'border-blue-200 bg-blue-50'
+                message.read ? 'border-gray-200 bg-white' : 'border-blue-200 bg-blue-50'
               }`}
             >
               <div className="flex items-start justify-between mb-3">
@@ -665,7 +665,7 @@ const PatientPortal: React.FC = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-600">{formatDate(message.created_at)}</p>
-            {!message.is_read && (
+            {!message.read && (
                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
                       <Bell className="w-3 h-3 mr-1" />
                       Nova

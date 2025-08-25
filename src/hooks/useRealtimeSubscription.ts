@@ -33,7 +33,7 @@ export function useRealtimeSubscription({
     const channel = supabase.channel(channelName)
 
     // Configure the subscription
-    let subscription = channel.on(
+    const subscription = channel.on(
       'postgres_changes',
       {
         event: '*',

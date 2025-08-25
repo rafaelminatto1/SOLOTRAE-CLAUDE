@@ -5,7 +5,7 @@ import { Exercise, ExerciseDifficulty, ExerciseCategory } from '@shared/types';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Card, { CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/Card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/Table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -171,19 +171,19 @@ const Exercises: React.FC = () => {
     setEditingExercise(exercise);
     setFormData({
       name: exercise.name,
-      description: exercise.description,
+      description: exercise.description || '',
       category: exercise.category as ExerciseCategory,
-      // subcategory: exercise.subcategory || '', // Property doesn't exist in Exercise interface
-      difficulty: exercise.difficulty,
-      estimated_duration: exercise.estimated_duration.toString(),
-      equipment: '', // exercise.equipment?.join(', ') || '',
-      muscle_groups: '', // exercise.muscle_groups?.join(', ') || '',
-      objectives: '', // exercise.objectives?.join(', ') || '',
-      instructions: exercise.instructions,
+      subcategory: '',
+      difficulty: exercise.difficulty as ExerciseDifficulty,
+      estimated_duration: exercise.estimated_duration?.toString() || '',
+      equipment: '',
+      muscle_groups: '',
+      objectives: '',
+      instructions: exercise.instructions || '',
       contraindications: exercise.precautions || '',
       video_url: exercise.video_url || '',
       image_url: exercise.image_url || '',
-      tags: '', // exercise.tags?.join(', ') || '',
+      tags: '',
       is_active: exercise.is_active,
     });
     setShowModal(true);

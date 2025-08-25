@@ -17,7 +17,7 @@ export function RealtimeNotificationBell() {
     if (!user) return
 
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('notifications')
         .update({ read: true })
         .eq('id', notificationId)
@@ -39,7 +39,7 @@ export function RealtimeNotificationBell() {
 
     setIsLoading(true)
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('notifications')
         .update({ read: true })
         .eq('user_id', user.id)
@@ -165,7 +165,7 @@ export function RealtimeNotificationBell() {
                       </div>
                       {!notification.read && (
                         <button
-                          onClick={() => markAsRead(notification.id)}
+                          onClick={() => markAsRead(notification.id.toString())}
                           className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1"
                           title="Marcar como lida"
                         >

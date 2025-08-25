@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRealtimeSubscription } from './useRealtimeSubscription'
 import { useAuthStore } from '../stores/authStore'
-import type { ExerciseProgress } from '@shared/types'
+// ExerciseProgress interface will be defined locally if needed
 
 interface ProgressEntry {
   id: string

@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../../shared/database.types';
 import { Tables } from '../../shared/database.types';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://qywbmnvsyjhlrmtsvkjd.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5d2JtbnZzeWpobHJtdHN2a2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5MDUwODIsImV4cCI6MjA3MTQ4MTA4Mn0.NrCQt7GgpDaUmSlIgXq9RQOkAxYqDS6EtS0bv2-ErtE';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl) {
   throw new Error('VITE_SUPABASE_URL is required');

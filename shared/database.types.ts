@@ -9,16 +9,18 @@ export interface Database {
           role: 'admin' | 'physiotherapist' | 'patient';
           phone?: string;
           avatar_url?: string;
+          is_active?: boolean;
           created_at: string;
           updated_at: string;
         };
         Insert: {
-          id?: string;
+          id: string;
           email: string;
           name: string;
           role: 'admin' | 'physiotherapist' | 'patient';
           phone?: string;
           avatar_url?: string;
+          is_active?: boolean;
           created_at?: string;
           updated_at?: string;
         };
@@ -29,6 +31,7 @@ export interface Database {
           role?: 'admin' | 'physiotherapist' | 'patient';
           phone?: string;
           avatar_url?: string;
+          is_active?: boolean;
           created_at?: string;
           updated_at?: string;
         };
