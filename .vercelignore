@@ -10,6 +10,7 @@ uploads/
 *.py
 __pycache__/
 *.pyc
+requirements.txt
 requirements.txt.backup
 
 # Development files

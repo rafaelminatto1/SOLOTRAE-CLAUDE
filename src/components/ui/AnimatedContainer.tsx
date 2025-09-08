@@ -93,3 +93,4 @@ const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
 };
 
 export default AnimatedContainer;
+export { AnimatedContainer };

@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { Card } from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
-import AnimatedContainer from '@/components/ui/AnimatedContainer';
-import { useAnimation } from '@/hooks/useAnimation';
-import { Eye, EyeOff, Lock, Mail, Shield, AlertCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, Lock, Mail, AlertCircle, Shield } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Separator } from '../components/ui/separator';
+import { AnimatedContainer } from '../components/ui/AnimatedContainer';
+import { EnhancedForm, FormField, EnhancedInput, SubmitButton } from '../components/ui/EnhancedForm';
+import { useAuth } from '../contexts/AuthContext';
+import { loginSchema } from '../utils/formValidation';
 import { toast } from 'sonner';
+import { useEnhancedForm } from '../hooks/useEnhancedForm';
 
 interface LoginForm {
   email: string;
@@ -15,212 +20,117 @@ interface LoginForm {
 
 export default function Login() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { login } = useAuth();
-  const { isVisible, triggerAnimation } = useAnimation({ trigger: 'mount' });
-  
-  const [form, setForm] = useState<LoginForm>({
-    email: '',
-    password: '',
-  });
-  
+  const { login, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<Partial<LoginForm>>({});
 
-  const from = location.state?.from?.pathname || '/dashboard';
-
-  const validateForm = () => {
-    const newErrors: Partial<LoginForm> = {};
-
-    if (!form.email) {
-      newErrors.email = 'E-mail é obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = 'E-mail inválido';
-    }
-
-    if (!form.password) {
-      newErrors.password = 'Senha é obrigatória';
-    } else if (form.password.length < 6) {
-      newErrors.password = 'Senha deve ter pelo menos 6 caracteres';
-    }
-
-
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
-
-    setIsLoading(true);
-    
-    try {
-      const result = await login(form.email, form.password);
-
+  const form = useEnhancedForm({
+    initialValues: { email: '', password: '' },
+    validationSchema: loginSchema,
+    onSubmit: async (data) => {
+      const result = await login(data.email, data.password);
+      
       if (result.success) {
         toast.success('Login realizado com sucesso!');
-        navigate(from, { replace: true });
+        navigate('/dashboard');
       } else {
         toast.error(result.message || 'Erro ao fazer login');
       }
-    } catch {
-      toast.error('Erro de conexão. Tente novamente.');
-    } finally {
-      setIsLoading(false);
     }
-  };
+  });
 
-  const handleInputChange = (field: keyof LoginForm, value: string) => {
-    setForm(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
-    }
+  const handleCredentialClick = (field: keyof LoginForm, value: string) => {
+    form.setFieldValue(field, value);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background Animation */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style={{animationDelay: '2s'}}></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style={{animationDelay: '4s'}}></div>
-      </div>
-      
-      <div className="max-w-md w-full space-y-8 relative z-10">
-        {/* Header */}
-        <AnimatedContainer animation="fade-in" delay={0}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4 transition-colors">
+      <AnimatedContainer animation="fade-in" className="w-full max-w-md">
+        <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 shadow-xl">
+          <CardHeader className="text-center">
+            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mb-4">
+              <Lock className="h-8 w-8 text-white" />
+            </div>
+            <CardTitle className="text-2xl font-bold">FisioFlow</CardTitle>
+            <CardDescription>Entre na sua conta</CardDescription>
+          </CardHeader>
+          <CardContent>
+
+             {/* Login Form */}
+             <form onSubmit={handleSubmit} className="space-y-4">
+               <div className="space-y-2">
+                 <Label htmlFor="email">Email</Label>
+                 <div className="relative">
+                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                   <Input
+                     id="email"
+                     type="email"
+                     placeholder="Digite seu email"
+                     value={formData.email}
+                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                     className="pl-10"
+                     required
+                   />
+                 </div>
+               </div>
+
+               <div className="space-y-2">
+                 <Label htmlFor="password">Senha</Label>
+                 <div className="relative">
+                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                   <Input
+                     id="password"
+                     type={showPassword ? 'text' : 'password'}
+                     placeholder="Digite sua senha"
+                     value={formData.password}
+                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                     className="pl-10 pr-10"
+                     required
+                   />
+                   <button
+                     type="button"
+                     onClick={() => setShowPassword(!showPassword)}
+                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                   >
+                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                   </button>
+                 </div>
+               </div>
+
+               <Button
+                 type="submit"
+                 disabled={loading}
+                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+               >
+                 {loading ? 'Entrando...' : 'Entrar'}
+               </Button>
+
+                {/* Test Credentials */}
+                <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">Credenciais de Teste:</h3>
+                  <div className="text-xs text-blue-600 dark:text-blue-300 space-y-1">
+                    <p><strong>Email:</strong> admin@fisioflow.com</p>
+                    <p><strong>Senha:</strong> admin123</p>
+                  </div>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Register Link */}
           <div className="text-center">
-            <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
-              <Shield className="h-8 w-8 text-white animate-pulse-slow" />
-            </div>
-            <h2 className="mt-6 text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-              FisioFlow
-            </h2>
-            <p className="mt-2 text-sm text-gray-600 transition-all duration-300">
-              Entre na sua conta
+            <p className="text-muted-foreground mb-4">
+              Não tem uma conta?
             </p>
-          </div>
-        </AnimatedContainer>
-
-        {/* Form */}
-        <AnimatedContainer animation="slide-up" delay={200}>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            <Card variant="glass" padding="lg" className="backdrop-blur-sm border border-white/20 shadow-2xl">
-                {/* Email */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                    E-mail
-                  </label>
-                  <div className="mt-1 relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      id="email"
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      className={`block w-full pl-10 pr-3 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:shadow-md ${
-                        errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                      }`}
-                      placeholder="seu@email.com"
-                      disabled={isLoading}
-                    />
-                  </div>
-                  {errors.email && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center">
-                      <AlertCircle className="h-4 w-4 mr-1" />
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
-
-                {/* Password */}
-                <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                    Senha
-                  </label>
-                  <div className="mt-1 relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      value={form.password}
-                      onChange={(e) => handleInputChange('password', e.target.value)}
-                      className={`block w-full pl-10 pr-10 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:shadow-md ${
-                        errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                      }`}
-                      placeholder="Sua senha"
-                      disabled={isLoading}
-                    />
-                    <button
-                      type="button"
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center hover:scale-110 transition-transform duration-200"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" />
-                      ) : (
-                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" />
-                      )}
-                    </button>
-                  </div>
-                  {errors.password && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center">
-                      <AlertCircle className="h-4 w-4 mr-1" />
-                      {errors.password}
-                    </p>
-                  )}
-                </div>
-
-            {/* Submit Button */}
             <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 text-base font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+              variant="outline"
+              onClick={() => navigate('/register')}
+              className="w-full"
             >
-              {isLoading ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Entrando...
-                </div>
-              ) : (
-                'Entrar'
-              )}
+              <UserPlus className="h-5 w-5 mr-2" />
+              Criar Nova Conta
             </Button>
-
-
-            </Card>
-          </form>
-        </AnimatedContainer>
-
-        {/* Links */}
-        <AnimatedContainer animation="fade-in" delay={400}>
-          <div className="text-center space-y-3">
-            <Link
-              to="/forgot-password"
-              className="inline-block text-sm text-blue-600 hover:text-blue-700 transition-all duration-300 hover:scale-105 hover:underline"
-            >
-              Esqueceu sua senha?
-            </Link>
-            <div className="text-sm text-gray-600">
-              Não tem uma conta?{' '}
-              <Link 
-                to="/register" 
-                className="text-blue-600 hover:text-blue-700 font-medium transition-all duration-300 hover:scale-105 hover:underline"
-              >
-                Cadastre-se
-              </Link>
-            </div>
           </div>
         </AnimatedContainer>
       </div>
-    </div>
   );
 }

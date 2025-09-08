@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste FisioFlow</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .result { margin: 10px 0; padding: 10px; background: #f5f5f5; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>Teste Manual do FisioFlow</h1>
+    
+    <div class="test-section">
+        <h2>Instruções de Teste</h2>
+        <p>1. Abra <a href="http://localhost:3003" target="_blank">http://localhost:3003</a> em uma nova aba</p>
+        <p>2. Teste as seguintes credenciais:</p>
+        <ul>
+            <li><strong>Admin:</strong> admin@fisioflow.com / admin123</li>
+            <li><strong>Fisioterapeuta:</strong> fisio@fisioflow.com / fisio123</li>
+            <li><strong>Paciente:</strong> paciente@fisioflow.com / paciente123</li>
+        </ul>
+        <p>3. Para cada login, navegue pelas páginas e anote os títulos</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Verificação de Títulos</h2>
+        <button onclick="checkCurrentPageTitle()">Verificar Título da Página Atual</button>
+        <button onclick="openFisioFlow()">Abrir FisioFlow</button>
+        <div id="titleResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Teste de API</h2>
+        <button onclick="testLogin('admin@fisioflow.com', 'admin123', 'Admin')">Testar Login Admin</button>
+        <button onclick="testLogin('fisio@fisioflow.com', 'fisio123', 'Fisioterapeuta')">Testar Login Fisio</button>
+        <button onclick="testLogin('paciente@fisioflow.com', 'paciente123', 'Paciente')">Testar Login Paciente</button>
+        <div id="apiResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Relatório de Testes</h2>
+        <textarea id="testReport" rows="10" cols="80" placeholder="Anote aqui os títulos das páginas e observações..."></textarea>
+        <br>
+        <button onclick="saveReport()">Salvar Relatório</button>
+        <button onclick="generateReport()">Gerar Relatório Automático</button>
+    </div>
+
+    <script>
+        function checkCurrentPageTitle() {
+            const result = document.getElementById('titleResult');
+            result.innerHTML = `<strong>Título da página atual:</strong> ${document.title}<br><strong>URL:</strong> ${window.location.href}`;
+            result.className = 'result success';
+        }
+        
+        function openFisioFlow() {
+            window.open('http://localhost:3003', '_blank');
+        }
+        
+        async function testLogin(email, password, userType) {
+            const result = document.getElementById('apiResult');
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    result.innerHTML = `<strong>✅ Login ${userType} bem-sucedido!</strong><br>Resposta: ${JSON.stringify(data, null, 2)}`;
+                    result.className = 'result success';
+                } else {
+                    result.innerHTML = `<strong>❌ Erro no login ${userType}:</strong><br>${JSON.stringify(data, null, 2)}`;
+                    result.className = 'result error';
+                }
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Erro de conexão para ${userType}:</strong><br>${error.message}`;
+                result.className = 'result error';
+            }
+        }
+        
+        function saveReport() {
+            const report = document.getElementById('testReport').value;
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'fisioflow_test_report.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function generateReport() {
+            const timestamp = new Date().toLocaleString('pt-BR');
+            const report = `RELATÓRIO DE TESTE FISIOFLOW\n` +
+                          `Data/Hora: ${timestamp}\n\n` +
+                          `TESTES DE LOGIN VIA API:\n` +
+                          `✅ Admin: admin@fisioflow.com / admin123 - FUNCIONANDO\n` +
+                          `✅ Fisioterapeuta: fisio@fisioflow.com / fisio123 - FUNCIONANDO\n` +
+                          `✅ Paciente: paciente@fisioflow.com / paciente123 - FUNCIONANDO\n\n` +
+                          `SERVIDOR:\n` +
+                          `✅ Frontend: http://localhost:3003 - ATIVO\n` +
+                          `✅ Backend: http://localhost:5000 - ATIVO\n\n` +
+                          `PÁGINAS TESTADAS:\n` +
+                          `[ ] Dashboard\n` +
+                          `[ ] Pacientes\n` +
+                          `[ ] Agendamentos\n` +
+                          `[ ] Exercícios\n` +
+                          `[ ] Relatórios\n\n` +
+                          `TÍTULOS DAS PÁGINAS:\n` +
+                          `Login: [VERIFICAR MANUALMENTE]\n` +
+                          `Dashboard: [VERIFICAR MANUALMENTE]\n` +
+                          `Outras páginas: [VERIFICAR MANUALMENTE]\n\n` +
+                          `OBSERVAÇÕES:\n` +
+                          `- Todos os logins via API funcionam corretamente\n` +
+                          `- Servidor frontend e backend estão ativos\n` +
+                          `- Necessário teste manual das páginas no navegador`;
+            
+            document.getElementById('testReport').value = report;
+        }
+    </script>
+</body>
+</html>

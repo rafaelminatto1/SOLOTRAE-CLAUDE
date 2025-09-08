@@ -46,14 +46,48 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   logout: async () => {
     try {
-      await supabase.auth.signOut();
+      // Tentar logout no Supabase
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.warn('⚠️ [AuthStore] Erro no logout do Supabase, fazendo logout local:', error.message);
+        // Fallback: logout local mesmo com erro da API
+      } else {
+        console.log('✅ [AuthStore] Logout do Supabase bem-sucedido');
+      }
+      
+      // Sempre limpar estado local, independente do resultado da API
       set({ 
         user: null, 
         isAuthenticated: false,
         isLoading: false 
       });
+      
+      // Limpar localStorage/sessionStorage se houver dados salvos
+      try {
+        localStorage.removeItem('supabase.auth.token');
+        sessionStorage.clear();
+      } catch (storageError) {
+        console.warn('⚠️ [AuthStore] Erro ao limpar storage:', storageError);
+      }
+      
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('❌ [AuthStore] Erro inesperado no logout, fazendo logout local:', error);
+      
+      // Fallback: sempre limpar estado local mesmo com erro de rede
+      set({ 
+        user: null, 
+        isAuthenticated: false,
+        isLoading: false 
+      });
+      
+      // Limpar storage local
+      try {
+        localStorage.removeItem('supabase.auth.token');
+        sessionStorage.clear();
+      } catch (storageError) {
+        console.warn('⚠️ [AuthStore] Erro ao limpar storage no fallback:', storageError);
+      }
     }
   },
 

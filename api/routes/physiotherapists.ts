@@ -4,6 +4,7 @@
 import { Router, type Request, type Response } from 'express';
 import { supabaseAdmin } from '../services/supabase.js';
 import { authenticateToken, requireAdmin } from '../middleware/auth.js';
+import { cacheMiddleware, physiotherapistCacheHelpers, cacheInvalidationMiddleware } from '../middleware/cache.js';
 
 const router = Router();
 
@@ -11,7 +12,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // GET /api/physiotherapists - Listar todos os fisioterapeutas
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', cacheMiddleware({ ttl: 600, keyGenerator: physiotherapistCacheHelpers.generateListKey }), async (req: Request, res: Response) => {
   try {
     const { data: physiotherapists, error } = await supabaseAdmin
       .from('physiotherapists')
@@ -47,7 +48,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // GET /api/physiotherapists/by-user/:userId - Obter fisioterapeuta por user_id
-router.get('/by-user/:userId', async (req: Request, res: Response) => {
+router.get('/by-user/:userId', cacheMiddleware({ ttl: 600, keyGenerator: physiotherapistCacheHelpers.generateByUserKey }), async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     
@@ -86,7 +87,7 @@ router.get('/by-user/:userId', async (req: Request, res: Response) => {
 });
 
 // GET /api/physiotherapists/:id - Obter fisioterapeuta específico
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', cacheMiddleware({ ttl: 600, keyGenerator: physiotherapistCacheHelpers.generateDetailKey }), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -125,7 +126,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // PUT /api/physiotherapists/:id - Atualizar fisioterapeuta
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', cacheInvalidationMiddleware(['physiotherapists', 'users']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, email, phone, license_number, specialization, bio } = req.body;

@@ -5,6 +5,7 @@ import { Router, type Request, type Response } from 'express';
 import { supabaseAdmin } from '../services/supabase.js';
 import { authenticateToken } from '../middleware/auth.js';
 import { validateRequest, validateParams, commonSchemas } from '../middleware/validation.js';
+import { cacheMiddleware, appointmentCacheHelpers, cacheInvalidationMiddleware } from '../middleware/cache.js';
 
 const router = Router();
 
@@ -12,7 +13,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // GET /api/appointments - Listar agendamentos
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', cacheMiddleware({ ttl: 300, keyGenerator: appointmentCacheHelpers.generateListKey }), async (req: Request, res: Response) => {
   try {
     const { patient_id, physiotherapist_id, status, date } = req.query;
     
@@ -109,7 +110,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // GET /api/appointments/:id - Obter agendamento específico
-router.get('/:id', validateParams(commonSchemas.id), async (req: Request, res: Response) => {
+router.get('/:id', validateParams(commonSchemas.id), cacheMiddleware({ ttl: 600, keyGenerator: appointmentCacheHelpers.generateDetailKey }), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -183,7 +184,7 @@ router.get('/:id', validateParams(commonSchemas.id), async (req: Request, res: R
 });
 
 // POST /api/appointments - Criar novo agendamento
-router.post('/', validateRequest(commonSchemas.appointment), async (req: Request, res: Response) => {
+router.post('/', validateRequest(commonSchemas.appointment), cacheInvalidationMiddleware(['appointments']), async (req: Request, res: Response) => {
   try {
     const { patient_id, physiotherapist_id, date_time, duration, type, notes } = (req as any).validatedData;
     

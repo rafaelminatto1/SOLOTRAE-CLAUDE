@@ -1,19 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuth } from '../../contexts/AuthContext';
 import { RealtimeNotificationBell } from '../Notifications/RealtimeNotificationBell';
 import { ThemeToggle } from '../ui/ThemeToggle';
-// import Button from '../ui/Button';
-// import Input from '../ui/Input';
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from '../ui/dropdown-menu';
-// import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
   Search,
   User,
@@ -23,7 +12,7 @@ import {
   ChevronDown,
   Shield,
 } from 'lucide-react';
-// import type { UserRole } from '@shared/types';
+import { toast } from 'sonner';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -31,7 +20,7 @@ interface HeaderProps {
 
 function Header({ onMenuClick }: HeaderProps) {
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user, logout } = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -49,9 +38,14 @@ function Header({ onMenuClick }: HeaderProps) {
     };
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.success) {
+      toast.success('Logout realizado com sucesso!');
+      navigate('/login');
+    } else {
+      toast.error(result.message || 'Erro ao fazer logout');
+    }
   };
 
   const getRoleDisplayName = (role: string) => {
@@ -75,8 +69,6 @@ function Header({ onMenuClick }: HeaderProps) {
     };
     return colors[role as keyof typeof colors] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
   };
-
-
 
   return (
     <header className="bg-white dark:bg-dark-800 shadow-sm border-b border-gray-200 dark:border-dark-700 transition-colors duration-300">
@@ -127,7 +119,7 @@ function Header({ onMenuClick }: HeaderProps) {
                   </div>
                   <div className="hidden sm:block text-left">
                     <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {user?.full_name}
+                      {user?.name || user?.full_name}
                     </p>
                     <div className="flex items-center space-x-2">
                       <span

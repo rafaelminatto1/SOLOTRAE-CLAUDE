@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Login - FisioFlow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .logs {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .log-entry {
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #17a2b8; }
+        .warning { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste de Login - FisioFlow</h1>
+        <p>Este teste simula exatamente o que acontece na aplicação real.</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" value="teste@fisioflow.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" value="teste123456" required>
+            </div>
+            
+            <button type="submit" id="loginBtn">Fazer Login</button>
+        </form>
+        
+        <div class="logs">
+            <h3>📋 Logs do Teste:</h3>
+            <div id="logContainer"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+        
+        // Configurações do Supabase (mesmas da aplicação)
+        const supabaseUrl = 'https://qywbmnvsyjhlrmtsvkjd.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5d2JtbnZzeWpobHJtdHN2a2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5MDUwODIsImV4cCI6MjA3MTQ4MTA4Mn0.NrCQt7GgpDaUmSlIgXq9RQOkAxYqDS6EtS0bv2-ErtE';
+        
+        const supabase = createClient(supabaseUrl, supabaseAnonKey);
+        
+        const logContainer = document.getElementById('logContainer');
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(message);
+        }
+        
+        // Simular exatamente o que a aplicação faz
+        async function simulateLogin(email, password) {
+            addLog('🌐 [Simulação] Formulário submetido', 'info');
+            addLog(`🌐 [Simulação] Email: ${email}`, 'info');
+            addLog(`🌐 [Simulação] Password length: ${password.length}`, 'info');
+            
+            // Validação básica (como na aplicação)
+            if (!email || !password) {
+                addLog('❌ [Simulação] Validação falhou - campos obrigatórios', 'error');
+                return;
+            }
+            
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                addLog('❌ [Simulação] Validação falhou - email inválido', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                addLog('❌ [Simulação] Validação falhou - senha muito curta', 'error');
+                return;
+            }
+            
+            addLog('✅ [Simulação] Validação passou, iniciando login...', 'success');
+            
+            try {
+                addLog('🔐 [Simulação] Chamando supabase.auth.signInWithPassword...', 'info');
+                
+                const result = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
+                
+                addLog(`🔐 [Simulação] Resultado: ${JSON.stringify({
+                    hasData: !!result.data,
+                    hasSession: !!result.data?.session,
+                    hasUser: !!result.data?.user,
+                    hasError: !!result.error
+                })}`, 'info');
+                
+                if (result.error) {
+                    addLog(`❌ [Simulação] Login falhou: ${result.error.message}`, 'error');
+                    addLog(`❌ [Simulação] Código do erro: ${result.error.status}`, 'error');
+                    return { success: false, message: result.error.message };
+                }
+                
+                if (result.data?.session) {
+                    addLog('✅ [Simulação] Login bem-sucedido!', 'success');
+                    addLog(`✅ [Simulação] User ID: ${result.data.session.user.id}`, 'success');
+                    addLog(`✅ [Simulação] Email: ${result.data.session.user.email}`, 'success');
+                    
+                    // Testar carregamento do perfil
+                    addLog('👤 [Simulação] Carregando perfil do usuário...', 'info');
+                    
+                    const { data: profile, error: profileError } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('id', result.data.session.user.id)
+                        .single();
+                    
+                    if (profileError) {
+                        addLog(`❌ [Simulação] Erro ao carregar perfil: ${profileError.message}`, 'error');
+                        addLog(`❌ [Simulação] Código: ${profileError.code}`, 'error');
+                    } else {
+                        addLog(`✅ [Simulação] Perfil carregado: ${profile.name} (${profile.email})`, 'success');
+                    }
+                    
+                    return { success: true };
+                } else {
+                    addLog('⚠️ [Simulação] Login sem sessão criada', 'warning');
+                    return { success: false, message: 'Login sem sessão' };
+                }
+                
+            } catch (error) {
+                addLog(`💥 [Simulação] Erro inesperado: ${error.message}`, 'error');
+                return { success: false, message: 'Erro de conexão' };
+            }
+        }
+        
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Fazendo login...';
+            
+            logContainer.innerHTML = '';
+            addLog('🚀 Iniciando teste de login...', 'info');
+            
+            const result = await simulateLogin(email, password);
+            
+            if (result.success) {
+                addLog('🎉 TESTE CONCLUÍDO COM SUCESSO!', 'success');
+            } else {
+                addLog(`❌ TESTE FALHOU: ${result.message}`, 'error');
+            }
+            
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Fazer Login';
+        });
+        
+        // Log inicial
+        addLog('🔧 Teste carregado e pronto para uso', 'info');
+        addLog(`🌐 Supabase URL: ${supabaseUrl}`, 'info');
+        addLog(`🔑 Anon Key: ${supabaseAnonKey.substring(0, 20)}...`, 'info');
+    </script>
+</body>
+</html>

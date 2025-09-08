@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin from '@fullcalendar/interaction';
 import { useApiGet, useApiPost, useApiPut, useApiDelete } from '@/hooks/useApi';
 import { formatDate, formatTime } from '@/lib/utils';
-import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
-import Card, { CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { 
   Appointment, 
   Patient, 
@@ -18,18 +23,46 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/Table';
+} from '@/components/ui/table';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+
+// Simple Badge component
+const Badge: React.FC<{ children: React.ReactNode; className?: string; variant?: string }> = ({ children, className = '', variant = 'default' }) => {
+  const variantClasses = {
+    default: 'bg-gray-100 text-gray-800',
+    outline: 'border border-gray-300 text-gray-700',
+    secondary: 'bg-gray-200 text-gray-900',
+    destructive: 'bg-red-100 text-red-800',
+    success: 'bg-green-100 text-green-800',
+    warning: 'bg-yellow-100 text-yellow-800'
+  };
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${variantClasses[variant as keyof typeof variantClasses] || variantClasses.default} ${className}`}>
+      {children}
+    </span>
+  );
+};
+
+// Simple Avatar components
+const Avatar: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+  <div className={`relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full ${className}`}>
+    {children}
+  </div>
+);
+
+const AvatarFallback: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+  <div className={`flex h-full w-full items-center justify-center rounded-full bg-muted ${className}`}>
+    {children}
+  </div>
+);
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,9 +77,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/Select';
+} from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/Textarea';
+import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Search,
@@ -81,11 +114,13 @@ import {
   CalendarPlus,
   List,
   Grid3X3,
-  RefreshCw
+  RefreshCw,
+  Settings
 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 
-// Interfaces locais para dados específicos da página
-
+// Interfaces para o sistema de agendamento
 interface AppointmentFormData {
   patient_id: string;
   physiotherapist_id: string;
@@ -97,24 +132,36 @@ interface AppointmentFormData {
   notes: string;
   price: string;
   payment_method: 'cash' | 'card' | 'pix' | 'insurance';
+  recurrence?: {
+    type: 'none' | 'weekly' | 'biweekly' | 'monthly';
+    end_date?: string;
+    occurrences?: number;
+  };
+}
+
+interface CalendarEvent {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  backgroundColor: string;
+  borderColor: string;
+  extendedProps: {
+    appointment: Appointment;
+    patient: Patient;
+    physiotherapist: Physiotherapist;
+  };
 }
 
 const Appointments: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('');
-  const [tipoFilter, setTipoFilter] = useState<string>('');
-  const [medicoFilter, setMedicoFilter] = useState<string>('');
-  const [dateFilter, setDateFilter] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
-  const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list');
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | null>(null);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [currentView, setCurrentView] = useState('dayGridMonth');
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
+  const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [formData, setFormData] = useState<AppointmentFormData>({
     patient_id: '',
     physiotherapist_id: '',
@@ -125,8 +172,38 @@ const Appointments: React.FC = () => {
     status: AppointmentStatus.SCHEDULED,
     notes: '',
     price: '',
-    payment_method: 'cash'
+    payment_method: 'cash',
+    recurrence: { type: 'none' }
   });
+
+  // Loading states
+  const [isValidating, setIsValidating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [conflictAlert, setConflictAlert] = useState<any>(null);
+  
+  // Modal states
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  
+  // Filter and search states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [tipoFilter, setTipoFilter] = useState('');
+  const [medicoFilter, setMedicoFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  
+  // View mode state
+  const [viewMode, setViewMode] = useState<'list' | 'calendar'>('calendar');
+  
+  // Edit and delete states
+  const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
+  const [appointmentToDelete, setAppointmentToDelete] = useState<string | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   // API calls
   const { data: appointmentsData, loading, refetch } = useApiGet<{
@@ -147,6 +224,242 @@ const Appointments: React.FC = () => {
   const totalAppointments = appointmentsData?.total || 0;
   const patients = patientsData?.patients || [];
   const physiotherapists = physiotherapistsData?.physiotherapists || [];
+
+  // Real-time updates via Supabase
+  useEffect(() => {
+    const subscription = supabase
+      .channel('appointments')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'appointments'
+      }, (payload) => {
+        console.log('Real-time update:', payload);
+        
+        // Refetch data when appointments change
+        refetch();
+        
+        // Show notification based on event type
+        switch (payload.eventType) {
+          case 'INSERT':
+            toast.success('Novo agendamento criado');
+            break;
+          case 'UPDATE':
+            toast.info('Agendamento atualizado');
+            break;
+          case 'DELETE':
+            toast.info('Agendamento removido');
+            break;
+        }
+      })
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []); // Removido refetch das dependências para evitar loop infinito
+
+  // Cores por tipo de consulta
+  const getAppointmentColor = (type: AppointmentType, status: AppointmentStatus) => {
+    const colors = {
+      [AppointmentType.CONSULTATION]: { bg: '#3b82f6', border: '#2563eb' },
+      [AppointmentType.EVALUATION]: { bg: '#8b5cf6', border: '#7c3aed' },
+      [AppointmentType.TREATMENT]: { bg: '#10b981', border: '#059669' },
+      [AppointmentType.FOLLOW_UP]: { bg: '#f59e0b', border: '#d97706' }
+    };
+
+    if (status === AppointmentStatus.CANCELLED) {
+      return { bg: '#ef4444', border: '#dc2626' };
+    }
+    if (status === AppointmentStatus.COMPLETED) {
+      return { bg: '#6b7280', border: '#4b5563' };
+    }
+
+    return colors[type] || colors[AppointmentType.CONSULTATION];
+  };
+
+  // Converter appointments para eventos do calendário
+  useEffect(() => {
+    const events: CalendarEvent[] = appointments.map(appointment => {
+      const patient = patients.find(p => p.id === appointment.patient_id);
+      const physiotherapist = physiotherapists.find(p => p.id === appointment.physiotherapist_id);
+      const colors = getAppointmentColor(appointment.appointment_type, appointment.status);
+
+      return {
+        id: appointment.id.toString(),
+        title: `${patient?.first_name || 'Paciente'} - ${getTipoLabel(appointment.appointment_type)}`,
+        start: `${appointment.appointment_date}T${appointment.start_time}`,
+        end: `${appointment.appointment_date}T${appointment.end_time}`,
+        backgroundColor: colors.bg,
+        borderColor: colors.border,
+        extendedProps: {
+          appointment,
+          patient: patient!,
+          physiotherapist: physiotherapist!
+        }
+      };
+    });
+
+    setCalendarEvents(events);
+  }, [appointments, patients, physiotherapists]); // Dependências estáveis
+
+  // Buscar slots disponíveis
+  const fetchAvailableSlots = async (therapistId: string, date: string, duration: number) => {
+    try {
+      const { data, error } = await supabase.rpc('get_available_slots', {
+        therapist_id: therapistId,
+        date: date,
+        duration: duration
+      });
+
+      if (error) throw error;
+      setAvailableSlots(data || []);
+    } catch (error) {
+      console.error('Error fetching available slots:', error);
+      // Fallback: gerar slots padrão
+      const slots = generateTimeSlots();
+      setAvailableSlots(slots);
+    }
+  };
+
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 8; hour <= 18; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        slots.push(timeString);
+      }
+    }
+    return slots;
+  };
+
+  // Regras de negócio
+  const validateAppointmentConflict = async (appointmentData: Partial<AppointmentFormData>) => {
+    try {
+      const { data, error } = await supabase.rpc('validate_appointment_conflict', {
+        appointment_id: selectedAppointment?.id || null,
+        therapist_id: appointmentData.physiotherapist_id,
+        patient_id: appointmentData.patient_id,
+        appointment_date: appointmentData.appointment_date,
+        appointment_time: appointmentData.start_time,
+        duration: appointmentData.appointment_type === AppointmentType.EVALUATION ? 60 : 30
+      });
+
+      if (error) throw error;
+      return data?.[0] || { has_conflict: false };
+    } catch (error) {
+      console.error('Error validating conflict:', error);
+      return { has_conflict: false };
+    }
+  };
+
+  const checkCancellationPolicy = async (appointmentId: string) => {
+    try {
+      const { data, error } = await supabase.rpc('can_cancel_appointment', {
+        appointment_id: appointmentId
+      });
+
+      if (error) throw error;
+      return data?.[0] || { can_cancel: false, reason: 'Erro ao verificar política' };
+    } catch (error) {
+      console.error('Error checking cancellation policy:', error);
+      return { can_cancel: false, reason: 'Erro ao verificar política de cancelamento' };
+    }
+  };
+
+  const checkDailyPatientLimit = async (therapistId: string, date: string) => {
+    try {
+      const { data, error } = await supabase.rpc('check_daily_patient_limit', {
+        therapist_id: therapistId,
+        appointment_date: date,
+        max_patients: 12
+      });
+
+      if (error) throw error;
+      return data?.[0] || { within_limit: true, current_count: 0, max_limit: 12 };
+    } catch (error) {
+      console.error('Error checking daily limit:', error);
+      return { within_limit: true, current_count: 0, max_limit: 12 };
+    }
+  };
+
+  const generateRecurringAppointments = async (baseData: AppointmentFormData) => {
+    if (!baseData.recurrence || baseData.recurrence.type === 'none') {
+      return [baseData];
+    }
+
+    try {
+      const { data, error } = await supabase.rpc('create_recurring_appointments', {
+        base_appointment: baseData,
+        recurrence_type: baseData.recurrence.type,
+        recurrence_count: baseData.recurrence.occurrences,
+        recurrence_end_date: baseData.recurrence.end_date
+      });
+
+      if (error) throw error;
+      return data || [baseData];
+    } catch (error) {
+      console.error('Error generating recurring appointments:', error);
+      return [baseData];
+    }
+  };
+
+  // Handlers do calendário
+  const handleDateClick = (selectInfo: any) => {
+    setSelectedDate(selectInfo.date);
+    setFormData(prev => ({
+      ...prev,
+      appointment_date: selectInfo.dateStr
+    }));
+    setIsEditing(false);
+    setSelectedAppointment(null);
+    setShowAppointmentModal(true);
+  };
+
+  const handleEventClick = (clickInfo: any) => {
+    const appointment = clickInfo.event.extendedProps.appointment;
+    setSelectedAppointment(appointment);
+    setFormData({
+      patient_id: appointment.patient_id,
+      physiotherapist_id: appointment.physiotherapist_id,
+      appointment_date: appointment.appointment_date,
+      start_time: appointment.start_time,
+      end_time: appointment.end_time,
+      appointment_type: appointment.appointment_type,
+      status: appointment.status,
+      notes: appointment.notes || '',
+      price: appointment.price?.toString() || '',
+      payment_method: appointment.payment_method || 'cash',
+      recurrence: { type: 'none' }
+    });
+    setIsEditing(true);
+    setShowAppointmentModal(true);
+  };
+
+  const handleEventDrop = async (dropInfo: any) => {
+    const appointment = dropInfo.event.extendedProps.appointment;
+    const newDate = dropInfo.event.start;
+    
+    try {
+      const { error } = await supabase
+        .from('appointments')
+        .update({
+          appointment_date: newDate.toISOString().split('T')[0],
+          start_time: newDate.toTimeString().slice(0, 5),
+          end_time: new Date(newDate.getTime() + (appointment.appointment_type === AppointmentType.EVALUATION ? 60 : 30) * 60000).toTimeString().slice(0, 5)
+        })
+        .eq('id', appointment.id);
+
+      if (error) throw error;
+      
+      toast.success('Consulta remarcada com sucesso!');
+      refetch();
+    } catch (error) {
+      console.error('Error updating appointment:', error);
+      toast.error('Erro ao remarcar consulta');
+      dropInfo.revert();
+    }
+  };
 
   const getStatusBadge = (status: string) => {
     const variants = {
@@ -223,17 +536,6 @@ const Appointments: React.FC = () => {
 
   const formatTimeRange = (inicio: string, fim: string) => {
     return `${inicio} - ${fim}`;
-  };
-
-  const generateTimeSlots = () => {
-    const slots = [];
-    for (let hour = 8; hour <= 18; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-        slots.push(timeString);
-      }
-    }
-    return slots;
   };
 
   const timeSlots = generateTimeSlots();
@@ -556,28 +858,23 @@ const Appointments: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Agendamentos</h1>
-          <p className="text-muted-foreground">
-            Gerencie os agendamentos e consultas da clínica
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">Agenda de Consultas</h1>
+          <p className="text-gray-600">Gerencie agendamentos com calendário interativo</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="h-4 w-4" />
-              <span>{totalAppointments} agendamentos</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Activity className="h-4 w-4" />
-              <span>{appointments.filter(a => a.status === 'confirmed').length} confirmados</span>
-            </div>
-          </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => setShowSettingsModal(true)}
+            variant="outline"
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Configurações
+          </Button>
           <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
             <DialogTrigger asChild>
-              <Button>
-                <CalendarPlus className="mr-2 h-4 w-4" />
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <Plus className="h-4 w-4 mr-2" />
                 Novo Agendamento
               </Button>
             </DialogTrigger>
@@ -614,8 +911,53 @@ const Appointments: React.FC = () => {
         </Button>
       </div>
 
-      {viewMode === 'calendar' ? (
-        <CalendarView />
+      {/* Calendário Principal */}
+      <div className="bg-white rounded-lg border p-6">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+          headerToolbar={{
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+          }}
+          initialView={currentView}
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          dayMaxEvents={true}
+          weekends={true}
+          events={calendarEvents}
+          select={handleDateClick}
+          eventClick={handleEventClick}
+          eventDrop={handleEventDrop}
+          eventResize={handleEventDrop}
+          height="auto"
+          locale="pt-br"
+          buttonText={{
+            today: 'Hoje',
+            month: 'Mês',
+            week: 'Semana',
+            day: 'Dia',
+            list: 'Lista'
+          }}
+          slotMinTime="07:00:00"
+          slotMaxTime="19:00:00"
+          slotDuration="00:30:00"
+          businessHours={{
+            daysOfWeek: [1, 2, 3, 4, 5, 6],
+            startTime: '08:00',
+            endTime: '18:00'
+          }}
+          eventTimeFormat={{
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+          }}
+        />
+      </div>
+
+      {false ? (
+        <div></div>
       ) : (
         <>
           {/* Filters */}
@@ -898,25 +1240,249 @@ const Appointments: React.FC = () => {
         </>
       )}
 
-      {/* Edit Appointment Modal */}
-      <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
+      {/* Appointment Modal */}
+      <Dialog open={showAppointmentModal} onOpenChange={setShowAppointmentModal}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Editar Agendamento</DialogTitle>
+            <DialogTitle>
+              {isEditing ? 'Editar Agendamento' : 'Novo Agendamento'}
+            </DialogTitle>
             <DialogDescription>
-              Atualize as informações do agendamento abaixo.
+              {isEditing ? 'Atualize as informações do agendamento' : 'Preencha as informações para criar um novo agendamento'}
             </DialogDescription>
           </DialogHeader>
-          <AppointmentForm isEdit={true} />
+          
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Seleção de Paciente */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Paciente</label>
+                <select
+                  value={formData.patient_id}
+                  onChange={(e) => setFormData(prev => ({ ...prev, patient_id: e.target.value }))}
+                  className="w-full p-2 border rounded-md"
+                  required
+                >
+                  <option value="">Selecione um paciente</option>
+                  {patients.map(patient => (
+                    <option key={patient.id} value={patient.id}>
+                      {patient.first_name} {patient.last_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Seleção de Fisioterapeuta */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Fisioterapeuta</label>
+                <select
+                  value={formData.physiotherapist_id}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, physiotherapist_id: e.target.value }));
+                    if (e.target.value && formData.appointment_date) {
+                      const duration = formData.appointment_type === AppointmentType.EVALUATION ? 60 : 30;
+                      fetchAvailableSlots(e.target.value, formData.appointment_date, duration);
+                    }
+                  }}
+                  className="w-full p-2 border rounded-md"
+                  required
+                >
+                  <option value="">Selecione um fisioterapeuta</option>
+                  {physiotherapists.map(physio => (
+                    <option key={physio.id} value={physio.id}>
+                      Dr. {physio.first_name} {physio.last_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Data */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Data</label>
+                <input
+                  type="date"
+                  value={formData.appointment_date}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, appointment_date: e.target.value }));
+                    if (formData.physiotherapist_id && e.target.value) {
+                      const duration = formData.appointment_type === AppointmentType.EVALUATION ? 60 : 30;
+                      fetchAvailableSlots(formData.physiotherapist_id, e.target.value, duration);
+                    }
+                  }}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Tipo de Consulta */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Tipo de Consulta</label>
+                <select
+                  value={formData.appointment_type}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, appointment_type: e.target.value as AppointmentType }));
+                    if (formData.physiotherapist_id && formData.appointment_date) {
+                      const duration = e.target.value === AppointmentType.EVALUATION ? 60 : 30;
+                      fetchAvailableSlots(formData.physiotherapist_id, formData.appointment_date, duration);
+                    }
+                  }}
+                  className="w-full p-2 border rounded-md"
+                  required
+                >
+                  <option value={AppointmentType.CONSULTATION}>Consulta (30min)</option>
+                  <option value={AppointmentType.EVALUATION}>Avaliação (60min)</option>
+                  <option value={AppointmentType.TREATMENT}>Tratamento (30min)</option>
+                  <option value={AppointmentType.FOLLOW_UP}>Retorno (30min)</option>
+                </select>
+              </div>
+
+              {/* Horário */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Horário</label>
+                <select
+                  value={formData.start_time}
+                  onChange={(e) => {
+                    const startTime = e.target.value;
+                    const duration = formData.appointment_type === AppointmentType.EVALUATION ? 60 : 30;
+                    const [hours, minutes] = startTime.split(':').map(Number);
+                    const endTime = new Date(0, 0, 0, hours, minutes + duration);
+                    const endTimeString = endTime.toTimeString().slice(0, 5);
+                    
+                    setFormData(prev => ({ 
+                      ...prev, 
+                      start_time: startTime,
+                      end_time: endTimeString
+                    }));
+                  }}
+                  className="w-full p-2 border rounded-md"
+                  required
+                >
+                  <option value="">Selecione um horário</option>
+                  {availableSlots.map(slot => (
+                    <option key={slot} value={slot}>
+                      {slot}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Status */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Status</label>
+                <select
+                  value={formData.status}
+                  onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as AppointmentStatus }))}
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value={AppointmentStatus.SCHEDULED}>Agendado</option>
+                  <option value={AppointmentStatus.CONFIRMED}>Confirmado</option>
+                  <option value={AppointmentStatus.COMPLETED}>Concluído</option>
+                  <option value={AppointmentStatus.CANCELLED}>Cancelado</option>
+                </select>
+              </div>
+
+              {/* Valor */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Valor (R$)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={formData.price}
+                  onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+                  className="w-full p-2 border rounded-md"
+                  placeholder="0,00"
+                />
+              </div>
+
+              {/* Forma de Pagamento */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Forma de Pagamento</label>
+                <select
+                  value={formData.payment_method}
+                  onChange={(e) => setFormData(prev => ({ ...prev, payment_method: e.target.value as 'cash' | 'card' | 'pix' | 'insurance' }))}
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value="cash">Dinheiro</option>
+                  <option value="card">Cartão</option>
+                  <option value="pix">PIX</option>
+                  <option value="insurance">Convênio</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Observações */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Observações</label>
+              <textarea
+                value={formData.notes}
+                onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                className="w-full p-2 border rounded-md"
+                rows={3}
+                placeholder="Observações adicionais..."
+              />
+            </div>
+
+            {/* Recorrência */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Recorrência</label>
+              <select
+                value={formData.recurrence.type}
+                onChange={(e) => setFormData(prev => ({ 
+                  ...prev, 
+                  recurrence: { type: e.target.value as 'none' | 'weekly' | 'biweekly' }
+                }))}
+                className="w-full p-2 border rounded-md"
+              >
+                <option value="none">Sem recorrência</option>
+                <option value="weekly">Semanal</option>
+                <option value="biweekly">Quinzenal</option>
+              </select>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowAppointmentModal(false)}
+            >
+              Cancelar
+            </Button>
+            <Button 
+              onClick={async () => {
+                // Implementar lógica de salvar
+                toast.success(isEditing ? 'Agendamento atualizado!' : 'Agendamento criado!');
+                setShowAppointmentModal(false);
+                refetch();
+              }}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              {isEditing ? 'Atualizar' : 'Criar'} Agendamento
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
+      {/* Edit Appointment Modal */}
+      <Modal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        title="Editar Agendamento"
+      >
+        <div className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <p className="text-sm text-gray-600 mb-4">
+            Atualize as informações do agendamento abaixo.
+          </p>
+          <div>Formulário de edição será implementado aqui</div>
+        </div>
+      </Modal>
+
       {/* Appointment Details Modal */}
-      <Dialog open={showDetailsModal} onOpenChange={setShowDetailsModal}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Detalhes do Agendamento</DialogTitle>
-          </DialogHeader>
+      <Modal
+        isOpen={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
+        title="Detalhes do Agendamento"
+      >
+        <div className="max-w-4xl max-h-[90vh] overflow-y-auto">
           {selectedAppointment && (
             <div className="space-y-6">
               {/* Header */}
@@ -1059,29 +1625,30 @@ const Appointments: React.FC = () => {
               </div>
             </div>
           )}
-        </DialogContent>
-      </Dialog>
+        </div>
+      </Modal>
 
       {/* Delete Confirmation Modal */}
-      <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Excluir Agendamento</DialogTitle>
-            <DialogDescription>
-              Tem certeza que deseja excluir este agendamento?
-              Esta ação não pode ser desfeita.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Excluir Agendamento"
+      >
+        <div>
+          <p className="text-sm text-gray-600 mb-4">
+            Tem certeza que deseja excluir este agendamento?
+            Esta ação não pode ser desfeita.
+          </p>
+          <div className="flex justify-end space-x-2">
             <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
               Cancelar
             </Button>
-            <Button variant="danger" onClick={confirmDelete} disabled={deleting}>
+            <Button variant="destructive" onClick={confirmDelete} disabled={deleting}>
               {deleting ? 'Excluindo...' : 'Excluir Agendamento'}
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

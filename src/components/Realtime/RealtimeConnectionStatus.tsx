@@ -27,6 +27,16 @@ export function RealtimeConnectionStatus() {
     );
   }
 
-  // Para status 'connecting' ou outros, não exibir nada
+  if (connectionStatus === 'connecting') {
+    return (
+      <div className="fixed bottom-4 right-4 z-50">
+        <div className="flex items-center space-x-2 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 px-3 py-2 rounded-lg shadow-lg border border-yellow-200 dark:border-yellow-800">
+          <div className="w-4 h-4 border-2 border-yellow-600 border-t-transparent rounded-full animate-spin" />
+          <span className="text-sm font-medium">Conectando...</span>
+        </div>
+      </div>
+    );
+  }
+
   return null;
 }

@@ -4,6 +4,7 @@
 import { Router, type Request, type Response } from 'express';
 import { supabaseAdmin } from '../database/supabase.js';
 import { authenticateToken } from '../middleware/auth.js';
+import { cacheMiddleware, progressCacheHelpers, cacheInvalidationMiddleware } from '../middleware/cache.js';
 
 const router = Router();
 
@@ -11,7 +12,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // GET /api/progress - Listar progresso dos exercícios
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', cacheMiddleware({ ttl: 300, keyGenerator: progressCacheHelpers.generateListKey }), async (req: Request, res: Response) => {
   try {
     const { patient_id, exercise_id, treatment_plan_id, date_from, date_to } = req.query;
     
@@ -107,7 +108,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // GET /api/progress/:id - Obter progresso específico
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', cacheMiddleware({ ttl: 600, keyGenerator: progressCacheHelpers.generateDetailKey }), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -178,7 +179,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // POST /api/progress - Registrar progresso de exercício
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', cacheInvalidationMiddleware(['progress', 'patients']), async (req: Request, res: Response) => {
   try {
     const { 
       exercise_id, 

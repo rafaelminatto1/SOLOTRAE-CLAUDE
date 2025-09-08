@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useApiGet, useApiPost, useApiPut, useApiDelete } from '@/hooks/useApi';
 import { formatDate } from '@/lib/utils';
 import { Patient, PatientStatus, Gender, MaritalStatus } from '@shared/types';
-import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
-import Card, { CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -12,7 +12,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/Table';
+} from '@/components/ui/table';
 import {
   Dialog,
   DialogContent,
@@ -38,9 +38,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/Select';
+} from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/Textarea';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Search,
   Filter,
@@ -1242,7 +1242,7 @@ const Patients: React.FC = () => {
             <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
               Cancelar
             </Button>
-            <Button variant="danger" onClick={confirmDelete} disabled={deleting}>
+            <Button variant="destructive" onClick={confirmDelete} disabled={deleting}>
               {deleting ? 'Excluindo...' : 'Excluir Paciente'}
             </Button>
           </DialogFooter>

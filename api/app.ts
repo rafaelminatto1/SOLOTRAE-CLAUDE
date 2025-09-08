@@ -14,6 +14,8 @@ import treatmentPlansRoutes from './routes/treatment-plans.js';
 import progressRoutes from './routes/progress.js';
 import notificationsRoutes from './routes/notifications.js';
 import uploadRoutes from './routes/upload.js';
+import dashboardRoutes from './routes/dashboard.js';
+import adminRoutes from './routes/admin.js';
 import { initializeDatabase } from './database/index.js';
 
 // Initialize database
@@ -23,8 +25,23 @@ initializeDatabase().catch(console.error);
 const app: express.Application = express();
 
 // CORS configuration using environment variables
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:5173'
+];
+
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -51,6 +68,8 @@ app.use('/api/treatment-plans', treatmentPlansRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/admin', adminRoutes);
 
 /**
  * health

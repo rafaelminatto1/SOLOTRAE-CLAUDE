@@ -81,13 +81,15 @@ export async function initializeSchema(db: Database): Promise<void> {
       )
     `);
 
-    // Exercises table
+    // Exercises table (Updated)
     await db.run(`
       CREATE TABLE IF NOT EXISTS exercises (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         description TEXT,
-        category TEXT NOT NULL,
+        type TEXT, -- Renamed from category. E.g., Fortalecimento, Alongamento
+        body_part TEXT, -- E.g., Membros Inferiores, Core, Ombro
+        equipment TEXT, -- E.g., Halter, Faixa Elástica, Rolo de Liberação
         difficulty TEXT CHECK (difficulty IN ('beginner', 'intermediate', 'advanced')),
         duration INTEGER,
         repetitions INTEGER,
@@ -100,7 +102,38 @@ export async function initializeSchema(db: Database): Promise<void> {
         is_active BOOLEAN DEFAULT 1,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (created_by) REFERENCES users (id)
+        FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE SET NULL
+      )
+    `);
+
+    // Protocols Table (New)
+    await db.run(`
+      CREATE TABLE IF NOT EXISTS protocols (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL, -- E.g., "Pós-operatório de LCA - Fase 1"
+        description TEXT,
+        pathology TEXT, -- E.g., "LCA", "Lombalgia Crônica"
+        created_by INTEGER,
+        is_public BOOLEAN DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE SET NULL
+      )
+    `);
+
+    // Protocol Exercises Join Table (New)
+    await db.run(`
+      CREATE TABLE IF NOT EXISTS protocol_exercises (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        protocol_id INTEGER NOT NULL,
+        exercise_id INTEGER NOT NULL,
+        order_index INTEGER DEFAULT 0,
+        default_sets INTEGER,
+        default_repetitions INTEGER,
+        default_duration INTEGER,
+        notes TEXT,
+        FOREIGN KEY (protocol_id) REFERENCES protocols (id) ON DELETE CASCADE,
+        FOREIGN KEY (exercise_id) REFERENCES exercises (id) ON DELETE CASCADE
       )
     `);
 
@@ -205,6 +238,9 @@ export async function initializeSchema(db: Database): Promise<void> {
     await db.run('CREATE INDEX IF NOT EXISTS idx_exercise_logs_patient_id ON exercise_logs (patient_id)');
     await db.run('CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications (user_id)');
     await db.run('CREATE INDEX IF NOT EXISTS idx_files_entity ON files (entity_type, entity_id)');
+    await db.run('CREATE INDEX IF NOT EXISTS idx_protocols_created_by ON protocols (created_by)');
+    await db.run('CREATE INDEX IF NOT EXISTS idx_protocol_exercises_protocol_id ON protocol_exercises (protocol_id)');
+    await db.run('CREATE INDEX IF NOT EXISTS idx_protocol_exercises_exercise_id ON protocol_exercises (exercise_id)');
 
     console.log('Database schema initialized successfully');
   } catch (error) {

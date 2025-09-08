@@ -4,6 +4,7 @@
 import { Router, type Request, type Response } from 'express';
 import { supabaseAdmin } from '../config/supabase.js';
 import { authenticateToken, requirePhysiotherapist } from '../middleware/auth.js';
+import { cacheMiddleware, treatmentPlanCacheHelpers, cacheInvalidationMiddleware } from '../middleware/cache.js';
 
 const router = Router();
 
@@ -11,7 +12,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // GET /api/treatment-plans - Listar planos de tratamento
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', cacheMiddleware({ ttl: 300, keyGenerator: treatmentPlanCacheHelpers.generateListKey }), async (req: Request, res: Response) => {
   try {
     const { patient_id, physiotherapist_id, status } = req.query;
     
@@ -100,7 +101,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // GET /api/treatment-plans/:id - Obter plano de tratamento específico
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', cacheMiddleware({ ttl: 600, keyGenerator: treatmentPlanCacheHelpers.generateDetailKey }), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     

@@ -1,194 +1,185 @@
-import React, { useState } from 'react'
-import { Bell, X, Check, CheckCheck } from 'lucide-react'
-import { useRealtimeContext } from '../../contexts/RealtimeContext'
-import { useAuthStore } from '../../stores/authStore'
-import { supabase } from '../../lib/supabase'
-import { toast } from 'sonner'
-import { Notification } from '@shared/types';
+import { useState, useRef, useEffect } from 'react';
+import { Bell, X, Check, CheckCheck } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import { useRealtimeNotifications } from '../../hooks/useRealtimeNotifications';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export function RealtimeNotificationBell() {
-  const { notifications, unreadCount } = useRealtimeContext()
-  const { user } = useAuthStore()
-  const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const { user } = useAuth();
+  const { notifications, unreadCount, isConnected, markAsRead, markAllAsRead } = useRealtimeNotifications();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Mark notification as read
-  const markAsRead = async (notificationId: string) => {
-    if (!user) return
-
-    try {
-      const { error } = await (supabase as any)
-        .from('notifications')
-        .update({ read: true })
-        .eq('id', notificationId)
-        .eq('user_id', user.id)
-
-      if (error) {
-        console.error('Error marking notification as read:', error)
-        toast.error('Erro ao marcar notificação como lida')
+  // Fechar dropdown ao clicar fora
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
       }
-    } catch (error) {
-      console.error('Error marking notification as read:', error)
-      toast.error('Erro ao marcar notificação como lida')
     }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  if (!user) {
+    return null;
   }
 
-  // Mark all notifications as read
-  const markAllAsRead = async () => {
-    if (!user || isLoading) return
-
-    setIsLoading(true)
-    try {
-      const { error } = await (supabase as any)
-        .from('notifications')
-        .update({ read: true })
-        .eq('user_id', user.id)
-        .eq('read', false)
-
-      if (error) {
-        console.error('Error marking all notifications as read:', error)
-        toast.error('Erro ao marcar todas as notificações como lidas')
-      } else {
-        toast.success('Todas as notificações foram marcadas como lidas')
-      }
-    } catch (error) {
-      console.error('Error marking all notifications as read:', error)
-      toast.error('Erro ao marcar todas as notificações como lidas')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  // Format date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
-
-    if (diffInMinutes < 1) return 'Agora'
-    if (diffInMinutes < 60) return `${diffInMinutes}m atrás`
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h atrás`
-    return `${Math.floor(diffInMinutes / 1440)}d atrás`
-  }
-
-  // Get notification icon color
-  const getNotificationColor = (type: string) => {
+  const getNotificationIcon = (type: string) => {
     switch (type) {
-      case 'success': return 'text-green-500'
-      case 'warning': return 'text-yellow-500'
-      case 'error': return 'text-red-500'
-      default: return 'text-blue-500'
+      case 'success':
+        return '✅';
+      case 'warning':
+        return '⚠️';
+      case 'error':
+        return '❌';
+      default:
+        return 'ℹ️';
     }
-  }
+  };
+
+  const handleNotificationClick = async (notificationId: string, isRead: boolean) => {
+    if (!isRead) {
+      await markAsRead(notificationId);
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    await markAllAsRead();
+  };
 
   return (
-    <div className="relative">
-      {/* Bell Icon */}
+    <div className="relative" ref={dropdownRef}>
+      {/* Bell Button */}
       <button
+        type="button"
+        className={`relative p-2 rounded-lg transition-colors duration-200 ${
+          isConnected
+            ? 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-dark-700'
+            : 'text-gray-400 dark:text-gray-500'
+        }`}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+        disabled={!isConnected}
       >
-        <Bell className="w-6 h-6" />
+        <Bell className="h-6 w-6" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
+        {!isConnected && (
+          <span className="absolute -bottom-1 -right-1 h-3 w-3 bg-yellow-500 rounded-full" title="Desconectado" />
+        )}
       </button>
 
-      {/* Notifications Dropdown */}
+      {/* Dropdown */}
       {isOpen && (
-        <>
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 z-40" 
-            onClick={() => setIsOpen(false)}
-          />
-          
-          {/* Dropdown */}
-          <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Notificações
-              </h3>
-              <div className="flex items-center gap-2">
-                {unreadCount > 0 && (
-                  <button
-                    onClick={markAllAsRead}
-                    disabled={isLoading}
-                    className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 disabled:opacity-50"
-                  >
-                    <CheckCheck className="w-4 h-4" />
-                  </button>
-                )}
+        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-dark-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-dark-600 z-50 max-h-96 overflow-hidden">
+          {/* Header */}
+          <div className="px-4 py-3 border-b border-gray-200 dark:border-dark-700 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              Notificações
+              {unreadCount > 0 && (
+                <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
+                  ({unreadCount} não lidas)
+                </span>
+              )}
+            </h3>
+            <div className="flex items-center space-x-2">
+              {unreadCount > 0 && (
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  onClick={handleMarkAllAsRead}
+                  className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center space-x-1"
+                  title="Marcar todas como lidas"
                 >
-                  <X className="w-4 h-4" />
+                  <CheckCheck className="h-3 w-3" />
+                  <span>Marcar todas</span>
                 </button>
-              </div>
+              )}
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
+          </div>
 
-            {/* Notifications List */}
-            <div className="max-h-96 overflow-y-auto">
-              {notifications.length === 0 ? (
-                <div className="p-4 text-center text-gray-500 dark:text-gray-400">
-                  Nenhuma notificação
-                </div>
-              ) : (
-                notifications.map((notification: Notification) => (
-                  <div
-                    key={notification.id}
-                    className={`p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
-                      !notification.read ? 'bg-blue-50 dark:bg-blue-900/20' : ''
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${getNotificationColor(notification.type)}`} />
-                          <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                            {notification.title}
-                          </h4>
-                          {!notification.read && (
-                            <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
-                          {notification.message}
+          {/* Notifications List */}
+          <div className="max-h-64 overflow-y-auto">
+            {notifications.length === 0 ? (
+              <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                <Bell className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                <p className="text-sm">Nenhuma notificação</p>
+              </div>
+            ) : (
+              notifications.map((notification) => (
+                <div
+                  key={notification.id}
+                  className={`px-4 py-3 border-b border-gray-100 dark:border-dark-700 last:border-b-0 cursor-pointer transition-colors duration-200 ${
+                    notification.read
+                      ? 'bg-white dark:bg-dark-800 hover:bg-gray-50 dark:hover:bg-dark-700'
+                      : 'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30'
+                  }`}
+                  onClick={() => handleNotificationClick(notification.id, notification.read)}
+                >
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <span className="text-lg">
+                        {getNotificationIcon(notification.type)}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <p className={`text-sm font-medium ${
+                          notification.read
+                            ? 'text-gray-900 dark:text-gray-100'
+                            : 'text-gray-900 dark:text-gray-100'
+                        }`}>
+                          {notification.title}
                         </p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                          {formatDate(notification.created_at)}
-                        </p>
+                        {!notification.read && (
+                          <div className="flex-shrink-0 ml-2">
+                            <div className="h-2 w-2 bg-blue-500 rounded-full" />
+                          </div>
+                        )}
                       </div>
-                      {!notification.read && (
-                        <button
-                          onClick={() => markAsRead(notification.id.toString())}
-                          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1"
-                          title="Marcar como lida"
-                        >
-                          <Check className="w-4 h-4" />
-                        </button>
-                      )}
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        {notification.message}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                        {formatDistanceToNow(new Date(notification.created_at), {
+                          addSuffix: true,
+                          locale: ptBR,
+                        })}
+                      </p>
                     </div>
                   </div>
-                ))
-              )}
-            </div>
-
-            {/* Footer */}
-            {notifications.length > 0 && (
-              <div className="p-3 border-t border-gray-200 dark:border-gray-700">
-                <button className="w-full text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-center">
-                  Ver todas as notificações
-                </button>
-              </div>
+                </div>
+              ))
             )}
           </div>
-        </>
+
+          {/* Footer */}
+          {notifications.length > 0 && (
+            <div className="px-4 py-3 border-t border-gray-200 dark:border-dark-700">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  // Navegar para página de notificações se existir
+                }}
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+              >
+                Ver todas as notificações
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
-  )
+  );
 }

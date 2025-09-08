@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApiGet } from '@/hooks/useApi';
 import { formatDate, formatCurrency, formatPhone } from '@/lib/utils';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
-import { Modal } from '@/components/ui/Modal';
+import { Button } from '@/components/ui/button';
+import Card from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import PatientExercisePlan from '@/components/PatientPortal/PatientExercisePlan';
+import PatientProgress from '@/components/PatientPortal/PatientProgress';
+import PatientChat from '@/components/PatientPortal/PatientChat';
+import PatientAppointments from '@/components/PatientPortal/PatientAppointments';
 import { 
   Appointment, 
   Exercise, 
@@ -34,6 +38,8 @@ import {
   Download,
   Clipboard,
   Bell,
+  TrendingUp,
+  Heart,
 } from 'lucide-react';
 
 // Interfaces locais para dados específicos do portal do paciente
@@ -743,10 +749,13 @@ const PatientPortal: React.FC = () => {
             {[
               { id: 'overview', label: 'Visão Geral', icon: Activity },
               { id: 'appointments', label: 'Agendamentos', icon: Calendar },
-              { id: 'exercises', label: 'Exercícios', icon: Dumbbell },
+              { id: 'exerciseplan', label: 'Plano de Exercícios', icon: Dumbbell },
+              { id: 'progress', label: 'Progresso', icon: TrendingUp },
+              { id: 'chat', label: 'Chat', icon: MessageSquare },
+              { id: 'exercises', label: 'Biblioteca de Exercícios', icon: Activity },
               { id: 'payments', label: 'Pagamentos', icon: CreditCard },
               { id: 'documents', label: 'Documentos', icon: FileText },
-              { id: 'messages', label: 'Mensagens', icon: MessageSquare },
+              { id: 'messages', label: 'Mensagens', icon: Heart },
             ].map((tab) => {
               const Icon = tab.icon;
               return (
@@ -761,7 +770,7 @@ const PatientPortal: React.FC = () => {
                 >
                   <Icon className="w-5 h-5" />
                   <span>{tab.label}</span>
-                  {tab.id === 'messages' && unreadMessages.length > 0 && (
+                  {(tab.id === 'messages' || tab.id === 'chat') && unreadMessages.length > 0 && (
                     <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                       {unreadMessages.length}
                     </span>
@@ -776,7 +785,10 @@ const PatientPortal: React.FC = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'overview' && renderOverview()}
-        {activeTab === 'appointments' && renderAppointments()}
+        {activeTab === 'appointments' && <PatientAppointments />}
+        {activeTab === 'exerciseplan' && <PatientExercisePlan />}
+        {activeTab === 'progress' && <PatientProgress />}
+        {activeTab === 'chat' && <PatientChat />}
         {activeTab === 'exercises' && renderExercises()}
         {activeTab === 'payments' && renderPayments()}
         {activeTab === 'documents' && renderDocuments()}

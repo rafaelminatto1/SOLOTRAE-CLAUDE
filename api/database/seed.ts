@@ -1,178 +1,200 @@
 /**
- * Database seeding
+ * Database seeding for FisioFlow
  */
 import bcrypt from 'bcryptjs';
 import { database } from './config.js';
 
+// Helper Functions
+const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const formatDate = (date) => date.toISOString().split('T')[0];
+
+// --- SAMPLE DATA ---
+const firstNames = ['Ana', 'Carlos', 'Beatriz', 'Daniel', 'Eduarda', 'Felipe', 'Gabriela', 'Heitor', 'Isabela', 'João', 'Larissa', 'Marcos', 'Natália', 'Otávio', 'Patrícia', 'Rafael', 'Sofia', 'Thiago', 'Valentina', 'Lucas'];
+const lastNames = ['Silva', 'Santos', 'Oliveira', 'Souza', 'Lima', 'Pereira', 'Ferreira', 'Costa', 'Rodrigues', 'Almeida', 'Nascimento', 'Ribeiro', 'Carvalho', 'Martins', 'Rocha'];
+const specialties = ['Ortopedia', 'Traumatologia', 'Neurologia', 'Pediatria', 'Geriatria', 'Fisioterapia Esportiva', 'Acupuntura', 'Quiropraxia', 'Saúde da Mulher'];
+const medicalHistories = ['Fratura de fêmur', 'Hérnia de disco lombar', 'Lesão no ligamento cruzado anterior (LCA)', 'Escoliose idiopática', 'Artrose no joelho', 'Tendinite no ombro', 'Síndrome do túnel do carpo', 'Asma', 'Hipertensão', 'Diabetes tipo 2'];
+const appointmentTypes = ['Consulta Inicial', 'Sessão de Acompanhamento', 'Avaliação Postural', 'Sessão de Reabilitação', 'Atendimento de Emergência'];
+
+const exercisesData = [
+    { name: 'Agachamento Livre', type: 'Fortalecimento', body_part: 'Membros Inferiores', equipment: 'Nenhum' },
+    { name: 'Elevação Pélvica', type: 'Fortalecimento', body_part: 'Core', equipment: 'Nenhum' },
+    { name: 'Prancha Abdominal', type: 'Fortalecimento', body_part: 'Core', equipment: 'Nenhum' },
+    { name: 'Flexão de Braço', type: 'Fortalecimento', body_part: 'Membros Superiores', equipment: 'Nenhum' },
+    { name: 'Remada com Elástico', type: 'Fortalecimento', body_part: 'Membros Superiores', equipment: 'Faixa Elástica' },
+    { name: 'Abdução de Quadril com Elástico', type: 'Fortalecimento', body_part: 'Membros Inferiores', equipment: 'Faixa Elástica' },
+    { name: 'Elevação de Panturrilha', type: 'Fortalecimento', body_part: 'Membros Inferiores', equipment: 'Nenhum' },
+    { name: 'Rosca Bíceps com Halter', type: 'Fortalecimento', body_part: 'Membros Superiores', equipment: 'Halter' },
+    { name: 'Alongamento de Isquiotibiais', type: 'Alongamento', body_part: 'Membros Inferiores', equipment: 'Toalha' },
+    { name: 'Alongamento Gato-Camelo', type: 'Mobilidade', body_part: 'Tronco', equipment: 'Nenhum' },
+    { name: 'Rotação de Tronco Sentado', type: 'Mobilidade', body_part: 'Tronco', equipment: 'Nenhum' },
+    { name: 'Liberação Miofascial de Panturrilha', type: 'Liberação Miofascial', body_part: 'Membros Inferiores', equipment: 'Rolo de Liberação' },
+    { name: 'Equilíbrio Unipodal', type: 'Propriocepção', body_part: 'Membros Inferiores', equipment: 'Nenhum' },
+    { name: 'Caminhada Estacionária', type: 'Cardiovascular', body_part: 'Geral', equipment: 'Nenhum' },
+];
+
+const protocolsData = [
+    { name: 'Protocolo Pós-Operatório de LCA - Fase 1', pathology: 'LCA', exercises: ['Elevação de Panturrilha', 'Equilíbrio Unipodal', 'Alongamento de Isquiotibiais'] },
+    { name: 'Protocolo para Lombalgia Crônica', pathology: 'Lombalgia', exercises: ['Elevação Pélvica', 'Prancha Abdominal', 'Alongamento Gato-Camelo'] },
+    { name: 'Protocolo de Fortalecimento de Ombro', pathology: 'Tendinite de Ombro', exercises: ['Remada com Elástico', 'Flexão de Braço'] },
+];
+
 /**
- * Seed the database with initial data
+ * Seed the database with a large amount of initial data
  */
 export async function seedDatabase(): Promise<void> {
   try {
     console.log('Starting database seeding...');
 
-    // Check if data already exists
-    const existingUsers = await database.get('SELECT COUNT(*) as count FROM users');
+    const existingUsers = await database.get(`SELECT COUNT(*) as count FROM users`);
     if (existingUsers.count > 0) {
-      console.log('Database already seeded, skipping...');
+      console.log(`Database already contains data. For a full re-seed, please clear the database first.`);
       return;
     }
 
-  // Create admin user
-  const adminPassword = await bcrypt.hash('admin123', 10);
-  const adminResult = await database.run(
-    `INSERT INTO users (email, password, name, role, phone) 
-     VALUES (?, ?, ?, ?, ?)`,
-    ['admin@fisioflow.com', adminPassword, 'Administrador', 'admin', '(11) 99999-9999']
-  );
+    // --- CREATE ADMIN ---
+    console.log('Creating admin user...');
+    const adminPassword = await bcrypt.hash(`admin123`, 10);
+    await database.run(
+      `INSERT INTO users (email, password, name, role, phone) VALUES (?, ?, ?, ?, ?)`,
+      [`admin@fisioflow.com`, adminPassword, `Admin Geral`, `admin`, `(11) 99999-9999`]
+    );
 
-    // Insert physiotherapist users
-     const physioPassword = await bcrypt.hash('physio123', 10);
-     const physio1Result = await database.run(`
-       INSERT INTO users (email, password, name, role, phone, is_active)
-       VALUES (?, ?, ?, ?, ?, ?)
-     `, ['dr.silva@fisioflow.com', physioPassword, 'Dr. João Silva', 'physiotherapist', '(11) 98888-8888', 1]);
+    const physioPassword = await bcrypt.hash(`physio123`, 10);
+    const patientPassword = await bcrypt.hash(`patient123`, 10);
 
-     const physio2Result = await database.run(`
-       INSERT INTO users (email, password, name, role, phone, is_active)
-       VALUES (?, ?, ?, ?, ?, ?)
-     `, ['dra.santos@fisioflow.com', physioPassword, 'Dra. Maria Santos', 'physiotherapist', '(11) 97777-7777', 1]);
-
-    // Insert patient users
-     const patientPassword = await bcrypt.hash('patient123', 10);
-     const patient1Result = await database.run(`
-       INSERT INTO users (email, password, name, role, phone, is_active)
-       VALUES (?, ?, ?, ?, ?, ?)
-     `, ['ana.costa@email.com', patientPassword, 'Ana Costa', 'patient', '(11) 96666-6666', 1]);
-
-     const patient2Result = await database.run(`
-       INSERT INTO users (email, password, name, role, phone, is_active)
-       VALUES (?, ?, ?, ?, ?, ?)
-     `, ['carlos.lima@email.com', patientPassword, 'Carlos Lima', 'patient', '(11) 95555-5555', 1]);
-
-    // Insert physiotherapists data
-    await database.run(`
-      INSERT INTO physiotherapists (user_id, crefito, specialties, bio, experience_years)
-      VALUES (?, ?, ?, ?, ?)
-    `, [physio1Result.lastID, 'CREFITO-3/12345', 'Ortopedia, Traumatologia', 'Especialista em reabilitação ortopédica com mais de 10 anos de experiência.', 10]);
-
-    await database.run(`
-      INSERT INTO physiotherapists (user_id, crefito, specialties, bio, experience_years)
-      VALUES (?, ?, ?, ?, ?)
-    `, [physio2Result.lastID, 'CREFITO-3/67890', 'Neurologia, Pediatria', 'Fisioterapeuta especializada em neurologia e fisioterapia pediátrica.', 8]);
-
-    // Insert patients data
-    await database.run(`
-      INSERT INTO patients (user_id, cpf, birth_date, gender, address, emergency_contact, emergency_phone, medical_history)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `, [patient1Result.lastID, '123.456.789-01', '1985-03-15', 'F', 'Rua das Flores, 123 - São Paulo/SP', 'Pedro Costa', '(11) 94444-4444', 'Histórico de lesão no joelho direito']);
-
-    await database.run(`
-      INSERT INTO patients (user_id, cpf, birth_date, gender, address, emergency_contact, emergency_phone, medical_history)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `, [patient2Result.lastID, '987.654.321-09', '1978-11-22', 'M', 'Av. Paulista, 456 - São Paulo/SP', 'Mariana Oliveira', '(11) 93333-3333', 'Dor lombar crônica']);
-
-    // Insert sample exercises
-    const exercises = [
-      {
-        name: 'Alongamento de Quadríceps',
-        description: 'Exercício para alongar os músculos da coxa',
-        category: 'Alongamento',
-        difficulty: 'beginner',
-        duration: 30,
-        repetitions: 3,
-        sets: 1,
-        instructions: '1. Fique em pé\n2. Dobre uma perna para trás\n3. Segure o pé com a mão\n4. Mantenha por 30 segundos',
-        precautions: 'Não force o movimento se sentir dor'
-      },
-      {
-        name: 'Fortalecimento de Core',
-        description: 'Exercício para fortalecer músculos abdominais',
-        category: 'Fortalecimento',
-        difficulty: 'intermediate',
-        duration: 60,
-        repetitions: 15,
-        sets: 3,
-        instructions: '1. Deite de costas\n2. Flexione os joelhos\n3. Levante o tronco\n4. Mantenha por 2 segundos',
-        precautions: 'Mantenha a respiração durante o exercício'
-      },
-      {
-        name: 'Caminhada Terapêutica',
-        description: 'Exercício cardiovascular de baixo impacto',
-        category: 'Cardiovascular',
-        difficulty: 'beginner',
-        duration: 1800,
-        repetitions: 1,
-        sets: 1,
-        instructions: '1. Caminhe em ritmo moderado\n2. Mantenha postura ereta\n3. Respire naturalmente',
-        precautions: 'Pare se sentir fadiga excessiva'
-      }
-    ];
-
-    for (const exercise of exercises) {
-      await database.run(`
-        INSERT INTO exercises (name, description, category, difficulty, duration, repetitions, sets, instructions, precautions, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [exercise.name, exercise.description, exercise.category, exercise.difficulty, exercise.duration, exercise.repetitions, exercise.sets, exercise.instructions, exercise.precautions, physio1Result.lastID]);
+    // --- CREATE PHYSIOTHERAPISTS ---
+    console.log('Creating physiotherapists...');
+    const physioUserIds = [];
+    for (let i = 0; i < 10; i++) {
+      const firstName = getRandomItem(firstNames);
+      const lastName = getRandomItem(lastNames);
+      const name = `Dr(a). ${firstName} ${lastName}`;
+      const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i}@fisioflow.com`;
+      const userResult = await database.run(
+        `INSERT INTO users (email, password, name, role, phone, is_active) VALUES (?, ?, ?, ?, ?, ?)`,
+        [email, physioPassword, name, `physiotherapist`, `(11) 9${getRandomNumber(1000, 9999)}-${getRandomNumber(1000, 9999)}`, 1]
+      );
+      const userId = userResult.lastID;
+      physioUserIds.push(userId);
+      await database.run(
+        `INSERT INTO physiotherapists (user_id, crefito, specialties, bio, experience_years) VALUES (?, ?, ?, ?, ?)`,
+        [userId, `CREFITO-3/${getRandomNumber(10000, 99999)}`, `${getRandomItem(specialties)}, ${getRandomItem(specialties)}`, `Especialista em reabilitação com ${getRandomNumber(2, 15)} anos de experiência.`, getRandomNumber(2, 15)]
+      );
     }
 
-    // Insert sample appointments
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    // --- CREATE PATIENTS ---
+    console.log('Creating patients...');
+    const patientUserIds = [];
+    for (let i = 0; i < 50; i++) {
+      const firstName = getRandomItem(firstNames);
+      const lastName = getRandomItem(lastNames);
+      const name = `${firstName} ${lastName}`;
+      const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i}@email.com`;
+      const userResult = await database.run(
+        `INSERT INTO users (email, password, name, role, phone, is_active) VALUES (?, ?, ?, ?, ?, ?)`,
+        [email, patientPassword, name, `patient`, `(11) 9${getRandomNumber(1000, 9999)}-${getRandomNumber(1000, 9999)}`, 1]
+      );
+      const userId = userResult.lastID;
+      patientUserIds.push(userId);
+      await database.run(
+        `INSERT INTO patients (user_id, cpf, birth_date, gender, address, emergency_contact, emergency_phone, medical_history) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [userId, `${getRandomNumber(100, 999)}.${getRandomNumber(100, 999)}.${getRandomNumber(100, 999)}-${getRandomNumber(10, 99)}`, `${getRandomNumber(1950, 2005)}-${getRandomNumber(1, 12).toString().padStart(2, '0')}-${getRandomNumber(1, 28).toString().padStart(2, '0')}`, getRandomItem([`M`, `F`, `Other`]), `Endereço Fictício, 123`, `${getRandomItem(firstNames)} ${lastName}`, `(11) 9${getRandomNumber(1000, 9999)}-${getRandomNumber(1000, 9999)}`, getRandomItem(medicalHistories)]
+      );
+    }
 
-    const nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    const nextWeekStr = nextWeek.toISOString().split('T')[0];
+    // --- CREATE EXERCISES ---
+    console.log('Creating exercises...');
+    const exerciseIdsMap = new Map();
+    for (const ex of exercisesData) {
+        const exerciseResult = await database.run(
+            `INSERT INTO exercises (name, description, type, body_part, equipment, difficulty, duration, repetitions, sets, instructions, precautions, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [ex.name, `Descrição para ${ex.name}`, ex.type, ex.body_part, ex.equipment, getRandomItem(['beginner', 'intermediate', 'advanced']), getRandomNumber(30, 300), getRandomNumber(8, 15), getRandomNumber(2, 4), 'Instruções detalhadas do exercício.', 'Precauções a serem tomadas.', getRandomItem(physioUserIds)]
+        );
+        exerciseIdsMap.set(ex.name, exerciseResult.lastID);
+    }
 
-    await database.run(`
-      INSERT INTO appointments (patient_id, physiotherapist_id, date, time, type, status, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `, [1, 1, tomorrowStr, '09:00', 'Consulta Inicial', 'scheduled', 'Primeira consulta para avaliação']);
+    // --- CREATE PROTOCOLS ---
+    console.log('Creating protocols...');
+    for (const proto of protocolsData) {
+        const protocolResult = await database.run(
+            `INSERT INTO protocols (name, description, pathology, created_by, is_public) VALUES (?, ?, ?, ?, ?)`,
+            [proto.name, `Protocolo para tratamento de ${proto.pathology}`, proto.pathology, getRandomItem(physioUserIds), 1]
+        );
+        const protocolId = protocolResult.lastID;
 
-    await database.run(`
-      INSERT INTO appointments (patient_id, physiotherapist_id, date, time, type, status, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `, [2, 2, nextWeekStr, '14:00', 'Sessão de Fisioterapia', 'scheduled', 'Sessão de reabilitação lombar']);
+        // Link exercises to protocol
+        for (const exName of proto.exercises) {
+            const exerciseId = exerciseIdsMap.get(exName);
+            if (exerciseId) {
+                await database.run(
+                    `INSERT INTO protocol_exercises (protocol_id, exercise_id, order_index) VALUES (?, ?, ?)`,
+                    [protocolId, exerciseId, proto.exercises.indexOf(exName) + 1]
+                );
+            }
+        }
+    }
 
-    // Insert sample treatment plan
-    const treatmentPlanResult = await database.run(`
-      INSERT INTO treatment_plans (patient_id, physiotherapist_id, title, description, start_date, goals)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, [1, 1, 'Reabilitação de Joelho', 'Plano de tratamento para recuperação de lesão no joelho direito', tomorrowStr, 'Reduzir dor e inflamação, recuperar amplitude de movimento, fortalecer musculatura']);
+    // --- CREATE APPOINTMENTS ---
+    console.log('Creating appointments...');
+    for (let i = 0; i < 200; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() + getRandomNumber(-30, 60));
+        const time = `${getRandomNumber(8, 18).toString().padStart(2, '0')}:${getRandomItem(['00', '30'])}`;
+        await database.run(
+            `INSERT INTO appointments (patient_id, physiotherapist_id, date, time, type, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [getRandomItem(patientUserIds), getRandomItem(physioUserIds), formatDate(date), time, getRandomItem(appointmentTypes), getRandomItem(['scheduled', 'completed', 'cancelled']), 'Nenhuma observação.']
+        );
+    }
 
-    // Insert exercises in treatment plan
-    await database.run(`
-      INSERT INTO treatment_plan_exercises (treatment_plan_id, exercise_id, sets, repetitions, frequency, order_index)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, [treatmentPlanResult.lastID, 1, 1, 3, 'Diário', 1]);
+    // --- CREATE TREATMENT PLANS ---
+    console.log('Creating treatment plans...');
+    const allExerciseIds = Array.from(exerciseIdsMap.values());
+    for (let i = 0; i < 50; i++) {
+        const patientId = getRandomItem(patientUserIds);
+        const physioId = getRandomItem(physioUserIds);
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - getRandomNumber(0, 45));
 
-    await database.run(`
-      INSERT INTO treatment_plan_exercises (treatment_plan_id, exercise_id, sets, repetitions, frequency, order_index)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, [treatmentPlanResult.lastID, 2, 3, 15, '3x por semana', 2]);
+        const planResult = await database.run(
+            `INSERT INTO treatment_plans (patient_id, physiotherapist_id, title, description, start_date, goals) VALUES (?, ?, ?, ?, ?, ?)`,
+            [patientId, physioId, `Plano de Reabilitação para ${medicalHistories[i % medicalHistories.length]}`, `Descrição detalhada do plano.`, formatDate(startDate), 'Reduzir a dor, melhorar a mobilidade e fortalecer a musculatura.']
+        );
+        const planId = planResult.lastID;
 
-    // Insert sample notifications
-    await database.run(`
-      INSERT INTO notifications (user_id, title, message, type)
-      VALUES (?, ?, ?, ?)
-    `, [patient1Result.lastID, 'Consulta Agendada', 'Sua consulta foi agendada para amanhã às 09:00', 'info']);
+        const numExercises = getRandomNumber(3, 8);
+        const shuffledExercises = [...allExerciseIds].sort(() => 0.5 - Math.random());
+        for (let j = 0; j < numExercises; j++) {
+            await database.run(
+                `INSERT INTO treatment_plan_exercises (treatment_plan_id, exercise_id, sets, repetitions, frequency, order_index) VALUES (?, ?, ?, ?, ?, ?)`,
+                [planId, shuffledExercises[j], getRandomNumber(2, 4), getRandomNumber(10, 20), getRandomItem(['Diário', '3x por semana', '2x por semana']), j + 1]
+            );
+        }
+    }
+    
+    // --- CREATE NOTIFICATIONS ---
+    console.log('Creating notifications...');
+    for (let i = 0; i < 100; i++) {
+        await database.run(
+            `INSERT INTO notifications (user_id, title, message, type) VALUES (?, ?, ?, ?)`,
+            [getRandomItem(patientUserIds), `Lembrete de Agendamento`, `Sua próxima sessão de fisioterapia é amanhã.`, `info`]
+        );
+    }
 
-    await database.run(`
-      INSERT INTO notifications (user_id, title, message, type)
-      VALUES (?, ?, ?, ?)
-    `, [physio1Result.lastID, 'Novo Paciente', 'Ana Costa foi adicionada como sua paciente', 'success']);
 
-    console.log('Database seeded successfully!');
-    console.log('\nLogin credentials:');
-    console.log('Admin: admin@fisioflow.com / admin123');
-    console.log('Fisioterapeuta 1: dr.silva@fisioflow.com / physio123');
-    console.log('Fisioterapeuta 2: dra.santos@fisioflow.com / physio123');
-    console.log('Paciente 1: ana.costa@email.com / patient123');
-    console.log('Paciente 2: carlos.oliveira@email.com / patient123');
+    console.log(`Database seeded successfully!`);
+    console.log(`\nDefault Login Credentials:`);
+    console.log(`Admin: admin@fisioflow.com / admin123`);
+    console.log(`Physiotherapists: (various emails) / physio123`);
+    console.log(`Patients: (various emails) / patient123`);
 
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error(`Error seeding database:`, error);
     throw error;
   }
 }
+
+seedDatabase().catch(err => {
+    console.error(err);
+    process.exit(1);
+});

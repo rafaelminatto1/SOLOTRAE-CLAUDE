@@ -1,177 +1,173 @@
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
-import { useRealtimeNotifications } from '../hooks/useRealtimeNotifications';
-import { useRealtimeProgress } from '../hooks/useRealtimeProgress';
-import { useRealtimeTreatmentPlans } from '../hooks/useRealtimeTreatmentPlans';
-import { useAuthStore } from '../stores/authStore';
-import type { Notification, TreatmentPlan } from '@shared/types';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { useAuth } from './AuthContext';
+import { supabase } from '../lib/supabase';
+import { toast } from 'sonner';
+
+interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+  read: boolean;
+  created_at: string;
+  user_id: string;
+}
 
 interface RealtimeContextType {
-  // Notifications
-  notifications: any[]
-  unreadCount: number
-  
-  // Progress
-  progressEntries: any[]
-  latestProgress: any | null
-  
-  // Treatment Plans
-  treatmentPlans: any[]
-  activePlans: any[]
-  
-  // Connection status
-  isConnected: boolean
-  connectionError: string | null
-  connectionStatus: 'connected' | 'disconnected' | 'connecting'
+  notifications: Notification[];
+  unreadCount: number;
+  isConnected: boolean;
+  connectionStatus: 'connecting' | 'connected' | 'disconnected' | 'error';
 }
 
-const RealtimeContext = createContext<RealtimeContextType | undefined>(undefined)
+const RealtimeContext = createContext<RealtimeContextType | undefined>(undefined);
 
-export function useRealtime() {
-  const context = useContext(RealtimeContext)
+export function useRealtimeContext() {
+  const context = useContext(RealtimeContext);
   if (context === undefined) {
-    throw new Error('useRealtime must be used within a RealtimeProvider')
+    throw new Error('useRealtimeContext must be used within a RealtimeProvider');
   }
-  return context
+  return context;
 }
-
-// Alias for compatibility
-export const useRealtimeContext = useRealtime;
 
 interface RealtimeProviderProps {
-  children: React.ReactNode
+  children: ReactNode;
 }
 
 export function RealtimeProvider({ children }: RealtimeProviderProps) {
-  const { user, isAuthenticated } = useAuthStore()
-  const [isConnected, setIsConnected] = useState(false)
-  const [connectionError, setConnectionError] = useState<string | null>(null)
-  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'connecting'>('disconnected')
+  const { user } = useAuth();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected' | 'error'>('disconnected');
 
-  // Initialize realtime hooks
-  const {
-    notifications,
-    unreadCount,
-    setNotifications,
-    setUnreadCount
-  } = useRealtimeNotifications()
+  const unreadCount = notifications.filter(n => !n.read).length;
 
-  const {
-    progressEntries,
-    latestEntry: latestProgress,
-    setProgressEntries,
-    setLatestEntry
-  } = useRealtimeProgress({
-    enabled: isAuthenticated
-  })
-
-  const {
-    treatmentPlans,
-    activePlans,
-    setTreatmentPlans,
-    setActivePlans
-  } = useRealtimeTreatmentPlans({
-    enabled: isAuthenticated
-  })
-
-  // Monitor connection status
   useEffect(() => {
-    if (!isAuthenticated) {
-      setIsConnected(false)
-      setConnectionError(null)
-      return
+    if (!user) {
+      setNotifications([]);
+      setIsConnected(false);
+      setConnectionStatus('disconnected');
+      return;
     }
 
-    // Simulate connection monitoring
-    // In a real implementation, you would monitor the Supabase connection status
-    const checkConnection = () => {
+    let channel: any;
+
+    const setupRealtimeConnection = async () => {
       try {
-        setConnectionStatus('connecting')
-        setIsConnected(true)
-        setConnectionError(null)
-        setConnectionStatus('connected')
+        setConnectionStatus('connecting');
+
+        // Carregar notificações existentes
+        const { data: existingNotifications, error } = await supabase
+          .from('notifications')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(50);
+
+        if (error) {
+          console.error('Erro ao carregar notificações:', error);
+          toast.error('Erro ao carregar notificações');
+          setConnectionStatus('error');
+          return;
+        }
+
+        setNotifications(existingNotifications || []);
+
+        // Configurar canal de tempo real
+        channel = supabase
+          .channel(`notifications:${user.id}`)
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'notifications',
+              filter: `user_id=eq.${user.id}`,
+            },
+            (payload) => {
+              const newNotification = payload.new as Notification;
+              setNotifications(prev => [newNotification, ...prev]);
+              
+              // Mostrar toast para nova notificação
+              toast(newNotification.title, {
+                description: newNotification.message,
+                duration: 5000,
+              });
+            }
+          )
+          .on(
+            'postgres_changes',
+            {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'notifications',
+              filter: `user_id=eq.${user.id}`,
+            },
+            (payload) => {
+              const updatedNotification = payload.new as Notification;
+              setNotifications(prev => 
+                prev.map(n => n.id === updatedNotification.id ? updatedNotification : n)
+              );
+            }
+          )
+          .on(
+            'postgres_changes',
+            {
+              event: 'DELETE',
+              schema: 'public',
+              table: 'notifications',
+              filter: `user_id=eq.${user.id}`,
+            },
+            (payload) => {
+              const deletedNotification = payload.old as Notification;
+              setNotifications(prev => 
+                prev.filter(n => n.id !== deletedNotification.id)
+              );
+            }
+          )
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+              setIsConnected(true);
+              setConnectionStatus('connected');
+            } else if (status === 'CHANNEL_ERROR') {
+              setIsConnected(false);
+              setConnectionStatus('error');
+              toast.error('Erro na conexão em tempo real');
+            } else if (status === 'TIMED_OUT') {
+              setIsConnected(false);
+              setConnectionStatus('error');
+              toast.error('Timeout na conexão em tempo real');
+            }
+          });
+
       } catch (error) {
-        setIsConnected(false)
-        setConnectionError('Failed to connect to realtime service')
-        setConnectionStatus('disconnected')
-        console.error('Realtime connection error:', error)
+        console.error('Erro ao configurar conexão em tempo real:', error);
+        setConnectionStatus('error');
+        toast.error('Erro ao configurar notificações em tempo real');
       }
-    }
+    };
 
-    checkConnection()
-
-    // Check connection periodically
-    const interval = setInterval(checkConnection, 30000) // Check every 30 seconds
+    setupRealtimeConnection();
 
     return () => {
-      clearInterval(interval)
-    }
-  }, [isAuthenticated])
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+      setIsConnected(false);
+      setConnectionStatus('disconnected');
+    };
+  }, [user]);
 
-  // Clear data when user logs out
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setNotifications([])
-      setUnreadCount(0)
-      setProgressEntries([])
-      setLatestEntry(null)
-      setTreatmentPlans([])
-      setActivePlans([])
-    }
-  }, [isAuthenticated, setNotifications, setUnreadCount, setProgressEntries, setLatestEntry, setTreatmentPlans, setActivePlans])
-
-  const contextValue: RealtimeContextType = {
-    // Notifications
+  const value: RealtimeContextType = {
     notifications,
     unreadCount,
-    
-    // Progress
-    progressEntries,
-    latestProgress,
-    
-    // Treatment Plans
-    treatmentPlans,
-    activePlans,
-    
-    // Connection status
     isConnected,
-    connectionError,
-    connectionStatus
-  }
+    connectionStatus,
+  };
 
   return (
-    <RealtimeContext.Provider value={contextValue}>
+    <RealtimeContext.Provider value={value}>
       {children}
     </RealtimeContext.Provider>
-  )
-}
-
-// Connection status indicator component
-export function RealtimeConnectionStatus() {
-  const { isConnected, connectionError } = useRealtime()
-  const { isAuthenticated } = useAuthStore()
-
-  if (!isAuthenticated) {
-    return null
-  }
-
-  return (
-    <div className="fixed bottom-4 right-4 z-50">
-      {connectionError ? (
-        <div className="bg-red-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
-          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-          <span className="text-sm">Conexão perdida</span>
-        </div>
-      ) : isConnected ? (
-        <div className="bg-green-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 opacity-75">
-          <div className="w-2 h-2 bg-white rounded-full" />
-          <span className="text-sm">Conectado</span>
-        </div>
-      ) : (
-        <div className="bg-yellow-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
-          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-          <span className="text-sm">Conectando...</span>
-        </div>
-      )}
-    </div>
-  )
+  );
 }
