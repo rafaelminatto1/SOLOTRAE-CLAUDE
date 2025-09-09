@@ -2,6 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { visualizer } from 'rollup-plugin-visualizer'
+import viteCompression from 'vite-plugin-compression';
 // // import traeSoloBadge from 'vite-plugin-trae-solo-badge' // Plugin removido temporariamente
 
 // https://vitejs.dev/config/
@@ -15,9 +17,30 @@ export default defineConfig({
         ]
       }
     }),
-    tsconfigPaths()
+    tsconfigPaths(),
+    // Compressão gzip para produção
+    viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 1024,
+      deleteOriginFile: false
+    }),
+    // Compressão brotli para produção
+    viteCompression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      threshold: 1024,
+      deleteOriginFile: false
+    }),
+    // Análise do bundle (apenas em build)
+    process.env.ANALYZE && visualizer({
+      filename: 'dist/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true
+    })
     // traeSoloBadge()
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -33,8 +56,14 @@ export default defineConfig({
   build: {
     target: 'esnext',
     minify: 'esbuild',
-    sourcemap: true,
+    sourcemap: process.env.NODE_ENV === 'development',
+    // Tree shaking e configurações de rollup otimizadas
     rollupOptions: {
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false
+      },
       output: {
         // Code splitting por chunks
         manualChunks: {
@@ -62,6 +91,18 @@ export default defineConfig({
     },
     // Configurações de chunk size
     chunkSizeWarningLimit: 1000,
+    // Otimizações adicionais
+    cssCodeSplit: true,
+    assetsInlineLimit: 4096,
+    reportCompressedSize: false, // Melhora performance do build
+    // Configurações de terser para minificação avançada
+    terserOptions: {
+      compress: {
+        drop_console: process.env.NODE_ENV === 'production',
+        drop_debugger: process.env.NODE_ENV === 'production',
+        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log'] : []
+      }
+    }
   },
   // Configurações do servidor de desenvolvimento
   server: {

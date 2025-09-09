@@ -14,7 +14,7 @@ import { setNotificationService } from './routes/notifications.js';
 /**
  * start server with port
  */
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 
 // Create HTTP server
 const server = createServer(app);

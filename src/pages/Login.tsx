@@ -124,7 +124,7 @@ export default function Login() {
                       type="email"
                       value={form.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      className={`block w-full pl-10 pr-3 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:shadow-md ${
+                      className={`block w-full pl-10 pr-3 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:shadow-md text-gray-900 ${
                         errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                       }`}
                       placeholder="seu@email.com"
@@ -153,7 +153,7 @@ export default function Login() {
                       type={showPassword ? 'text' : 'password'}
                       value={form.password}
                       onChange={(e) => handleInputChange('password', e.target.value)}
-                      className={`block w-full pl-10 pr-10 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:shadow-md ${
+                      className={`block w-full pl-10 pr-10 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:shadow-md text-gray-900 ${
                         errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                       }`}
                       placeholder="Sua senha"

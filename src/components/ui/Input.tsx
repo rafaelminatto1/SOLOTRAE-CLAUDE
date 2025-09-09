@@ -48,8 +48,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const labelClasses = cn(
       'block text-sm font-medium mb-1.5 transition-colors',
-      hasError ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-dark-300',
-      disabled && 'text-gray-400 dark:text-dark-500'
+      hasError ? 'text-red-600' : 'text-gray-700',
+      disabled && 'text-gray-400'
     );
 
     const inputWrapperClasses = cn(
@@ -60,24 +60,24 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const baseInputClasses = [
       'block w-full rounded-lg border transition-all duration-200',
       'focus:outline-none focus:ring-2 focus:ring-offset-0',
-      'disabled:bg-gray-50 dark:disabled:bg-dark-800 disabled:text-gray-500 dark:disabled:text-dark-500 disabled:cursor-not-allowed',
-      'placeholder:text-gray-400 dark:placeholder:text-dark-500',
+      'disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed',
+      'placeholder:text-gray-400',
     ];
 
     const variantClasses = {
       default: [
-        'bg-white dark:bg-dark-800 border-gray-300 dark:border-dark-600 text-gray-900 dark:text-white',
+        'bg-white border-gray-300 text-gray-900',
         hasError
-          ? 'border-red-300 dark:border-red-500 focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-400'
-          : 'focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400',
-        isFocused && !hasError && 'border-blue-500 dark:border-blue-400 ring-2 ring-blue-500 dark:ring-blue-400',
+          ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+          : 'focus:border-blue-500 focus:ring-blue-500',
+        isFocused && !hasError && 'border-blue-500 ring-2 ring-blue-500',
       ],
       filled: [
-        'bg-gray-50 dark:bg-dark-700 border-transparent text-gray-900 dark:text-white',
+        'bg-gray-50 border-transparent text-gray-900',
         hasError
-          ? 'bg-red-50 dark:bg-red-900/20 focus:bg-white dark:focus:bg-dark-800 focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-400'
-          : 'focus:bg-white dark:focus:bg-dark-800 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400',
-        isFocused && !hasError && 'bg-white dark:bg-dark-800 border-blue-500 dark:border-blue-400 ring-2 ring-blue-500 dark:ring-blue-400',
+          ? 'bg-red-50 focus:bg-white focus:border-red-500 focus:ring-red-500'
+          : 'focus:bg-white focus:border-blue-500 focus:ring-blue-500',
+        isFocused && !hasError && 'bg-white border-blue-500 ring-2 ring-blue-500',
       ],
     };
 
@@ -122,7 +122,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const helperTextClasses = cn(
       'mt-1.5 text-xs transition-colors',
-      hasError ? 'text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-dark-400'
+      hasError ? 'text-red-600' : 'text-gray-500'
     );
 
     const togglePasswordVisibility = () => {
@@ -141,7 +141,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <div className={inputWrapperClasses}>
           {leftIcon && (
             <div className={cn(
-              'absolute z-10 flex items-center justify-center text-gray-400 dark:text-dark-500 transition-colors',
+              'absolute z-10 flex items-center justify-center text-gray-400 transition-colors',
               iconPositionClasses[inputSize].left,
               'top-1/2 -translate-y-1/2'
             )}>
@@ -184,8 +184,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   type="button"
                   onClick={togglePasswordVisibility}
                   className={cn(
-                    'text-gray-400 dark:text-dark-500 hover:text-gray-600 dark:hover:text-dark-300 transition-colors',
-                    'focus:outline-none focus:text-gray-600 dark:focus:text-dark-300',
+                    'text-gray-400 hover:text-gray-600 transition-colors',
+                    'focus:outline-none focus:text-gray-600',
                     iconSizeClasses[inputSize]
                   )}
                   tabIndex={-1}
@@ -198,7 +198,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 </button>
               ) : (
                 <span className={cn(
-                  'text-gray-400 dark:text-dark-500 transition-colors',
+                  'text-gray-400 transition-colors',
                   iconSizeClasses[inputSize]
                 )}>
                   {rightIcon}

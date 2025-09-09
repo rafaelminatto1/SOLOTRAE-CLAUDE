@@ -4,9 +4,19 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { RealtimeProvider } from './contexts/RealtimeContext';
 import { RealtimeConnectionStatus } from './components/Realtime/RealtimeConnectionStatus';
 import { Toaster } from 'sonner';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { ErrorBoundary, RouteErrorBoundary } from './components/ErrorBoundary';
+import PerformanceMonitor from './components/Monitoring/PerformanceMonitor';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Patients from './pages/Patients';
+import Appointments from './pages/Appointments';
+import Exercises from './pages/Exercises';
+import AIAssistant from './pages/AIAssistant';
+import Reports from './pages/Reports';
+import PatientPortal from './pages/PatientPortal';
 import MainLayout from './components/Layout/MainLayout';
 import ProtectedRoute, {
   AdminRoute,
@@ -19,12 +29,14 @@ import ProtectedRoute, {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <RealtimeProvider>
-          <Router>
-          <div className="min-h-screen bg-gray-50 dark:bg-dark-900 transition-colors duration-300">
-            <Routes>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <RealtimeProvider>
+            <Router>
+            <div className="min-h-screen bg-gray-50 dark:bg-dark-900 transition-colors duration-300">
+              <RouteErrorBoundary>
+                <Routes>
               {/* Rotas públicas */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -39,16 +51,16 @@ function App() {
                 <Route path="settings" element={<div>Configurações</div>} />
                 
                 {/* Rotas específicas por papel */}
-                <Route path="patients/*" element={<StaffRoute><div>Gestão de Pacientes</div></StaffRoute>} />
-                <Route path="appointments/*" element={<StaffRoute><div>Sistema de Agendamento</div></StaffRoute>} />
-                <Route path="exercises/*" element={<FisioterapeutaRoute><div>Biblioteca de Exercícios</div></FisioterapeutaRoute>} />
-                <Route path="ai/*" element={<FisioterapeutaRoute><div>IA Assistente</div></FisioterapeutaRoute>} />
-                <Route path="reports/*" element={<AdminRoute><div>Relatórios</div></AdminRoute>} />
+                <Route path="patients" element={<StaffRoute><Patients /></StaffRoute>} />
+                <Route path="appointments" element={<StaffRoute><Appointments /></StaffRoute>} />
+                <Route path="exercises" element={<FisioterapeutaRoute><Exercises /></FisioterapeutaRoute>} />
+                <Route path="ai" element={<FisioterapeutaRoute><AIAssistant /></FisioterapeutaRoute>} />
+                <Route path="reports" element={<AdminRoute><Reports /></AdminRoute>} />
                 <Route path="partnerships/*" element={<AdminRoute><div>Parcerias</div></AdminRoute>} />
                 <Route path="users/*" element={<AdminRoute><div>Gestão de Usuários</div></AdminRoute>} />
                 
                 {/* Portal do Paciente */}
-                <Route path="portal/*" element={<PacienteRoute><div>Portal do Paciente</div></PacienteRoute>} />
+                <Route path="portal" element={<PacienteRoute><PatientPortal /></PacienteRoute>} />
                 
                 {/* Portal do Parceiro */}
                 <Route path="partner/*" element={<ParceiroRoute><div>Portal do Parceiro</div></ParceiroRoute>} />
@@ -56,24 +68,33 @@ function App() {
               
               {/* Rota de fallback */}
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
-            
-            {/* Toast notifications */}
-            <Toaster 
-              position="top-right" 
-              richColors 
-              closeButton 
-              duration={4000}
-              theme="system"
-            />
-            
-            {/* Realtime connection status */}
-            <RealtimeConnectionStatus />
-          </div>
-          </Router>
-        </RealtimeProvider>
-      </AuthProvider>
-    </ThemeProvider>
+                </Routes>
+              </RouteErrorBoundary>
+              
+              {/* Toast notifications */}
+              <Toaster 
+                position="top-right" 
+                richColors 
+                closeButton 
+                duration={4000}
+                theme="system"
+              />
+              
+              {/* Realtime connection status */}
+              <RealtimeConnectionStatus />
+              
+              {/* Vercel Analytics */}
+              <Analytics />
+              <SpeedInsights />
+              
+              {/* Performance Monitoring */}
+              <PerformanceMonitor />
+            </div>
+            </Router>
+          </RealtimeProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
