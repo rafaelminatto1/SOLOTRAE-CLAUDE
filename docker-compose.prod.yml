@@ -1,0 +1,154 @@
+version: '3.8'
+
+services:
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: fisioflow-frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`fisioflow.com`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+
+  # Backend Flask
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: fisioflow-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://fisioflow:${DB_PASSWORD}@postgres:5432/fisioflow_prod
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.fisioflow.com`)"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+
+  # Banco PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: fisioflow-postgres
+    environment:
+      - POSTGRES_DB=fisioflow_prod
+      - POSTGRES_USER=fisioflow
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+
+  # Redis para cache e sessões
+  redis:
+    image: redis:7-alpine
+    container_name: fisioflow-redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # Nginx Proxy Manager (Traefik)
+  traefik:
+    image: traefik:v2.10
+    container_name: fisioflow-traefik
+    command:
+      - --api.dashboard=true
+      - --api.debug=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt_data:/letsencrypt
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+
+  # Monitoramento com Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: fisioflow-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+
+  # Grafana para dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: fisioflow-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - fisioflow-network
+    restart: unless-stopped
+
+  # Backup automático
+  backup:
+    image: postgres:15
+    container_name: fisioflow-backup
+    depends_on:
+      - postgres
+    volumes:
+      - ./backups:/backups
+      - ./scripts/backup.sh:/backup.sh
+    networks:
+      - fisioflow-network
+    restart: "no"
+    command: /bin/bash -c "chmod +x /backup.sh && /backup.sh"
+
+volumes:
+  postgres_data:
+  redis_data:
+  letsencrypt_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  fisioflow-network:
+    driver: bridge
