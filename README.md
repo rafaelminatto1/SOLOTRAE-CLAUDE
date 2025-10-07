@@ -1,183 +1,383 @@
-# Supabase CLI
+# 🏥 FisioFlow - Sistema de Gestão para Clínicas de Fisioterapia
 
-[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
-](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
+Sistema completo e moderno de gestão para clínicas de fisioterapia, desenvolvido com as melhores tecnologias do mercado.
 
-[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
+## 🚀 Tecnologias Utilizadas
 
-This repository contains all the functionality for Supabase CLI.
+### Frontend
+- **React 18** com TypeScript
+- **Vite** - Build tool ultra-rápido
+- **Tailwind CSS** - Estilização moderna
+- **Radix UI** - Componentes acessíveis
+- **React Router** - Navegação
+- **Lucide React** - Ícones
+- **Recharts** - Gráficos e visualizações
 
-- [x] Running Supabase locally
-- [x] Managing database migrations
-- [x] Creating and deploying Supabase Functions
-- [x] Generating types directly from your database schema
-- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
+### Backend
+- **Node.js** com TypeScript
+- **Express** - Framework web
+- **Socket.IO** - Comunicação em tempo real
+- **Supabase** - Backend as a Service (Auth + Database)
+- **PostgreSQL** - Banco de dados
 
-## Getting started
+### DevOps
+- **Docker** - Containerização
+- **Docker Compose** - Orquestração
+- **Supabase CLI** - Gerenciamento do banco
 
-### Install the CLI
+## 📋 Funcionalidades
 
-Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
+### ✅ Implementadas
 
-```bash
-npm i supabase --save-dev
-```
+#### 👤 Gestão de Pacientes
+- Cadastro completo de pacientes
+- Histórico médico
+- Informações de emergência
+- Filtros avançados (status, sexo, busca)
+- Visualização detalhada
 
-To install the beta release channel:
+#### 👨‍⚕️ Gestão de Fisioterapeutas
+- Cadastro de profissionais
+- Especialidades
+- Licença CREFITO
+- Biografia e experiência
 
-```bash
-npm i supabase@beta --save-dev
-```
+#### 📅 Agendamento de Consultas
+- Calendário interativo
+- Múltiplos tipos de consultas
+- Status de agendamento
+- Consultas de hoje, semana e próximas
+- Filtros por status, tipo e fisioterapeuta
 
-When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
+#### 🏃 Biblioteca de Exercícios
+- Cadastro de exercícios
+- Categorias e dificuldades
+- Instruções detalhadas
+- Vídeos demonstrativos
+- Precauções de segurança
 
-```
-NODE_OPTIONS=--no-experimental-fetch yarn add supabase
-```
+#### 📋 Planos de Tratamento
+- Criação de planos personalizados
+- Associação de exercícios
+- Acompanhamento de progresso
+- Status (ativo, concluído, pausado)
 
-> **Note**
-For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
+#### 📊 Dashboard Analítico
+- Estatísticas em tempo real
+- Total de pacientes e novos no mês
+- Consultas (hoje, semana, pendentes, concluídas)
+- Total de exercícios
+- Gráficos e métricas
 
-<details>
-  <summary><b>macOS</b></summary>
+#### 🔒 Autenticação e Segurança
+- Login seguro com Supabase Auth
+- Registro de usuários
+- Row Level Security (RLS)
+- Diferentes níveis de acesso
 
-  Available via [Homebrew](https://brew.sh). To install:
+#### ⚡ Recursos Técnicos
+- Interface responsiva
+- Dark mode
+- Performance otimizada
+- Monitoramento de métricas (FCP, LCP, TTFB)
+- Service Worker
+- PWA ready
 
-  ```sh
-  brew install supabase/tap/supabase
-  ```
+## 🗄️ Estrutura do Banco de Dados
 
-  To install the beta release channel:
-  
-  ```sh
-  brew install supabase/tap/supabase-beta
-  brew link --overwrite supabase-beta
-  ```
-  
-  To upgrade:
+### Tabelas Principais
 
-  ```sh
-  brew upgrade supabase
-  ```
-</details>
+- **users** - Usuários do sistema
+- **patients** - Pacientes cadastrados
+- **physiotherapists** - Fisioterapeutas
+- **appointments** - Consultas agendadas
+- **exercises** - Biblioteca de exercícios
+- **treatment_plans** - Planos de tratamento
+- **treatment_plan_exercises** - Exercícios dos planos
+- **exercise_logs** - Logs de exercícios realizados
+- **progress_records** - Registros de progresso
 
-<details>
-  <summary><b>Windows</b></summary>
+## 🛠️ Instalação e Configuração
 
-  Available via [Scoop](https://scoop.sh). To install:
+### Pré-requisitos
 
-  ```powershell
-  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
-  scoop install supabase
-  ```
+- Node.js 18+ 
+- npm ou yarn
+- Docker e Docker Compose (opcional)
+- Conta no Supabase
 
-  To upgrade:
-
-  ```powershell
-  scoop update supabase
-  ```
-</details>
-
-<details>
-  <summary><b>Linux</b></summary>
-
-  Available via [Homebrew](https://brew.sh) and Linux packages.
-
-  #### via Homebrew
-
-  To install:
-
-  ```sh
-  brew install supabase/tap/supabase
-  ```
-
-  To upgrade:
-
-  ```sh
-  brew upgrade supabase
-  ```
-
-  #### via Linux packages
-
-  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
-
-  ```sh
-  sudo apk add --allow-untrusted <...>.apk
-  ```
-
-  ```sh
-  sudo dpkg -i <...>.deb
-  ```
-
-  ```sh
-  sudo rpm -i <...>.rpm
-  ```
-
-  ```sh
-  sudo pacman -U <...>.pkg.tar.zst
-  ```
-</details>
-
-<details>
-  <summary><b>Other Platforms</b></summary>
-
-  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
-
-  ```sh
-  go install github.com/supabase/cli@latest
-  ```
-
-  Add a symlink to the binary in `$PATH` for easier access:
-
-  ```sh
-  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
-  ```
-
-  This works on other non-standard Linux distros.
-</details>
-
-<details>
-  <summary><b>Community Maintained Packages</b></summary>
-
-  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
-  To install in your working directory:
-
-  ```bash
-  pkgx install supabase
-  ```
-
-  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
-</details>
-
-### Run the CLI
+### 1. Clone o Repositório
 
 ```bash
-supabase bootstrap
+git clone <url-do-repositorio>
+cd SOLOTRAE-CLAUDE
 ```
 
-Or using npx:
+### 2. Instale as Dependências
 
 ```bash
-npx supabase bootstrap
+npm install
 ```
 
-The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
+### 3. Configure as Variáveis de Ambiente
 
-## Docs
+Crie um arquivo `.env` na raiz do projeto:
 
-Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
+```env
+# Supabase
+SUPABASE_URL=https://seu-projeto.supabase.co
+SUPABASE_ANON_KEY=sua-anon-key
+SUPABASE_SERVICE_ROLE_KEY=sua-service-role-key
 
-## Breaking changes
+# Frontend (Vite)
+VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+VITE_SUPABASE_ANON_KEY=sua-anon-key
+VITE_API_URL=http://localhost:8080
 
-We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
-
-However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
-
-## Developing
-
-To run from source:
-
-```sh
-# Go >= 1.22
-go run . help
+# Backend
+PORT=8080
+NODE_ENV=development
+CORS_ORIGIN=http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173
 ```
+
+### 4. Configure o Supabase
+
+#### 4.1. Instale a Supabase CLI
+
+```bash
+npm install -g supabase
+```
+
+#### 4.2. Faça Login no Supabase
+
+```bash
+supabase login
+```
+
+#### 4.3. Conecte ao Projeto
+
+```bash
+supabase link --project-ref seu-project-ref
+```
+
+#### 4.4. Execute as Migrations
+
+```bash
+supabase db push
+```
+
+### 5. Popule o Banco de Dados (Opcional)
+
+Para popular o banco com dados de teste:
+
+```bash
+npm run seed
+```
+
+Ou manualmente:
+
+```bash
+npx tsx api/scripts/seed-database.ts
+```
+
+### 6. Inicie o Sistema
+
+#### Desenvolvimento
+
+```bash
+# Terminal 1 - Backend
+npm run backend:dev
+
+# Terminal 2 - Frontend
+npm run frontend:dev
+```
+
+Ou em um único comando:
+
+```bash
+npm run dev
+```
+
+#### Produção
+
+```bash
+npm run build
+npm start
+```
+
+## 📱 Acesso ao Sistema
+
+Após iniciar o sistema, acesse:
+
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8080
+- **API Health**: http://localhost:8080/api/health
+
+## 🧪 Dados de Teste
+
+Após executar o seed, você terá:
+
+- **3 Fisioterapeutas** (Ortopedia, Neurologia, Esportiva)
+- **5 Pacientes** com diferentes condições
+- **5 Exercícios** de várias categorias
+- **6 Consultas** agendadas
+- **3 Planos de Tratamento** ativos
+
+## 📁 Estrutura do Projeto
+
+```
+SOLOTRAE-CLAUDE/
+├── api/                    # Backend Node.js
+│   ├── routes/            # Rotas da API
+│   ├── database/          # Configuração do banco
+│   ├── scripts/           # Scripts utilitários
+│   └── server.ts          # Servidor principal
+├── src/                   # Frontend React
+│   ├── components/        # Componentes reutilizáveis
+│   ├── contexts/          # Context API (Auth, etc)
+│   ├── pages/             # Páginas da aplicação
+│   ├── hooks/             # Custom hooks
+│   ├── lib/               # Utilitários
+│   └── styles/            # Estilos globais
+├── supabase/              # Configuração Supabase
+│   └── migrations/        # Migrations SQL
+├── public/                # Arquivos estáticos
+├── .env                   # Variáveis de ambiente
+├── package.json           # Dependências
+└── README.md              # Este arquivo
+```
+
+## 🔌 API Endpoints
+
+### Dashboard
+- `GET /dashboard/stats` - Estatísticas gerais
+- `GET /dashboard/activity` - Atividades recentes
+- `GET /dashboard/appointments` - Resumo de consultas
+
+### Pacientes
+- `GET /api/patients` - Lista de pacientes
+- `GET /api/patients/:id` - Detalhes do paciente
+- `POST /api/patients` - Criar paciente
+- `PUT /api/patients/:id` - Atualizar paciente
+- `DELETE /api/patients/:id` - Excluir paciente
+
+### Consultas
+- `GET /api/appointments` - Lista de consultas
+- `GET /api/appointments/:id` - Detalhes da consulta
+- `POST /api/appointments` - Agendar consulta
+- `PUT /api/appointments/:id` - Atualizar consulta
+- `DELETE /api/appointments/:id` - Cancelar consulta
+
+### Exercícios
+- `GET /api/exercises` - Lista de exercícios
+- `GET /api/exercises/:id` - Detalhes do exercício
+- `POST /api/exercises` - Criar exercício
+- `PUT /api/exercises/:id` - Atualizar exercício
+- `DELETE /api/exercises/:id` - Excluir exercício
+
+### Planos de Tratamento
+- `GET /api/treatment-plans` - Lista de planos
+- `GET /api/treatment-plans/:id` - Detalhes do plano
+- `POST /api/treatment-plans` - Criar plano
+- `PUT /api/treatment-plans/:id` - Atualizar plano
+- `DELETE /api/treatment-plans/:id` - Excluir plano
+
+## 🔐 Segurança
+
+- **Autenticação**: Supabase Auth com JWT
+- **RLS (Row Level Security)**: Políticas de acesso por linha
+- **CORS**: Configurado para origens permitidas
+- **Variáveis de Ambiente**: Credenciais protegidas
+- **HTTPS**: Recomendado em produção
+
+## 🎨 UI/UX
+
+- **Design System**: Consistente e moderno
+- **Responsivo**: Mobile-first approach
+- **Acessibilidade**: Componentes Radix UI
+- **Performance**: Lazy loading e code splitting
+- **Dark Mode**: Suporte completo
+
+## 📈 Monitoramento
+
+O sistema inclui monitoramento de performance:
+
+- **FCP** (First Contentful Paint)
+- **LCP** (Largest Contentful Paint)
+- **TTFB** (Time to First Byte)
+- **INP** (Interaction to Next Paint)
+- **CLS** (Cumulative Layout Shift)
+
+## 🐛 Resolução de Problemas
+
+### Erro: "EADDRINUSE: address already in use"
+
+```bash
+# Mate o processo na porta 8080
+pkill -f "tsx.*server"
+
+# Ou manualmente
+lsof -ti:8080 | xargs kill -9
+```
+
+### Erro: "VITE_SUPABASE_URL is required"
+
+Certifique-se de que as variáveis de ambiente estão configuradas e reinicie o Vite.
+
+### Banco de dados não conecta
+
+Verifique:
+1. Credenciais do Supabase no `.env`
+2. Migrations foram aplicadas (`supabase db push`)
+3. Internet está funcionando
+
+## 📝 Scripts Disponíveis
+
+```bash
+npm run dev              # Inicia frontend e backend
+npm run frontend:dev     # Inicia apenas frontend
+npm run backend:dev      # Inicia apenas backend
+npm run build            # Build de produção
+npm run seed             # Popula banco de dados
+npm run lint             # Verifica código
+npm run test             # Executa testes
+```
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/NovaFuncionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/NovaFuncionalidade`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
+
+## 👥 Equipe
+
+Desenvolvido com ❤️ pela equipe SOLOTRAE
+
+## 🎯 Roadmap
+
+### Próximas Funcionalidades
+
+- [ ] Integração com calendário Google
+- [ ] Notificações push
+- [ ] Relatórios em PDF
+- [ ] Chat em tempo real
+- [ ] Integração com WhatsApp
+- [ ] Histórico de pagamentos
+- [ ] Avaliações de pacientes
+- [ ] Exercícios com vídeo ao vivo
+- [ ] Dashboard para pacientes
+- [ ] App mobile (React Native)
+
+## 📞 Suporte
+
+Para suporte, envie um email para suporte@fisioflow.com ou abra uma issue no GitHub.
+
+---
+
+**FisioFlow** - Transformando a gestão de clínicas de fisioterapia 🏥✨

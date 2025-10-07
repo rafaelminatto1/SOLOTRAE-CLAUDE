@@ -905,7 +905,7 @@ const Reports: React.FC = () => {
                   <SelectValue placeholder="Todos os fisioterapeutas" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os fisioterapeutas</SelectItem>
+                  <SelectItem value="all">Todos os fisioterapeutas</SelectItem>
                   {physiotherapists.map((physio) => (
                     <SelectItem key={physio.id} value={physio.id}>
                       {physio.first_name} {physio.last_name}
@@ -927,7 +927,7 @@ const Reports: React.FC = () => {
                   <SelectValue placeholder="Todos os pacientes" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os pacientes</SelectItem>
+                  <SelectItem value="all">Todos os pacientes</SelectItem>
                   {patients.map((patient) => (
                     <SelectItem key={patient.id} value={patient.id}>
                       {patient.first_name} {patient.last_name}

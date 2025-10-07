@@ -8,6 +8,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  loginWithGoogle: () => Promise<{ success: boolean; message?: string }>;
   logout: () => Promise<{ success: boolean; message?: string }>;
   register: (userData: { email: string; password: string; name: string; role: UserRole; phone?: string }) => Promise<{ success: boolean; message?: string }>;
   isAuthenticated: boolean;
@@ -87,6 +88,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (data.session.user) {
           await loadUserProfile(data.session.user.id);
         }
+      }
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, message: 'Erro de conexão' };
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+
+      if (error) {
+        return { success: false, message: error.message || 'Erro ao fazer login com Google' };
       }
 
       return { success: true };
@@ -188,6 +208,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     session,
     login,
+    loginWithGoogle,
     logout,
     register,
     isAuthenticated: !!user && !!session,

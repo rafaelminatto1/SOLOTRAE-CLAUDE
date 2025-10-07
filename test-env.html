@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Variáveis de Ambiente</title>
+</head>
+<body>
+    <h1>Teste de Variáveis de Ambiente</h1>
+    <div id="result"></div>
+    <script>
+        fetch('/src/lib/supabase.ts')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('result').innerHTML = 
+                    '<h2>Variáveis carregadas:</h2>' +
+                    '<p>VITE_SUPABASE_URL: ' + 
+                    (data.includes('VITE_SUPABASE_URL') ? '✅ Presente' : '❌ Ausente') +
+                    '</p>' +
+                    '<p>VITE_SUPABASE_ANON_KEY: ' + 
+                    (data.includes('VITE_SUPABASE_ANON_KEY') ? '✅ Presente' : '❌ Ausente') +
+                    '</p>';
+            });
+    </script>
+</body>
+</html>

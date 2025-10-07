@@ -11,11 +11,12 @@ export default defineConfig({
   plugins: [
     react({
       // Otimizações para React 19
-      babel: {
-        plugins: [
-          ['babel-plugin-react-dev-locator', { enabled: process.env.NODE_ENV === 'development' }]
-        ]
-      }
+      // Plugin desabilitado temporariamente devido a warnings de atributos duplicados
+      // babel: {
+      //   plugins: [
+      //     ['babel-plugin-react-dev-locator', { enabled: process.env.NODE_ENV === 'development' }]
+      //   ]
+      // }
     }),
     tsconfigPaths(),
     // Compressão gzip para produção
@@ -108,9 +109,13 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    hmr: {
+      port: 3000,
+      host: 'localhost'
+    },
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },

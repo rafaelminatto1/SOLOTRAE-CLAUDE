@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: fisioflow123
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -49,8 +49,8 @@ services:
   # Backend Flask API
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.backend
     container_name: fisioflow-backend
     environment:
       - NODE_ENV=development

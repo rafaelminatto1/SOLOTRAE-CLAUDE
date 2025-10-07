@@ -1,9 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
-import type { Database } from '../../shared/database.types';
-import { Tables } from '../../shared/database.types';
+import type { Database } from '@shared/database.types';
+import { Tables } from '@shared/database.types';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+// Debug: Log das variáveis de ambiente
+console.log('🔍 DEBUG SUPABASE:', {
+  VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
+  VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'Definida' : 'Não definida',
+  supabaseUrl,
+  supabaseAnonKey: supabaseAnonKey ? 'Definida' : 'Não definida'
+});
 
 if (!supabaseUrl) {
   throw new Error('VITE_SUPABASE_URL is required');
@@ -23,7 +31,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 });
 
 // Tipos exportados para uso no frontend
-export type { Database, Tables, TablesInsert, TablesUpdate } from '../../shared/database.types';
+export type { Database, Tables, TablesInsert, TablesUpdate } from '@shared/database.types';
 
 // Tipos específicos para o frontend
 export type User = Tables<'users'>;
@@ -105,7 +113,7 @@ export const realtime = {
   // Escutar mudanças em uma tabela
   subscribe: (table: keyof Database['public']['Tables'], callback: (payload: any) => void) => {
     return supabase
-      .channel(`public:${table}`)
+      .channel(`public:${String(table)}`)
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
@@ -117,7 +125,7 @@ export const realtime = {
   // Escutar mudanças específicas de um usuário
   subscribeToUser: (userId: string, table: keyof Database['public']['Tables'], callback: (payload: any) => void) => {
     return supabase
-      .channel(`user:${userId}:${table}`)
+      .channel(`user:${userId}:${String(table)}`)
       .on('postgres_changes', {
         event: '*',
         schema: 'public',

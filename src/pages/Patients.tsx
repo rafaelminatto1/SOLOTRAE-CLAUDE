@@ -100,8 +100,8 @@ interface PatientFormData {
 
 const Patients: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('');
-  const [sexFilter, setSexFilter] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [sexFilter, setSexFilter] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -143,7 +143,7 @@ const Patients: React.FC = () => {
     total: number;
     page: number;
     totalPages: number;
-  }>(`/patients?search=${searchQuery}&status=${statusFilter}&sex=${sexFilter}&page=${currentPage}&limit=${pageSize}`);
+  }>(`/patients?search=${searchQuery}&status=${statusFilter === 'all' ? '' : statusFilter}&sex=${sexFilter === 'all' ? '' : sexFilter}&page=${currentPage}&limit=${pageSize}`);
 
   const { mutate: createPatient, loading: creating } = useApiPost('/patients');
   const { mutate: updatePatient, loading: updating } = useApiPut(`/patients/${editingPatient?.id}`);
@@ -770,7 +770,7 @@ const Patients: React.FC = () => {
                   <SelectValue placeholder="Todos os status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os status</SelectItem>
+                  <SelectItem value="all">Todos os status</SelectItem>
                   {statusOptions.map(status => (
                     <SelectItem key={status.value} value={status.value}>
                       {status.label}
@@ -784,7 +784,7 @@ const Patients: React.FC = () => {
                   <SelectValue placeholder="Todos os sexos" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os sexos</SelectItem>
+                  <SelectItem value="all">Todos os sexos</SelectItem>
                   {sexOptions.map(sex => (
                     <SelectItem key={sex.value} value={sex.value}>
                       {sex.label}

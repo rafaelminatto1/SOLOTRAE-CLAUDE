@@ -14,6 +14,7 @@ import treatmentPlansRoutes from './routes/treatment-plans.js';
 import progressRoutes from './routes/progress.js';
 import notificationsRoutes from './routes/notifications.js';
 import uploadRoutes from './routes/upload.js';
+import dashboardRoutes from './routes/dashboard.js';
 import { initializeDatabase } from './database/index.js';
 
 // Initialize database
@@ -24,7 +25,7 @@ const app: express.Application = express();
 
 // CORS configuration using environment variables
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ['http://localhost:3000'],
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -51,6 +52,7 @@ app.use('/api/treatment-plans', treatmentPlansRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 /**
  * health

@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import Login from '../pages/Login';
-import { AuthProvider } from '../contexts/AuthContext';
+import { AuthProvider } from "../contexts/AppContext"';
 import { ThemeProvider } from '../contexts/ThemeContext';
 
 // Mock the useAuth hook

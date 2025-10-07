@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Upgrade pip and setuptools
+RUN pip install --upgrade pip setuptools wheel
+
 # Copiar arquivos de requisitos
 COPY requirements_essential.txt .
 

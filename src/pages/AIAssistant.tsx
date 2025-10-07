@@ -290,7 +290,7 @@ const AIAssistant: React.FC = () => {
                     <SelectValue placeholder="Selecione um paciente" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Selecione um paciente</SelectItem>
+                    <SelectItem value="all">Selecione um paciente</SelectItem>
                     {patients.map((patient) => (
                       <SelectItem key={patient.id} value={patient.id}>
                         {patient.first_name} {patient.last_name}

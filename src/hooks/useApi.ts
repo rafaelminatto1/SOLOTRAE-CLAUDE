@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';;
 import { supabase } from '@/lib/supabase';
 
 interface ApiResponse<T = any> {

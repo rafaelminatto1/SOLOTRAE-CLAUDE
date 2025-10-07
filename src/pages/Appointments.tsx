@@ -101,9 +101,9 @@ interface AppointmentFormData {
 
 const Appointments: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('');
-  const [tipoFilter, setTipoFilter] = useState<string>('');
-  const [medicoFilter, setMedicoFilter] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [tipoFilter, setTipoFilter] = useState<string>('all');
+  const [medicoFilter, setMedicoFilter] = useState<string>('all');
   const [dateFilter, setDateFilter] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -134,7 +134,7 @@ const Appointments: React.FC = () => {
     total: number;
     page: number;
     totalPages: number;
-  }>(`/appointments?search=${searchQuery}&status=${statusFilter}&tipo=${tipoFilter}&medico=${medicoFilter}&date=${dateFilter}&page=${currentPage}&limit=${pageSize}`);
+  }>(`/appointments?search=${searchQuery}&status=${statusFilter === 'all' ? '' : statusFilter}&tipo=${tipoFilter === 'all' ? '' : tipoFilter}&medico=${medicoFilter === 'all' ? '' : medicoFilter}&date=${dateFilter}&page=${currentPage}&limit=${pageSize}`);
 
   const { data: patientsData } = useApiGet<{ patients: Patient[] }>('/patients?limit=1000');
   const { data: physiotherapistsData } = useApiGet<{ physiotherapists: Physiotherapist[] }>('/physiotherapists?limit=1000');
@@ -647,7 +647,7 @@ const Appointments: React.FC = () => {
                       <SelectValue placeholder="Todos os status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os status</SelectItem>
+                      <SelectItem value="all">Todos os status</SelectItem>
                       {statusOptions.map(status => (
                         <SelectItem key={status.value} value={status.value}>
                           {status.label}
@@ -661,7 +661,7 @@ const Appointments: React.FC = () => {
                       <SelectValue placeholder="Todos os tipos" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os tipos</SelectItem>
+                      <SelectItem value="all">Todos os tipos</SelectItem>
                       {tipoOptions.map(tipo => (
                         <SelectItem key={tipo.value} value={tipo.value}>
                           {tipo.label}
@@ -675,7 +675,7 @@ const Appointments: React.FC = () => {
                       <SelectValue placeholder="Todos os fisioterapeutas" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os fisioterapeutas</SelectItem>
+                      <SelectItem value="all">Todos os fisioterapeutas</SelectItem>
                       {physiotherapists.map(physiotherapist => (
                         <SelectItem key={physiotherapist.id} value={physiotherapist.id.toString()}>
                           {physiotherapist.first_name} {physiotherapist.last_name}

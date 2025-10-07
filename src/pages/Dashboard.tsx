@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';;
 import { useApiGet } from '@/hooks/useApi';
 import { Card } from '@/components/ui/Card';
 import AnimatedContainer from '@/components/ui/AnimatedContainer';

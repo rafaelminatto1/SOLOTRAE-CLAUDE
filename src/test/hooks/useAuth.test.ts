@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, waitFor, act } from '@testing-library/react'
 import { ReactNode, createElement } from 'react'
 import { useAuth } from '../../hooks/useAuth'
-import { AuthProvider } from '../../contexts/AuthContext'
+import { AuthProvider } from "../contexts/AppContext"'
 
 // Mock localStorage
 const mockLocalStorage = {
